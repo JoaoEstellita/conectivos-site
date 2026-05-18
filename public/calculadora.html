@@ -851,7 +851,8 @@ async function sendChat(){
   const reply=await zumeRequest(msg,null);
   addBubble(reply,'bot');
 }
-function addBubble(text,type){const w=$('chat-msgs'),d=document.createElement('div');d.className='bubble '+type;d.innerHTML=type==='bot'?`<strong>Zumé</strong> — ${text}`:text;w.appendChild(d);w.scrollTop=w.scrollHeight;return d;}
+function renderMd(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>').replace(/\n/g,'<br>');}
+function addBubble(text,type){const w=$('chat-msgs'),d=document.createElement('div');d.className='bubble '+type;d.innerHTML=type==='bot'?`<strong>Zumé</strong> — ${renderMd(text)}`:renderMd(text);w.appendChild(d);w.scrollTop=w.scrollHeight;return d;}
 
 /* FLOAT WIDGET */
 function toggleZFloat(){document.getElementById('zfloat-panel').classList.toggle('open');}
@@ -862,7 +863,7 @@ async function sendFloatChat(){
   const reply=await zumeRequest(msg,st);
   addFBubble(reply,'bot');
 }
-function addFBubble(text,type){const w=document.getElementById('zfloat-msgs'),d=document.createElement('div');d.className='bubble '+type;d.innerHTML=type==='bot'?`<strong>Zumé</strong> — ${text}`:text;w.appendChild(d);w.scrollTop=w.scrollHeight;return d;}
+function addFBubble(text,type){const w=document.getElementById('zfloat-msgs'),d=document.createElement('div');d.className='bubble '+type;d.innerHTML=type==='bot'?`<strong>Zumé</strong> — ${renderMd(text)}`:renderMd(text);w.appendChild(d);w.scrollTop=w.scrollHeight;return d;}
 
 /* ════ INIT ════ */
 async function fetchCambio() {

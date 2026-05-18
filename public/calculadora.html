@@ -177,7 +177,11 @@
   <!-- ══ TAB: PROJETOS ══ -->
   <div id="tab-projetos" class="tab-content active">
     <div class="card">
-      <div class="card-title">Adicionar Projeto / Cliente</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div class="card-title" style="margin:0" id="form-title">Adicionar Projeto / Cliente</div>
+        <button class="btn btn-ghost btn-sm" id="form-cancel-btn" style="display:none" onclick="cancelEdit()">✕ Cancelar edição</button>
+      </div>
+      <input type="hidden" id="p-edit-id" value="">
       <div class="g3">
         <div class="fg"><label>Nome do Projeto</label><input type="text" id="p-nome" placeholder="Ex: GS Clínica"></div>
         <div class="fg"><label>Modelo LLM</label>
@@ -188,18 +192,18 @@
             <option value="gemini20flash">Gemini 2.0 Flash</option>
           </select>
         </div>
-        <div class="fg"><label>Profissionais (médicos, terapeutas…)</label><input type="number" id="p-prof" value="52" min="1"></div>
+        <div class="fg"><label>Profissionais (médicos, terapeutas…)</label><input type="number" id="p-prof" min="1"></div>
         <div class="fg">
           <label>Msgs / profissional / mês</label>
-          <input type="number" id="p-mpp" value="154" min="1">
+          <input type="number" id="p-mpp" min="1">
           <div class="hint">Total = profissionais × msgs/prof</div>
         </div>
-        <div class="fg"><label>Receita Mensal (R$)</label><input type="number" id="p-receita" value="5900"></div>
-        <div class="fg"><label>Infra Fixa / mês (R$)</label><input type="number" id="p-infra" value="158">
+        <div class="fg"><label>Receita Mensal (R$)</label><input type="number" id="p-receita"></div>
+        <div class="fg"><label>Infra Fixa / mês (R$)</label><input type="number" id="p-infra">
           <div class="hint">Fly.io + S3 fixo; Meta API calculada auto</div>
         </div>
       </div>
-      <button class="btn btn-primary" onclick="addProjeto()">+ Adicionar Projeto</button>
+      <button class="btn btn-primary" id="form-submit-btn" onclick="addProjeto()">+ Adicionar Projeto</button>
     </div>
 
     <div class="g4" id="proj-metrics" style="margin-bottom:16px"></div>
@@ -506,17 +510,59 @@ function save() { localStorage.setItem('cnx_proj2', JSON.stringify(projetos)); }
 function addProjeto() {
   const nome = $('p-nome').value.trim();
   if(!nome){ alert('Informe o nome'); return; }
-  projetos.push({
-    id: Date.now(), nome,
+  const editId = $('p-edit-id').value;
+  const data = {
+    nome,
     modelo: $('p-modelo').value,
     prof: parseInt($('p-prof').value)||1,
     mpp:  parseInt($('p-mpp').value)||100,
     receita: parseFloat($('p-receita').value)||0,
     infra:   parseFloat($('p-infra').value)||40,
-  });
-  save(); $('p-nome').value=''; renderProjetos();
+  };
+  if (editId) {
+    projetos = projetos.map(p => p.id == editId ? {...p, ...data} : p);
+    cancelEdit();
+  } else {
+    projetos.push({id: Date.now(), ...data});
+    $('p-nome').value=''; $('p-prof').value=''; $('p-mpp').value='';
+    $('p-receita').value=''; $('p-infra').value='';
+  }
+  save(); renderProjetos();
 }
-function deleteProjeto(id) { projetos=projetos.filter(p=>p.id!==id); save(); renderProjetos(); }
+
+function editProjeto(id) {
+  const p = projetos.find(x => x.id == id);
+  if (!p) return;
+  $('p-edit-id').value = p.id;
+  $('p-nome').value = p.nome;
+  $('p-modelo').value = p.modelo;
+  $('p-prof').value = p.prof;
+  $('p-mpp').value = p.mpp;
+  $('p-receita').value = p.receita;
+  $('p-infra').value = p.infra;
+  $('form-title').textContent = '✏️ Editando: ' + p.nome;
+  $('form-submit-btn').textContent = '✓ Salvar alterações';
+  $('form-submit-btn').className = 'btn btn-accent';
+  $('form-cancel-btn').style.display = 'inline-block';
+  $('tab-projetos').scrollIntoView({behavior:'smooth'});
+}
+
+function cancelEdit() {
+  $('p-edit-id').value = '';
+  $('p-nome').value=''; $('p-prof').value=''; $('p-mpp').value='';
+  $('p-receita').value=''; $('p-infra').value='';
+  $('p-modelo').value = 'gpt4omini';
+  $('form-title').textContent = 'Adicionar Projeto / Cliente';
+  $('form-submit-btn').textContent = '+ Adicionar Projeto';
+  $('form-submit-btn').className = 'btn btn-primary';
+  $('form-cancel-btn').style.display = 'none';
+}
+
+function deleteProjeto(id) {
+  if (!confirm('Remover este projeto?')) return;
+  projetos=projetos.filter(p=>p.id!==id); save(); renderProjetos();
+  if ($('p-edit-id').value == id) cancelEdit();
+}
 
 function renderProjetos() {
   const brl=gBrl(), tin=gTin(), tout=gTout();
@@ -542,7 +588,7 @@ function renderProjetos() {
       <td>${fBRL(llm.brl)}</td>
       <td>${fBRL(cogs)}</td>
       <td>${marginBadge(mg)}</td>
-      <td style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="analisarProposta(${p.id})" title="Analisar com Zumé">🤖</button><button class="btn btn-danger btn-sm" onclick="deleteProjeto(${p.id})">✕</button></td>
+      <td style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="editProjeto(${p.id})" title="Editar">✏️</button><button class="btn btn-ghost btn-sm" onclick="analisarProposta(${p.id})" title="Analisar com Zumé">🤖</button><button class="btn btn-danger btn-sm" onclick="deleteProjeto(${p.id})">✕</button></td>
     </tr>`;
   });
   tbody.innerHTML=rows;

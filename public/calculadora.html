@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Aura — Conectivos</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --primary: #6c3fc5; --primary-light: #8b5cf6; --accent: #14b8a6;
+      --bg: #0a0614; --bg2: #110c24; --bg3: #1c1338;
+      --border: rgba(108,63,197,0.25); --text: #e2e0f0; --muted: #7c6fa0;
+      --green: #10b981; --red: #ef4444; --yellow: #f59e0b; --blue: #3b82f6;
+      --sidebar-w: 220px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; overflow: hidden; }
+
+    /* SIDEBAR */
+    .sidebar { width: var(--sidebar-w); min-width: var(--sidebar-w); background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; z-index: 20; }
+    .logo { padding: 20px 18px 16px; border-bottom: 1px solid var(--border); }
+    .logo h1 { font-size: 16px; font-weight: 800; }
+    .logo h1 span { color: var(--accent); }
+    .logo p { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-top: 2px; }
+    .nav { flex: 1; padding: 8px 0; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 18px; cursor: pointer; color: var(--muted); font-size: 13px; border-left: 3px solid transparent; transition: all .15s; user-select: none; }
+    .nav-item:hover { color: var(--text); background: rgba(108,63,197,.08); }
+    .nav-item.active { color: var(--primary-light); border-left-color: var(--primary); background: rgba(108,63,197,.14); }
+    .nav-icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+
+    /* GLOBAL CONFIG */
+    .gcfg { padding: 12px 14px; border-top: 1px solid var(--border); }
+    .gcfg-title { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 8px; }
+    .gcfg-row { margin-bottom: 7px; }
+    .gcfg-row label { display: block; font-size: 10px; color: var(--muted); margin-bottom: 3px; }
+    .gcfg-row input { width: 100%; padding: 5px 8px; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 12px; }
+    .gcfg-row input:focus { outline: none; border-color: var(--primary); }
+
+    /* MAIN */
+    .main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; overflow-y: auto; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--border); background: var(--bg2); position: sticky; top: 0; z-index: 10; }
+    .topbar h2 { font-size: 16px; font-weight: 700; }
+    .tab-content { display: none; padding: 24px; }
+    .tab-content.active { display: block; }
+
+    /* CARD */
+    .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 16px; }
+    .card-title { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 14px; }
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+
+    /* GRIDS */
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+
+    /* METRIC */
+    .metric { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+    .metric-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
+    .metric-value { font-size: 20px; font-weight: 700; }
+    .c-green { color: var(--green); } .c-accent { color: var(--accent); } .c-primary { color: var(--primary-light); } .c-yellow { color: var(--yellow); } .c-red { color: var(--red); }
+
+    /* FORM */
+    .fg { margin-bottom: 12px; }
+    .fg label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+    .fg input, .fg select { width: 100%; padding: 8px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 13px; font-family: inherit; }
+    .fg input:focus, .fg select:focus { outline: none; border-color: var(--primary); }
+    .fg .hint { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+    /* BUTTON */
+    .btn { padding: 8px 16px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: filter .15s; }
+    .btn:hover { filter: brightness(1.1); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-accent  { background: var(--accent); color: var(--bg); }
+    .btn-ghost   { background: rgba(108,63,197,.15); color: var(--primary-light); border: 1px solid var(--border); }
+    .btn-danger  { background: rgba(239,68,68,.12); color: var(--red); border: 1px solid rgba(239,68,68,.25); }
+    .btn-sm      { padding: 4px 10px; font-size: 11px; border-radius: 6px; }
+
+    /* TABLE */
+    .tw { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th { padding: 9px 11px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); background: var(--bg3); border-bottom: 1px solid var(--border); white-space: nowrap; }
+    tbody td { padding: 9px 11px; border-bottom: 1px solid rgba(108,63,197,.07); white-space: nowrap; }
+    tbody tr:hover { background: rgba(108,63,197,.04); }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr.highlight td { background: rgba(108,63,197,.12) !important; }
+
+    /* BADGE */
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+    .badge-green  { background: rgba(16,185,129,.12); color: var(--green); }
+    .badge-yellow { background: rgba(245,158,11,.12); color: var(--yellow); }
+    .badge-red    { background: rgba(239,68,68,.12);  color: var(--red); }
+    .badge-purple { background: rgba(108,63,197,.18); color: var(--primary-light); }
+
+    /* RANGE */
+    input[type=range] { width: 100%; accent-color: var(--primary); margin: 4px 0; }
+
+    /* SIMULATION PANEL */
+    .sim-panel { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-top: 14px; }
+    .sim-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+    .sim-title { font-size: 13px; font-weight: 700; }
+    .sim-proj-sel select { padding: 5px 10px; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 12px; }
+
+    /* PILLS */
+    .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .pill { padding: 5px 12px; border-radius: 16px; border: 1px solid var(--border); cursor: pointer; font-size: 12px; color: var(--muted); transition: all .15s; user-select: none; }
+    .pill.on { font-weight: 700; }
+
+    /* CHART */
+    .chart-box { position: relative; }
+
+    /* CHAT */
+    .chat-shell { border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column; background: var(--bg3); overflow: hidden; height: 400px; }
+    .chat-msgs { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .bubble { max-width: 82%; padding: 9px 13px; border-radius: 12px; font-size: 13px; line-height: 1.6; }
+    .bubble.user { background: rgba(108,63,197,.3); align-self: flex-end; border-bottom-right-radius: 3px; }
+    .bubble.bot  { background: var(--bg2); align-self: flex-start; border-bottom-left-radius: 3px; border: 1px solid var(--border); }
+    .bubble.sys  { color: var(--muted); font-size: 11px; align-self: center; font-style: italic; }
+    .chat-in-row { padding: 10px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+    .chat-in-row input { flex: 1; padding: 7px 11px; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 13px; font-family: inherit; }
+    .chat-in-row input:focus { outline: none; border-color: var(--primary); }
+
+    code { background: var(--bg3); padding: 2px 6px; border-radius: 4px; font-size: 11px; font-family: Consolas, monospace; }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
+
+    @media print { .sidebar { display: none; } .main { margin-left: 0; } }
+    @media (max-width: 900px) { .g2, .g3, .g4 { grid-template-columns: 1fr; } }
+
+    /* ZUMÉ FLOAT */
+    #zfloat-btn { position:fixed; bottom:24px; right:24px; width:52px; height:52px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; font-size:22px; cursor:pointer; box-shadow:0 4px 24px rgba(108,63,197,.55); z-index:1000; transition:.2s; user-select:none; }
+    #zfloat-btn:hover { transform:scale(1.1); background:var(--primary-light); }
+    #zfloat-panel { position:fixed; bottom:88px; right:24px; width:370px; height:500px; background:var(--bg2); border:1px solid var(--border); border-radius:16px; display:flex; flex-direction:column; z-index:999; box-shadow:0 8px 48px rgba(0,0,0,.65); transform:scale(.85); transform-origin:bottom right; opacity:0; transition:.2s cubic-bezier(.34,1.56,.64,1); pointer-events:none; }
+    #zfloat-panel.open { transform:scale(1); opacity:1; pointer-events:all; }
+    .zfloat-header { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--border); border-radius:16px 16px 0 0; background:var(--bg3); }
+    .zfloat-header span { font-weight:700; font-size:14px; }
+    .zfloat-header button { background:none; border:none; color:var(--muted); cursor:pointer; font-size:18px; line-height:1; padding:0; }
+    .zfloat-header button:hover { color:var(--text); }
+    .zfloat-msgs { flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:8px; }
+    .zfloat-in { display:flex; gap:8px; padding:10px 12px; border-top:1px solid var(--border); }
+    .zfloat-in input { flex:1; padding:8px 12px; background:var(--bg3); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:13px; font-family:inherit; }
+    .zfloat-in input:focus { outline:none; border-color:var(--primary); }
+    .zfloat-in button { padding:8px 14px; background:var(--primary); border:none; border-radius:8px; color:#fff; cursor:pointer; font-size:18px; line-height:1; transition:.15s; }
+    .zfloat-in button:hover { background:var(--primary-light); }
+    .zfloat-status { font-size:10px; padding:3px 12px 6px; color:var(--muted); min-height:18px; }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">
+    <h1>Cone<span>cti</span>vos</h1>
+    <p>Calculadora Aura</p>
+  </div>
+  <nav class="nav">
+    <div class="nav-item active" onclick="showTab('projetos',this)"><span class="nav-icon">📋</span> Projetos</div>
+    <div class="nav-item" onclick="showTab('simulacao',this)"><span class="nav-icon">🔬</span> Simulação / Volume</div>
+    <div class="nav-item" onclick="showTab('exponencial',this)"><span class="nav-icon">📈</span> Tabela Exponencial</div>
+    <div class="nav-item" onclick="showTab('infra',this)"><span class="nav-icon">🏗️</span> Infraestrutura</div>
+    <div class="nav-item" onclick="showTab('zume',this)"><span class="nav-icon">🤖</span> Zumé</div>
+  </nav>
+  <div class="gcfg">
+    <div class="gcfg-title">⚙ Config Global</div>
+    <div class="gcfg-row"><label>Câmbio USD → BRL</label><input type="number" id="gUsd" value="5.70" step=".05" oninput="globalRecalc()"></div>
+    <div class="gcfg-row"><label>Tokens input / msg</label><input type="number" id="gTin" value="10500" oninput="globalRecalc()"></div>
+    <div class="gcfg-row"><label>Tokens output / msg</label><input type="number" id="gTout" value="500" oninput="globalRecalc()"></div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <h2 id="page-title">📋 Projetos</h2>
+    <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 PDF</button>
+  </div>
+
+  <!-- ══ TAB: PROJETOS ══ -->
+  <div id="tab-projetos" class="tab-content active">
+    <div class="card">
+      <div class="card-title">Adicionar Projeto / Cliente</div>
+      <div class="g3">
+        <div class="fg"><label>Nome do Projeto</label><input type="text" id="p-nome" placeholder="Ex: GS Clínica"></div>
+        <div class="fg"><label>Modelo LLM</label>
+          <select id="p-modelo">
+            <option value="gpt4omini">GPT-4o-mini</option>
+            <option value="gpt4o">GPT-4o</option>
+            <option value="claude35haiku">Claude 3.5 Haiku</option>
+            <option value="gemini20flash">Gemini 2.0 Flash</option>
+          </select>
+        </div>
+        <div class="fg"><label>Profissionais (médicos, terapeutas…)</label><input type="number" id="p-prof" value="52" min="1"></div>
+        <div class="fg">
+          <label>Msgs / profissional / mês</label>
+          <input type="number" id="p-mpp" value="154" min="1">
+          <div class="hint">Total = profissionais × msgs/prof</div>
+        </div>
+        <div class="fg"><label>Receita Mensal (R$)</label><input type="number" id="p-receita" value="5900"></div>
+        <div class="fg"><label>Infra Fixa / mês (R$)</label><input type="number" id="p-infra" value="158">
+          <div class="hint">Fly.io + S3 fixo; Meta API calculada auto</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="addProjeto()">+ Adicionar Projeto</button>
+    </div>
+
+    <div class="g4" id="proj-metrics" style="margin-bottom:16px"></div>
+
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div class="card-title" style="margin:0">Portfólio</div>
+        <button class="btn btn-ghost btn-sm" onclick="analisarPortfolio()">🤖 Analisar portfólio com Zumé</button>
+      </div>
+      <div class="tw">
+        <table>
+          <thead>
+            <tr><th>Projeto</th><th>Modelo</th><th>Profissionais</th><th>Msgs/prof</th><th>Total msgs</th><th>Receita</th><th>LLM (R$)</th><th>COGS</th><th>Margem</th><th></th></tr>
+          </thead>
+          <tbody id="proj-tbody"><tr><td colspan="10" style="text-align:center;color:var(--muted);padding:28px;font-style:italic">Nenhum projeto ainda.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Receita vs COGS por Projeto</div>
+      <div class="chart-box" style="height:240px"><canvas id="chart-proj"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ══ TAB: SIMULAÇÃO ══ -->
+  <div id="tab-simulacao" class="tab-content">
+
+    <!-- Project selector -->
+    <div class="card">
+      <div class="card-title">Projeto para simular</div>
+      <div class="g2">
+        <div class="fg" style="margin:0">
+          <label>Selecionar projeto</label>
+          <select id="sim-proj-sel" onchange="simRecalc()">
+            <option value="">— selecione —</option>
+          </select>
+        </div>
+        <div class="fg" style="margin:0">
+          <label>Modelo LLM</label>
+          <select id="sim-modelo" onchange="simRecalc()">
+            <option value="gpt4omini">GPT-4o-mini</option>
+            <option value="gpt4o">GPT-4o</option>
+            <option value="claude35haiku">Claude 3.5 Haiku</option>
+            <option value="gemini20flash">Gemini 2.0 Flash</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Config do projeto selecionado -->
+    <div id="sim-body" style="display:none">
+
+      <!-- Slider msgs/profissional -->
+      <div class="card">
+        <div class="card-title">Volume de mensagens por profissional</div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:12px">
+          <span style="font-size:13px;color:var(--muted)">Msgs / profissional / mês:</span>
+          <strong id="sim-mpp-val" style="font-size:22px;color:var(--primary-light);min-width:60px">154</strong>
+          <span style="font-size:12px;color:var(--muted)">→ Total: <strong id="sim-total-val" style="color:var(--accent)">8.008</strong> msgs/mês</span>
+        </div>
+        <input type="range" id="sim-slider" min="10" max="2000" step="10" value="154" oninput="onSimSlider()">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:2px">
+          <span>10 msgs/prof</span><span>500</span><span>1.000</span><span>1.500</span><span>2.000</span>
+        </div>
+      </div>
+
+      <!-- Live metrics -->
+      <div class="g4" id="sim-metrics" style="margin-bottom:16px"></div>
+
+      <!-- Tabela de cenários por volume -->
+      <div class="card">
+        <div class="card-title">Tabela de Cenários — <span id="sim-proj-nome">—</span></div>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Msgs/prof</th>
+                <th>Total msgs</th>
+                <th>LLM (USD)</th>
+                <th>LLM (R$)</th>
+                <th>Meta API (R$)</th>
+                <th>COGS (R$)</th>
+                <th>Margem bruta</th>
+                <th>Lucro líq. (R$)</th>
+              </tr>
+            </thead>
+            <tbody id="sim-tbody"></tbody>
+          </table>
+        </div>
+        <p style="font-size:10px;color:var(--muted);margin-top:10px">⬆ Linha destacada = valor atual do slider. Meta API = (total_msgs ÷ 10) conversas × $0.026 × BRL. Infra fixa do projeto não incluída no COGS aqui (ver coluna "COGS completo" abaixo).</p>
+      </div>
+
+      <!-- Gráficos -->
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">Custo LLM + Meta vs Volume</div>
+          <div class="chart-box" style="height:240px"><canvas id="chart-sim-cost"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Margem Bruta % vs Volume</div>
+          <div class="chart-box" style="height:240px"><canvas id="chart-sim-margin"></canvas></div>
+        </div>
+      </div>
+
+      <!-- COGS completo (com infra fixa) -->
+      <div class="card">
+        <div class="card-title">COGS Completo (LLM + Meta + Infra Fixa do Projeto)</div>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Msgs/prof</th><th>Total msgs</th><th>LLM (R$)</th><th>Meta API (R$)</th><th>Infra Fixa (R$)</th><th>COGS Total (R$)</th><th>Margem Completa</th><th>P/ 80% margem</th><th>P/ 70% margem</th>
+              </tr>
+            </thead>
+            <tbody id="sim-tbody2"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="sim-empty" style="text-align:center;padding:60px;color:var(--muted);font-style:italic">Selecione um projeto acima para ver a simulação.</div>
+  </div>
+
+  <!-- ══ TAB: EXPONENCIAL ══ -->
+  <div id="tab-exponencial" class="tab-content">
+    <div class="card">
+      <div class="card-title">Configuração</div>
+      <div class="pills" id="exp-pills"></div>
+      <div class="g3">
+        <div class="fg"><label>Tokens input / msg</label><input type="number" id="exp-tin" value="10500" oninput="expRecalc()"></div>
+        <div class="fg"><label>Tokens output / msg</label><input type="number" id="exp-tout" value="500" oninput="expRecalc()"></div>
+        <div class="fg"><label>Preço do plano (R$/mês)</label><input type="number" id="exp-preco" value="5900" oninput="expRecalc()"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Custo × Volume — por cliente/mês (<span id="exp-model-lbl">GPT-4o-mini</span>)</div>
+      <div class="tw">
+        <table>
+          <thead>
+            <tr><th>Msgs/mês</th><th>LLM (USD)</th><th>LLM (R$)</th><th>Infra (R$)</th><th>COGS (R$)</th><th style="color:var(--red)">P/ 90% margem</th><th style="color:var(--yellow)">P/ 80%</th><th style="color:var(--accent)">P/ 70%</th><th>Margem @ plano</th></tr>
+          </thead>
+          <tbody id="exp-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Custo LLM vs Volume (escala log)</div>
+      <div class="chart-box" style="height:300px"><canvas id="chart-exp"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ══ TAB: INFRA ══ -->
+  <div id="tab-infra" class="tab-content">
+    <div class="g2">
+      <div class="card">
+        <div class="card-title">Custos por Cliente / Mês</div>
+        <p style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:10px">☁️ Fly.io</p>
+        <div class="fg"><label>Instância (R$)</label><input type="number" id="i-fly" value="35" oninput="infraRecalc()"></div>
+        <hr class="divider">
+        <p style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:10px">📱 Meta Cloud API</p>
+        <div class="fg"><label>Conversas / mês</label><input type="number" id="i-conv" value="800" oninput="infraRecalc()"></div>
+        <div class="fg"><label>Taxa / conversa (USD)</label><input type="number" id="i-meta" value="0.026" step=".001" oninput="infraRecalc()"></div>
+        <hr class="divider">
+        <p style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:10px">🗄️ S3 / Litestream</p>
+        <div class="fg"><label>S3 mensal (R$)</label><input type="number" id="i-s3" value="5" oninput="infraRecalc()"></div>
+        <hr class="divider">
+        <div class="fg"><label>Outros (R$)</label><input type="number" id="i-outros" value="0" oninput="infraRecalc()"></div>
+      </div>
+      <div>
+        <div class="g2" id="infra-metrics" style="margin-bottom:14px"></div>
+        <div class="card">
+          <div class="card-title">Composição</div>
+          <div class="chart-box" style="height:200px"><canvas id="chart-infra"></canvas></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Escala por Número de Clientes</div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Clientes</th><th>Fly.io</th><th>Meta API</th><th>S3</th><th>Total</th><th>Por cliente</th></tr></thead>
+          <tbody id="infra-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TAB: ZUMÉ ══ -->
+  <div id="tab-zume" class="tab-content">
+    <div class="card" style="height:calc(100vh - 120px);display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="card-title" style="margin:0">💬 Chat com Zumé</div>
+        <button class="btn btn-ghost btn-sm" onclick="toggleZCfg()" id="z-cfg-btn">⚙ Configurar</button>
+      </div>
+      <div id="z-cfg-panel" style="display:none;margin-bottom:12px;padding:12px;background:var(--bg3);border-radius:8px;border:1px solid var(--border)">
+        <div class="fg" style="margin-bottom:8px"><label>URL da API</label><input type="text" id="z-url" placeholder="https://..."></div>
+        <div class="fg" style="margin-bottom:8px"><label>Token</label><input type="password" id="z-token"></div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn btn-primary btn-sm" onclick="saveZume()">Salvar</button>
+          <button class="btn btn-ghost btn-sm" onclick="testZume()">Testar</button>
+          <span id="z-status" style="font-size:11px;color:var(--muted)"></span>
+        </div>
+      </div>
+      <div class="chat-shell" style="flex:1;height:0">
+        <div class="chat-msgs" id="chat-msgs">
+          <div class="bubble bot"><strong>Zumé</strong> — Olá! Posso analisar custos de LLM, margens, simular cenários de volume e responder perguntas sobre os projetos da Conectivos.</div>
+        </div>
+        <div class="chat-in-row">
+          <input type="text" id="chat-in" placeholder="Pergunte ao Zumé..." onkeydown="if(event.key==='Enter')sendChat()">
+          <button class="btn btn-primary btn-sm" onclick="sendChat()">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ZUMÉ FLOATING WIDGET -->
+<div id="zfloat-btn" onclick="toggleZFloat()" title="Falar com Zumé">🤖</div>
+<div id="zfloat-panel">
+  <div class="zfloat-header">
+    <span>🤖 Zumé — Conectivos</span>
+    <button onclick="toggleZFloat()">✕</button>
+  </div>
+  <div class="zfloat-msgs" id="zfloat-msgs">
+    <div class="bubble bot"><strong>Zumé</strong> — Olá! Posso ajudar com custos de LLM, margens de projeto, precificação e qualquer dúvida sobre os dados da Calculadora Aura.</div>
+  </div>
+  <div class="zfloat-status" id="zfloat-status"></div>
+  <div class="zfloat-in">
+    <input type="text" id="zfloat-in" placeholder="Pergunte ao Zumé..." onkeydown="if(event.key==='Enter')sendFloatChat()">
+    <button onclick="sendFloatChat()">↑</button>
+  </div>
+</div>
+
+<script>
+/* ════ DADOS ════ */
+const MODELS = {
+  gpt4omini:    { label:'GPT-4o-mini',      in:.15,  out:.60,  color:'#10b981' },
+  gpt4o:        { label:'GPT-4o',           in:2.50, out:10.0, color:'#3b82f6' },
+  claude35haiku:{ label:'Claude 3.5 Haiku', in:.80,  out:4.00, color:'#ec4899' },
+  gemini20flash:{ label:'Gemini 2.0 Flash', in:.10,  out:.40,  color:'#f59e0b' },
+};
+const EXP_TIERS = [1000,5000,10000,25000,50000,100000,250000,500000,1000000];
+// Tiers de msgs/profissional para a simulação
+const SIM_TIERS = [25,50,75,100,150,200,300,400,500,750,1000,1500,2000];
+
+const CHARTS = {};
+let projetos = JSON.parse(localStorage.getItem('cnx_proj2') || '[]');
+let expSel = ['gpt4omini','claude35haiku'];
+
+/* ════ HELPERS ════ */
+const $ = id => document.getElementById(id);
+const gBrl  = () => parseFloat($('gUsd').value)  || 5.70;
+const gTin  = () => parseInt($('gTin').value)     || 10500;
+const gTout = () => parseInt($('gTout').value)    || 500;
+
+function llmCost(modelKey, msgs, tin, tout, brl) {
+  const m = MODELS[modelKey] || MODELS['gpt4omini'];
+  const usd = (tin/1e6 * m.in + tout/1e6 * m.out) * msgs;
+  return { usd, brl: usd*brl, perMsg: usd/msgs };
+}
+function metaCost(msgs, brl, rate=0.026) {
+  return Math.ceil(msgs/10) * rate * brl;
+}
+function infraCost(msgs, brl, fly=35, s3=5, outros=0) {
+  return { fly, meta: metaCost(msgs, brl), s3, outros, total: fly + metaCost(msgs, brl) + s3 + outros };
+}
+
+function fBRL(v) { return 'R$\u00a0'+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fN(v,d=2) { return v.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+function fUSD(v) { return '$'+v.toFixed(4); }
+
+function marginBadge(m) {
+  if (m>=85) return `<span class="badge badge-green">${fN(m,1)}%</span>`;
+  if (m>=70) return `<span class="badge badge-yellow">${fN(m,1)}%</span>`;
+  return `<span class="badge badge-red">${fN(m,1)}%</span>`;
+}
+function mClass(m) {
+  if (m>=85) return 'c-green'; if (m>=70) return 'c-accent'; if (m>=50) return 'c-yellow'; return 'c-red';
+}
+function metric(v,l,c='') { return `<div class="metric"><div class="metric-label">${l}</div><div class="metric-value ${c}">${v}</div></div>`; }
+function kill(id) { if(CHARTS[id]){ CHARTS[id].destroy(); delete CHARTS[id]; } }
+
+const AX = { ticks:{color:'#7c6fa0'}, grid:{color:'rgba(108,63,197,.1)'} };
+const LEG = { labels:{color:'#e2e0f0',font:{size:11}} };
+
+/* ════ NAV ════ */
+const TITLES = { projetos:'📋 Projetos', simulacao:'🔬 Simulação / Volume', exponencial:'📈 Tabela Exponencial', infra:'🏗️ Infraestrutura', zume:'🤖 Zumé' };
+function showTab(id, el) {
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  $('tab-'+id).classList.add('active');
+  if(el) el.classList.add('active');
+  $('page-title').textContent = TITLES[id];
+  if(id==='simulacao') { populateSimSel(); simRecalc(); }
+  if(id==='exponencial') expRecalc();
+  if(id==='infra') infraRecalc();
+}
+function globalRecalc() { renderProjetos(); simRecalc(); expRecalc(); infraRecalc(); }
+
+/* ════ PROJETOS ════ */
+function save() { localStorage.setItem('cnx_proj2', JSON.stringify(projetos)); }
+
+function addProjeto() {
+  const nome = $('p-nome').value.trim();
+  if(!nome){ alert('Informe o nome'); return; }
+  projetos.push({
+    id: Date.now(), nome,
+    modelo: $('p-modelo').value,
+    prof: parseInt($('p-prof').value)||1,
+    mpp:  parseInt($('p-mpp').value)||100,
+    receita: parseFloat($('p-receita').value)||0,
+    infra:   parseFloat($('p-infra').value)||40,
+  });
+  save(); $('p-nome').value=''; renderProjetos();
+}
+function deleteProjeto(id) { projetos=projetos.filter(p=>p.id!==id); save(); renderProjetos(); }
+
+function renderProjetos() {
+  const brl=gBrl(), tin=gTin(), tout=gTout();
+  const tbody=$('proj-tbody');
+  if(!projetos.length){ tbody.innerHTML='<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:28px;font-style:italic">Nenhum projeto ainda.</td></tr>'; $('proj-metrics').innerHTML=''; kill('chart-proj'); return; }
+
+  let rows='', totRec=0, totCOGS=0, labels=[], recArr=[], cogsArr=[];
+  projetos.forEach(p=>{
+    const totalMsgs = p.prof * p.mpp;
+    const llm  = llmCost(p.modelo, totalMsgs, tin, tout, brl);
+    const meta = metaCost(totalMsgs, brl);
+    const cogs = llm.brl + meta + p.infra;
+    const mg   = p.receita>0 ? (p.receita-cogs)/p.receita*100 : 0;
+    totRec+=p.receita; totCOGS+=cogs;
+    labels.push(p.nome); recArr.push(p.receita); cogsArr.push(+cogs.toFixed(2));
+    rows+=`<tr>
+      <td><strong>${p.nome}</strong></td>
+      <td><span class="badge badge-purple">${MODELS[p.modelo].label}</span></td>
+      <td>${p.prof}</td>
+      <td>${p.mpp}</td>
+      <td>${totalMsgs.toLocaleString('pt-BR')}</td>
+      <td>${fBRL(p.receita)}</td>
+      <td>${fBRL(llm.brl)}</td>
+      <td>${fBRL(cogs)}</td>
+      <td>${marginBadge(mg)}</td>
+      <td style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="analisarProposta(${p.id})" title="Analisar com Zumé">🤖</button><button class="btn btn-danger btn-sm" onclick="deleteProjeto(${p.id})">✕</button></td>
+    </tr>`;
+  });
+  tbody.innerHTML=rows;
+
+  const totMg = totRec>0?(totRec-totCOGS)/totRec*100:0;
+  $('proj-metrics').innerHTML =
+    metric(projetos.length,'Projetos','c-primary') +
+    metric(fBRL(totRec),'Receita Total/mês','c-accent') +
+    metric(fBRL(totCOGS),'COGS Total/mês','') +
+    metric(fN(totMg,1)+'%','Margem Geral',totMg>=80?'c-green':'c-yellow');
+
+  kill('chart-proj');
+  CHARTS['chart-proj'] = new Chart($('chart-proj').getContext('2d'),{
+    type:'bar',
+    data:{ labels, datasets:[
+      {label:'Receita',data:recArr,backgroundColor:'rgba(20,184,166,.75)',borderRadius:6},
+      {label:'COGS',   data:cogsArr,backgroundColor:'rgba(239,68,68,.55)',borderRadius:6},
+    ]},
+    options:{ responsive:true,maintainAspectRatio:false,
+      plugins:{legend:LEG},
+      scales:{ x:AX, y:{...AX,ticks:{...AX.ticks,callback:v=>'R$'+v.toLocaleString('pt-BR')}} }
+    }
+  });
+}
+
+/* ════ SIMULAÇÃO POR VOLUME ════ */
+function populateSimSel() {
+  const sel=$('sim-proj-sel');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">— selecione —</option>';
+  projetos.forEach(p=>{ const o=document.createElement('option'); o.value=p.id; o.textContent=p.nome+' ('+p.prof+' prof)'; if(p.id==cur) o.selected=true; sel.appendChild(o); });
+}
+
+function onSimSlider() {
+  const v=parseInt($('sim-slider').value);
+  const pid=$('sim-proj-sel').value;
+  const p=projetos.find(x=>x.id==pid);
+  $('sim-mpp-val').textContent=v;
+  $('sim-total-val').textContent=(p?p.prof*v:v).toLocaleString('pt-BR');
+  simRecalc();
+}
+
+function simRecalc() {
+  const pid=$('sim-proj-sel').value;
+  const p=projetos.find(x=>x.id==pid);
+  if(!p){ $('sim-body').style.display='none'; $('sim-empty').style.display='block'; return; }
+  $('sim-body').style.display='block'; $('sim-empty').style.display='none';
+
+  const brl=gBrl(), tin=gTin(), tout=gTout();
+  const modelKey=$('sim-modelo').value;
+  const sliderMpp=parseInt($('sim-slider').value)||p.mpp;
+  const totalNow=p.prof*sliderMpp;
+
+  $('sim-proj-nome').textContent=p.nome;
+  $('sim-mpp-val').textContent=sliderMpp;
+  $('sim-total-val').textContent=totalNow.toLocaleString('pt-BR');
+
+  // Live metrics for slider value
+  const llmNow=llmCost(modelKey,totalNow,tin,tout,brl);
+  const metaNow=metaCost(totalNow,brl);
+  const cogsNow=llmNow.brl+metaNow+p.infra;
+  const mgNow=p.receita>0?(p.receita-cogsNow)/p.receita*100:0;
+  $('sim-metrics').innerHTML =
+    metric(sliderMpp+' msgs','Por profissional','c-primary') +
+    metric(totalNow.toLocaleString('pt-BR')+' msgs','Total / mês','c-accent') +
+    metric(fBRL(cogsNow),'COGS (com infra)','') +
+    metric(fN(mgNow,1)+'%','Margem bruta',mgNow>=80?'c-green':'c-yellow');
+
+  // Scenario table
+  const curTier=sliderMpp;
+  let rows='', rows2='';
+  const chartLabels=[], costLLM=[], costMeta=[], margins=[];
+
+  SIM_TIERS.forEach(mpp=>{
+    const total=p.prof*mpp;
+    const llm=llmCost(modelKey,total,tin,tout,brl);
+    const meta=metaCost(total,brl);
+    const cogs_partial=llm.brl+meta; // sem infra fixa
+    const cogs_full=llm.brl+meta+p.infra;
+    const mg_partial=p.receita>0?(p.receita-cogs_partial)/p.receita*100:0;
+    const mg_full=p.receita>0?(p.receita-cogs_full)/p.receita*100:0;
+    const lucro=p.receita-cogs_full;
+    const isHighlight=(mpp===curTier||(!SIM_TIERS.includes(curTier)&&mpp===SIM_TIERS.find(t=>t>=curTier)));
+    const hl=isHighlight?' class="highlight"':'';
+
+    rows+=`<tr${hl}>
+      <td><strong>${mpp}</strong>${isHighlight?' ◀':''}</td>
+      <td>${total.toLocaleString('pt-BR')}</td>
+      <td>${fUSD(llm.usd)}</td>
+      <td>${fBRL(llm.brl)}</td>
+      <td>${fBRL(meta)}</td>
+      <td>${fBRL(cogs_partial)}</td>
+      <td>${marginBadge(mg_partial)}</td>
+      <td class="${lucro>0?'c-green':'c-red'}">${fBRL(lucro)}</td>
+    </tr>`;
+
+    const p80=cogs_full/0.20, p70=cogs_full/0.30;
+    rows2+=`<tr${hl}>
+      <td><strong>${mpp}</strong>${isHighlight?' ◀':''}</td>
+      <td>${total.toLocaleString('pt-BR')}</td>
+      <td>${fBRL(llm.brl)}</td>
+      <td>${fBRL(meta)}</td>
+      <td>${fBRL(p.infra)}</td>
+      <td><strong>${fBRL(cogs_full)}</strong></td>
+      <td>${marginBadge(mg_full)}</td>
+      <td class="c-yellow">${fBRL(p80)}</td>
+      <td class="c-accent">${fBRL(p70)}</td>
+    </tr>`;
+
+    chartLabels.push(mpp);
+    costLLM.push(+llm.brl.toFixed(2));
+    costMeta.push(+meta.toFixed(2));
+    margins.push(+mg_full.toFixed(2));
+  });
+
+  $('sim-tbody').innerHTML=rows;
+  $('sim-tbody2').innerHTML=rows2;
+
+  // Chart custo
+  kill('chart-sim-cost');
+  CHARTS['chart-sim-cost']=new Chart($('chart-sim-cost').getContext('2d'),{
+    type:'line',
+    data:{labels:chartLabels,datasets:[
+      {label:'LLM (R$)',  data:costLLM,  borderColor:'#8b5cf6',backgroundColor:'#8b5cf622',tension:.4,fill:true,pointRadius:3},
+      {label:'Meta API (R$)',data:costMeta,borderColor:'#14b8a6',backgroundColor:'#14b8a622',tension:.4,fill:true,pointRadius:3},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:LEG,tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fBRL(c.parsed.y)}`}}},
+      scales:{x:{...AX,title:{display:true,text:'msgs/profissional',color:'#7c6fa0'}},y:{...AX,ticks:{...AX.ticks,callback:v=>'R$'+v.toLocaleString('pt-BR')}}}
+    }
+  });
+
+  // Chart margem
+  kill('chart-sim-margin');
+  CHARTS['chart-sim-margin']=new Chart($('chart-sim-margin').getContext('2d'),{
+    type:'line',
+    data:{labels:chartLabels,datasets:[{
+      label:'Margem Bruta %',data:margins,borderColor:'#10b981',backgroundColor:'#10b98122',tension:.4,fill:true,pointRadius:3,
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:LEG,tooltip:{callbacks:{label:c=>` Margem: ${fN(c.parsed.y,1)}%`}}},
+      scales:{
+        x:{...AX,title:{display:true,text:'msgs/profissional',color:'#7c6fa0'}},
+        y:{...AX,min:0,max:100,ticks:{...AX.ticks,callback:v=>v+'%'}},
+      }
+    }
+  });
+}
+
+/* ════ EXPONENCIAL ════ */
+function renderExpPills(){
+  $('exp-pills').innerHTML=Object.entries(MODELS).map(([k,m])=>{
+    const on=expSel.includes(k);
+    return `<div class="pill ${on?'on':''}" style="${on?`border-color:${m.color};color:${m.color}`:''}" onclick="toggleExp('${k}',this,'${m.color}')">${m.label}</div>`;
+  }).join('');
+}
+function toggleExp(k,el,color){
+  if(expSel.includes(k)){if(expSel.length<=1)return;expSel=expSel.filter(x=>x!==k);el.classList.remove('on');el.style.borderColor='';el.style.color='';}
+  else{expSel.push(k);el.classList.add('on');el.style.borderColor=color;el.style.color=color;}
+  expRecalc();
+}
+function expRecalc(){
+  const brl=gBrl(),tin=parseInt($('exp-tin').value)||10500,tout=parseInt($('exp-tout').value)||500,preco=parseFloat($('exp-preco').value)||0;
+  const primary=expSel[0];
+  $('exp-model-lbl').textContent=MODELS[primary].label;
+  let rows='';
+  EXP_TIERS.forEach(vol=>{
+    const llm=llmCost(primary,vol,tin,tout,brl);
+    const infra=infraCost(vol,brl);
+    const cogs=llm.brl+infra.total;
+    const p90=cogs/.10,p80=cogs/.20,p70=cogs/.30;
+    const mg=preco>0?(preco-cogs)/preco*100:null;
+    rows+=`<tr>
+      <td><strong>${vol.toLocaleString('pt-BR')}</strong></td>
+      <td>$${llm.usd.toFixed(2)}</td><td>${fBRL(llm.brl)}</td><td>${fBRL(infra.total)}</td>
+      <td><strong>${fBRL(cogs)}</strong></td>
+      <td class="c-red">${fBRL(p90)}</td><td class="c-yellow">${fBRL(p80)}</td><td class="c-accent">${fBRL(p70)}</td>
+      <td>${mg!==null?`<span class="${mClass(mg)}">${fN(mg,1)}%</span>`:'—'}</td>
+    </tr>`;
+  });
+  $('exp-tbody').innerHTML=rows;
+
+  kill('chart-exp');
+  CHARTS['chart-exp']=new Chart($('chart-exp').getContext('2d'),{
+    type:'line',
+    data:{labels:EXP_TIERS.map(v=>v.toLocaleString('pt-BR')),
+      datasets:expSel.map(k=>({label:MODELS[k].label,data:EXP_TIERS.map(v=>+llmCost(k,v,tin,tout,brl).brl.toFixed(2)),borderColor:MODELS[k].color,backgroundColor:MODELS[k].color+'22',tension:.4,fill:false,pointRadius:4}))
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:LEG,tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fBRL(c.parsed.y)}`}}},
+      scales:{x:{...AX,ticks:{...AX.ticks,maxRotation:40}},y:{...AX,type:'logarithmic',ticks:{...AX.ticks,callback:v=>'R$'+v.toLocaleString('pt-BR')}}}
+    }
+  });
+}
+
+/* ════ INFRA ════ */
+function infraRecalc(){
+  const brl=gBrl(),fly=parseFloat($('i-fly').value)||35,conv=parseInt($('i-conv').value)||800;
+  const mRate=parseFloat($('i-meta').value)||.026,s3=parseFloat($('i-s3').value)||5,outros=parseFloat($('i-outros').value)||0;
+  const meta=conv*mRate*brl,total=fly+meta+s3+outros;
+
+  $('infra-metrics').innerHTML=
+    metric(fBRL(total),'Total / cliente / mês','c-primary')+
+    metric(fBRL(meta),'Meta API','') +
+    metric(fBRL(fly+s3+outros),'Fixos','')+
+    metric(fBRL(total*12),'Anual / cliente','c-accent');
+
+  kill('chart-infra');
+  CHARTS['chart-infra']=new Chart($('chart-infra').getContext('2d'),{
+    type:'doughnut',
+    data:{labels:['Fly.io','Meta API','S3','Outros'],
+      datasets:[{data:[fly,+meta.toFixed(2),s3,outros],backgroundColor:['#14b8a6','#6c3fc5','#10b981','#f59e0b'],borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#e2e0f0',font:{size:11}}},tooltip:{callbacks:{label:c=>` ${c.label}: ${fBRL(c.parsed)}`}}}}
+  });
+
+  let rows='';
+  [1,2,5,10,20,50,100].forEach(n=>{
+    const tN=(fly+meta+s3+outros)*n;
+    rows+=`<tr><td><strong>${n}</strong></td><td>${fBRL(fly*n)}</td><td>${fBRL(meta*n)}</td><td>${fBRL(s3*n)}</td><td><strong>${fBRL(tN)}</strong></td><td>${fBRL(tN/n)}</td></tr>`;
+  });
+  $('infra-tbody').innerHTML=rows;
+}
+
+/* ════ ZUMÉ ════ */
+const Z_DEFAULT_URL   = 'https://api.dashboard.conectivos.net/api/zume/public-chat';
+const Z_DEFAULT_TOKEN = 'conectivoszume';
+
+function getZCtx() {
+  const brl=gBrl(), tin=gTin(), tout=gTout();
+  let ctx = `Você é Zumé, assistente IA da Conectivos. Está integrado à Calculadora Aura — ferramenta de precificação de propostas de IA para clínicas e empresas.
+
+CONFIGURAÇÃO ATUAL: Câmbio R$${brl.toFixed(2)}/USD | Tokens input/msg: ${tin.toLocaleString('pt-BR')} | Tokens output/msg: ${tout.toLocaleString('pt-BR')}
+
+MODELOS LLM (preço/1M tokens): GPT-4o-mini $0.15/$0.60 | GPT-4o $2.50/$10.00 | Claude 3.5 Haiku $0.80/$4.00 | Gemini 2.0 Flash $0.10/$0.40
+
+INFRA PADRÃO/CLIENTE/MÊS: Fly.io R$35 + Meta Cloud API ~R$118 (800 conv × $0.026) + S3 R$5 = ~R$158 fixo`;
+
+  if (projetos.length > 0) {
+    ctx += `\n\nPROJETOS NO PORTFÓLIO:\n`;
+    projetos.forEach(p => {
+      const totalMsgs = p.prof * p.mpp;
+      const llm = llmCost(p.modelo, totalMsgs, tin, tout, brl);
+      const meta = metaCost(totalMsgs, brl);
+      const cogs = llm.brl + meta + p.infra;
+      const mg = p.receita > 0 ? (p.receita - cogs) / p.receita * 100 : null;
+      ctx += `- ${p.nome}: ${p.prof} prof | ${totalMsgs.toLocaleString('pt-BR')} msgs/mês | ${MODELS[p.modelo]?.label||p.modelo} | COGS R$${cogs.toFixed(2)} | Receita R$${p.receita.toFixed(2)} | Margem ${mg !== null ? mg.toFixed(1)+'%' : 'indefinida'}\n`;
+    });
+  } else {
+    ctx += `\n\nNenhum projeto cadastrado ainda.`;
+  }
+
+  ctx += `\n\nSUA FUNÇÃO: ajudar a equipe Conectivos a definir o valor adequado de propostas comerciais. Para cada projeto analise: preço mínimo viável, margem atual vs ideal (meta 70%+), risco de subprecificação, e recomendação objetiva de preço. Use sempre os números reais da calculadora. Seja direto e use R$ concretos.`;
+  return ctx;
+}
+
+function zUrl()   { return localStorage.getItem('z_url')   || Z_DEFAULT_URL;   }
+function zToken() { return localStorage.getItem('z_token') || Z_DEFAULT_TOKEN; }
+
+function toggleZCfg(){const p=$('z-cfg-panel'),b=$('z-cfg-btn');const open=p.style.display!=='none';p.style.display=open?'none':'block';b.textContent=open?'⚙ Configurar':'✕ Fechar';}
+function saveZume(){localStorage.setItem('z_url',$('z-url').value);localStorage.setItem('z_token',$('z-token').value);const s=$('z-status');s.textContent='✓ Salvo';s.style.color='var(--green)';setTimeout(()=>s.textContent='',2000);}
+async function testZume(){const url=$('z-url').value||Z_DEFAULT_URL,token=$('z-token').value||Z_DEFAULT_TOKEN,s=$('z-status');s.textContent='Testando…';s.style.color='var(--muted)';try{const r=await fetch(url,{method:'POST',headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({message:'ping',context:getZCtx()})});s.textContent=r.ok?'✓ Online ('+r.status+')':'✗ Erro '+r.status;s.style.color=r.ok?'var(--green)':'var(--red)';}catch(e){s.textContent='✗ '+e.message;s.style.color='var(--red)';}}
+function loadZume(){$('z-url').value=zUrl();$('z-token').value=zToken();}
+
+async function zumeRequest(msg, statusEl) {
+  if (statusEl) { statusEl.textContent='Zumé está pensando…'; }
+  try {
+    const r = await fetch(zUrl(), {method:'POST', headers:{'Authorization':'Bearer '+zToken(),'Content-Type':'application/json'}, body:JSON.stringify({message:msg, context:getZCtx()})});
+    if (statusEl) statusEl.textContent='';
+    if (r.ok) { const d=await r.json(); return d.reply||d.message||JSON.stringify(d); }
+    return 'Erro '+r.status;
+  } catch(e) { if(statusEl) statusEl.textContent=''; return 'Erro: '+e.message; }
+}
+
+function analisarProposta(id) {
+  const p = projetos.find(x => x.id == id);
+  if (!p) return;
+  const brl=gBrl(), tin=gTin(), tout=gTout();
+  const totalMsgs = p.prof * p.mpp;
+  const llm = llmCost(p.modelo, totalMsgs, tin, tout, brl);
+  const meta = metaCost(totalMsgs, brl);
+  const cogs = llm.brl + meta + p.infra;
+  const mg = p.receita > 0 ? (p.receita - cogs) / p.receita * 100 : null;
+  const prompt = `Analise a proposta "${p.nome}": ${p.prof} profissionais, ${totalMsgs.toLocaleString('pt-BR')} msgs/mês com ${MODELS[p.modelo]?.label||p.modelo}, COGS R$${cogs.toFixed(2)}/mês (LLM R$${llm.brl.toFixed(2)} + Meta R$${meta.toFixed(2)} + Infra R$${p.infra.toFixed(2)}), receita atual R$${p.receita.toFixed(2)}/mês${mg !== null ? ', margem atual '+mg.toFixed(1)+'%' : ', sem receita definida'}. Estou precificando corretamente? Qual o preço mínimo viável e o preço ideal para 70% e 80% de margem?`;
+  document.getElementById('zfloat-panel').classList.add('open');
+  addFBubble(prompt, 'user');
+  zumeRequest(prompt, document.getElementById('zfloat-status')).then(r => addFBubble(r, 'bot'));
+}
+
+function analisarPortfolio() {
+  if (!projetos.length) { alert('Adicione ao menos um projeto primeiro.'); return; }
+  const brl=gBrl(), tin=gTin(), tout=gTout();
+  const linhas = projetos.map(p => {
+    const totalMsgs = p.prof * p.mpp;
+    const llm = llmCost(p.modelo, totalMsgs, tin, tout, brl);
+    const meta = metaCost(totalMsgs, brl);
+    const cogs = llm.brl + meta + p.infra;
+    const mg = p.receita > 0 ? (p.receita - cogs) / p.receita * 100 : null;
+    return `${p.nome}: COGS R$${cogs.toFixed(0)}, receita R$${p.receita}, margem ${mg !== null ? mg.toFixed(1)+'%' : 'indefinida'}`;
+  }).join(' | ');
+  const prompt = `Analise o portfólio completo da Conectivos: ${linhas}. Quais projetos estão subprecificados? Onde está o maior risco? Que ajustes de preço recomenda para cada um?`;
+  document.getElementById('zfloat-panel').classList.add('open');
+  addFBubble(prompt, 'user');
+  zumeRequest(prompt, document.getElementById('zfloat-status')).then(r => addFBubble(r, 'bot'));
+}
+
+async function sendChat(){
+  const inp=$('chat-in'),msg=inp.value.trim();if(!msg)return;
+  addBubble(msg,'user');inp.value='';
+  const reply=await zumeRequest(msg,null);
+  addBubble(reply,'bot');
+}
+function addBubble(text,type){const w=$('chat-msgs'),d=document.createElement('div');d.className='bubble '+type;d.innerHTML=type==='bot'?`<strong>Zumé</strong> — ${text}`:text;w.appendChild(d);w.scrollTop=w.scrollHeight;return d;}
+
+/* FLOAT WIDGET */
+function toggleZFloat(){document.getElementById('zfloat-panel').classList.toggle('open');}
+async function sendFloatChat(){
+  const inp=document.getElementById('zfloat-in'),msg=inp.value.trim();if(!msg)return;
+  addFBubble(msg,'user');inp.value='';
+  const st=document.getElementById('zfloat-status');
+  const reply=await zumeRequest(msg,st);
+  addFBubble(reply,'bot');
+}
+function addFBubble(text,type){const w=document.getElementById('zfloat-msgs'),d=document.createElement('div');d.className='bubble '+type;d.innerHTML=type==='bot'?`<strong>Zumé</strong> — ${text}`:text;w.appendChild(d);w.scrollTop=w.scrollHeight;return d;}
+
+/* ════ INIT ════ */
+async function fetchCambio() {
+  try {
+    const r = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL');
+    const d = await r.json();
+    const rate = parseFloat(d.USDBRL.bid);
+    if (rate > 0) { $('gUsd').value = rate.toFixed(2); globalRecalc(); }
+  } catch(e) { /* mantém 5.70 */ }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  // Migra modelos antigos removidos
+  projetos = projetos.map(p => ({...p, modelo: (p.modelo==='geminiflash'||p.modelo==='claude3haiku') ? 'gpt4omini' : p.modelo}));
+  save();
+
+  renderExpPills();
+  renderProjetos();
+  infraRecalc();
+  loadZume();
+  populateSimSel();
+  fetchCambio();
+});
+</script>
+</body>
+</html>

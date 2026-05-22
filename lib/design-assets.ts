@@ -1,5 +1,5 @@
 export type AssetCategory = "efeito" | "componente" | "animação" | "design-system";
-export type AssetLanguage = "tsx" | "css" | "js" | "html";
+export type AssetLanguage = "tsx" | "css" | "js" | "html" | "md";
 
 export interface DesignAsset {
   id: string;

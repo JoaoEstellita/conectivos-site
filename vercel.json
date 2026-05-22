@@ -1,0 +1,14 @@
+{
+  "rewrites": [
+    { "source": "/servicos/clinica",                    "destination": "/servicos/clinica.html"          },
+    { "source": "/servicos/clinica/roi",                "destination": "/servicos/clinica-roi.html"      },
+    { "source": "/servicos/clinica/analise_estrategica","destination": "/servicos/clinica-analise.html"  },
+    { "source": "/servicos/clinica/proposta_gs",        "destination": "/servicos/clinica-proposta_gs.html" },
+    { "source": "/calculadora",                         "destination": "/calculadora.html"                   },
+    { "source": "/servicos/agentes",                    "destination": "/servicos/agentes.html"          },
+    { "source": "/servicos/sdr",                        "destination": "/servicos/sdr.html"              },
+    { "source": "/servicos/instagram",                  "destination": "/servicos/instagram.html"        },
+    { "source": "/servicos/meta",                       "destination": "/servicos/meta.html"             },
+    { "source": "/servicos/monitor",                    "destination": "/servicos/monitor.html"          }
+  ]
+}

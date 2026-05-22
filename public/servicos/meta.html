@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="/icon.png" type="image/png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meta Ads by Conectivos — Campanhas Meta Otimizadas por IA</title>
+<meta name="description" content="Gestão de campanhas Facebook e Instagram com IA. Criativas testados automaticamente, segmentação preditiva e relatórios em tempo real — mais ROAS, menos trabalho manual.">
+<style>
+:root {
+  --primary: #6c3fc5;
+  --primary-light: #8b5cf6;
+  --accent: #0ea5e9;
+  --accent2: #f59e0b;
+  --dark: #0f0a1e;
+  --dark2: #1a1033;
+  --dark3: #251848;
+  --card: rgba(255,255,255,0.04);
+  --card-border: rgba(255,255,255,0.08);
+  --text: #e2dff7;
+  --muted: #9b92c8;
+  --white: #ffffff;
+  --green: #22c55e;
+  --pink: #ec4899;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--dark);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── NAVBAR ── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:100;
+  background: rgba(15,10,30,0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--card-border);
+  padding: 0 2rem;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand { display:flex; align-items:center; gap:0.75rem; text-decoration:none; }
+.nav-brand img { height:30px; }
+.nav-brand span { font-size:1.05rem; font-weight:700; color:var(--white); }
+.nav-brand em { color:var(--accent); font-style:normal; }
+.nav-links { display:flex; gap:2rem; list-style:none; }
+.nav-links a { color:var(--muted); text-decoration:none; font-size:0.88rem; font-weight:500; transition:color 0.2s; }
+.nav-links a:hover { color:var(--white); }
+.nav-cta {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: var(--white); border:none; padding: 0.5rem 1.3rem;
+  border-radius: 2rem; font-size:0.88rem; font-weight:700;
+  cursor:pointer; text-decoration:none; transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 4px 16px rgba(14,165,233,0.3);
+}
+.nav-cta:hover { opacity:0.9; transform: translateY(-1px); }
+
+/* ── HERO ── */
+#home {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -5%, rgba(108,63,197,0.5) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 35% at 90% 85%, rgba(14,165,233,0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 10% 90%, rgba(139,92,246,0.15) 0%, transparent 60%),
+    var(--dark);
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 7rem 2rem 5rem;
+  position: relative; overflow: hidden;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap:0.5rem;
+  background: rgba(108,63,197,0.12); border: 1px solid rgba(108,63,197,0.35);
+  border-radius: 2rem; padding: 0.4rem 1.1rem;
+  font-size: 0.78rem; color: var(--primary-light); font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 1.75rem;
+}
+.hero-badge span { color: var(--accent); }
+#home h1 {
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-weight: 800; line-height: 1.12;
+  color: var(--white);
+  max-width: 820px; margin: 0 auto 1.5rem;
+  letter-spacing: -0.02em;
+}
+#home h1 .hl {
+  background: linear-gradient(135deg, var(--primary-light) 30%, var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: 1.15rem; color: var(--muted);
+  max-width: 560px; margin: 0 auto 2.75rem;
+}
+.hero-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color:var(--white); padding: 0.95rem 2.2rem;
+  border-radius: 2rem; font-weight:700; font-size:1rem;
+  text-decoration:none; transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 10px 36px rgba(14,165,233,0.4);
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(14,165,233,0.55); }
+.btn-ghost {
+  background: transparent; border: 1px solid rgba(255,255,255,0.15);
+  color: var(--text); padding: 0.95rem 2.2rem;
+  border-radius: 2rem; font-weight:600; font-size:1rem;
+  text-decoration:none; transition: background 0.2s, border-color 0.2s;
+}
+.btn-ghost:hover { background: var(--card); border-color: rgba(255,255,255,0.25); }
+
+.hero-stats {
+  display: flex; gap: 3.5rem; justify-content: center; flex-wrap:wrap;
+  margin-top: 4.5rem; padding-top: 3rem;
+  border-top: 1px solid var(--card-border);
+}
+.stat { text-align: center; }
+.stat-num { font-size: 2.2rem; font-weight: 900; color: var(--white); }
+.stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top:0.2rem; }
+
+/* ── SHARED SECTION ── */
+.section { padding: 5.5rem 2rem; max-width: 1100px; margin: 0 auto; }
+.section-wrap { padding: 5.5rem 0; }
+.section-inner { max-width:1100px; margin:0 auto; padding: 0 2rem; }
+.section-tag {
+  display: inline-block;
+  color: var(--accent); font-size: 0.75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 0.8rem;
+}
+.section-title {
+  font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+  font-weight: 800; color: var(--white); margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+.section-sub { color: var(--muted); font-size: 1.05rem; max-width: 560px; }
+.divider { width:100%; height:1px; background: var(--card-border); }
+
+/* ── PROBLEM ── */
+.problem-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem; margin-top: 3rem;
+}
+.problem-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: 16px; padding: 1.75rem;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.problem-card:hover { border-color: rgba(236,72,153,0.35); transform: translateY(-3px); }
+.prob-icon { font-size: 2rem; margin-bottom: 0.9rem; }
+.prob-title { font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+.prob-text { font-size: 0.88rem; color: var(--muted); }
+
+/* ── HOW IT WORKS ── */
+.steps { display:flex; gap:1.5rem; margin-top:3rem; flex-wrap:wrap; }
+.step {
+  flex:1; min-width:210px;
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: 18px; padding: 2rem 1.5rem; text-align:center;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.step:hover { border-color: rgba(14,165,233,0.4); transform: translateY(-3px); }
+.step-num {
+  width:46px; height:46px; border-radius:50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display:flex; align-items:center; justify-content:center;
+  font-weight:900; font-size:1.1rem; color:var(--white);
+  margin: 0 auto 1rem;
+  box-shadow: 0 6px 20px rgba(14,165,233,0.35);
+}
+.step h3 { font-size:1rem; font-weight:700; color:var(--white); margin-bottom:0.5rem; }
+.step p { font-size:0.85rem; color:var(--muted); }
+
+/* ── CHAT DEMO ── */
+.demo-cols {
+  display:grid; grid-template-columns: 1fr 1fr;
+  gap:3.5rem; margin-top:3rem; align-items:start;
+}
+@media(max-width:768px) { .demo-cols { grid-template-columns:1fr; } }
+.phone-frame {
+  background: #18182a; border-radius: 26px;
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+}
+.phone-header {
+  background: #20202e; padding: 0.85rem 1.1rem;
+  display:flex; align-items:center; gap:0.8rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.phone-avatar {
+  width:38px; height:38px; border-radius:50%; flex-shrink:0;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem;
+}
+.phone-name { font-size:0.9rem; font-weight:700; color:var(--white); }
+.phone-status { font-size:0.72rem; color:var(--green); }
+.chat-body { padding: 1.1rem; display:flex; flex-direction:column; gap:0.85rem; min-height:340px; }
+.bubble {
+  max-width:80%; padding: 0.65rem 1rem; border-radius:16px;
+  font-size:0.84rem; line-height:1.55;
+}
+.bubble-in {
+  background: rgba(255,255,255,0.07); color:var(--text); align-self:flex-start;
+  border-bottom-left-radius:4px;
+}
+.bubble-out {
+  background: linear-gradient(135deg, rgba(108,63,197,0.65), rgba(14,165,233,0.45));
+  color:var(--white); align-self:flex-end; border-bottom-right-radius:4px;
+}
+.bubble-time { font-size:0.66rem; opacity:0.5; margin-top:0.2rem; text-align:right; }
+.demo-desc h3 { font-size:1.5rem; font-weight:800; color:var(--white); margin-bottom:1rem; letter-spacing:-0.01em; }
+.demo-desc p { color:var(--muted); font-size:0.95rem; margin-bottom:1.5rem; }
+.demo-tabs { display:flex; gap:0.5rem; margin-bottom:0.8rem; }
+.demo-tab {
+  background:var(--card); border:1px solid var(--card-border);
+  color:var(--muted); padding:0.4rem 1rem; border-radius:2rem;
+  font-size:0.8rem; font-weight:600; cursor:pointer; transition:all 0.2s;
+}
+.demo-tab.active {
+  background:linear-gradient(135deg, var(--primary), var(--primary-light));
+  border-color:transparent; color:var(--white);
+}
+.demo-chat-panel { display:none; }
+.demo-chat-panel.active { display:block; }
+.demo-pill {
+  display:inline-flex; align-items:center; gap:0.4rem;
+  background: rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.2);
+  color:var(--green); border-radius:2rem; padding:0.32rem 0.85rem;
+  font-size:0.77rem; font-weight:600; margin:0.25rem;
+}
+
+/* ── FEATURES ── */
+.ftabs {
+  display: flex; gap:0.6rem; flex-wrap:wrap; margin-bottom: 2rem;
+}
+.ftab {
+  background: var(--card); border: 1px solid var(--card-border);
+  color: var(--muted); padding: 0.5rem 1.3rem; border-radius: 2rem;
+  font-size: 0.85rem; cursor:pointer; transition: all 0.2s;
+  font-weight:600; user-select:none;
+}
+.ftab.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  border-color: transparent; color: var(--white);
+  box-shadow: 0 4px 16px rgba(108,63,197,0.3);
+}
+.features-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.1rem;
+}
+.feature-panel { display:none; }
+.feature-panel.active { display:grid; }
+.feature-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: 14px; padding: 1.4rem;
+  display:flex; gap:1rem; align-items:flex-start;
+  transition: all 0.25s;
+}
+.feature-card:hover {
+  border-color: rgba(14,165,233,0.45);
+  background: rgba(14,165,233,0.07);
+  transform: translateY(-2px);
+}
+.feat-icon {
+  width: 46px; height:46px; border-radius:12px; flex-shrink:0;
+  background: linear-gradient(135deg, rgba(108,63,197,0.18), rgba(14,165,233,0.18));
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.35rem;
+}
+.feat-title { font-size:0.95rem; font-weight:700; color:var(--white); margin-bottom:0.3rem; }
+.feat-desc { font-size:0.82rem; color:var(--muted); line-height:1.5; }
+
+/* ── ADVANCED ── */
+.adv-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.25rem; margin-top: 3rem;
+}
+@media(max-width:640px) { .adv-grid { grid-template-columns:1fr; } }
+.adv-card {
+  border-radius: 18px; padding: 2rem 1.75rem;
+  position: relative; overflow: hidden;
+}
+.adv-card.ap { background: linear-gradient(135deg, rgba(108,63,197,0.22), rgba(108,63,197,0.06)); border: 1px solid rgba(108,63,197,0.3); }
+.adv-card.at { background: linear-gradient(135deg, rgba(14,165,233,0.18), rgba(14,165,233,0.04)); border: 1px solid rgba(14,165,233,0.25); }
+.adv-card.aa { background: linear-gradient(135deg, rgba(245,158,11,0.18), rgba(245,158,11,0.04)); border: 1px solid rgba(245,158,11,0.25); }
+.adv-card.apk { background: linear-gradient(135deg, rgba(236,72,153,0.18), rgba(236,72,153,0.04)); border: 1px solid rgba(236,72,153,0.25); }
+.adv-icon { font-size: 2.4rem; margin-bottom: 1rem; }
+.adv-label { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; font-weight:700; margin-bottom:0.5rem; }
+.adv-card.ap .adv-label { color: var(--primary-light); }
+.adv-card.at .adv-label { color: var(--accent); }
+.adv-card.aa .adv-label { color: var(--accent2); }
+.adv-card.apk .adv-label { color: var(--pink); }
+.adv-title { font-size:1.15rem; font-weight:800; color:var(--white); margin-bottom:0.6rem; }
+.adv-text { font-size:0.87rem; color:var(--muted); margin-bottom:1rem; line-height:1.6; }
+.adv-list { list-style:none; }
+.adv-list li { font-size:0.82rem; color:var(--muted); padding:0.28rem 0; display:flex; gap:0.5rem; align-items:flex-start; }
+.adv-list li::before { content:"→"; color:var(--accent); flex-shrink:0; font-weight:700; }
+.adv-badge {
+  display:inline-block; padding:0.2rem 0.7rem; border-radius:2rem;
+  font-size:0.7rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+  margin-bottom:0.7rem;
+}
+.adv-badge.available { background:rgba(34,197,94,0.12); color:var(--green); border:1px solid rgba(34,197,94,0.25); }
+.adv-badge.soon { background:rgba(245,158,11,0.12); color:var(--accent2); border:1px solid rgba(245,158,11,0.25); }
+.extras-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 1rem; margin-top: 1.5rem;
+}
+
+/* ── ROI ── */
+.roi-grid {
+  display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:1.25rem; margin-top:3rem;
+}
+.roi-card {
+  text-align:center; padding:2.2rem 1.5rem;
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:18px; transition: transform 0.25s, border-color 0.25s;
+}
+.roi-card:hover { transform: translateY(-4px); border-color: rgba(14,165,233,0.3); }
+.roi-num {
+  font-size: 3rem; font-weight:900;
+  background: linear-gradient(135deg, var(--primary-light), var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; line-height:1;
+}
+.roi-title { font-size:0.95rem; font-weight:700; color:var(--white); margin:0.65rem 0 0.3rem; }
+.roi-sub { font-size:0.82rem; color:var(--muted); line-height:1.5; }
+
+/* ── USE CASES ── */
+.use-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 1rem; margin-top: 3rem;
+}
+.use-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: 14px; padding: 1.6rem 1.25rem; text-align: center;
+  transition: all 0.22s;
+}
+.use-card:hover { border-color: rgba(14,165,233,0.4); transform: translateY(-3px); background: rgba(14,165,233,0.05); }
+.use-icon { font-size: 2rem; margin-bottom: 0.7rem; }
+.use-title { font-size: 0.92rem; font-weight: 700; color: var(--white); margin-bottom:0.25rem; }
+.use-text { font-size: 0.78rem; color: var(--muted); }
+
+/* ── CASE / TESTIMONIAL ── */
+.case-wrap {
+  margin-top: 3rem;
+  background: linear-gradient(135deg, rgba(14,165,233,0.08), rgba(108,63,197,0.08));
+  border: 1px solid rgba(14,165,233,0.2);
+  border-radius: 20px; padding: 2.5rem 2rem;
+}
+.case-quote {
+  font-size: 1.12rem; color: var(--white); font-style: italic;
+  line-height: 1.7; margin-bottom: 1.5rem;
+}
+.case-author { font-size: 0.88rem; font-weight: 700; color: var(--accent); margin-bottom: 0.2rem; }
+.case-role { font-size: 0.82rem; color: var(--muted); margin-bottom: 2rem; }
+.case-stats {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  padding-top: 1.5rem; border-top: 1px solid var(--card-border);
+}
+.case-stat-num { font-size: 1.8rem; font-weight: 900; color: var(--white); }
+.case-stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* ── DIFFERENTIALS ── */
+.diff-list { margin-top:3rem; display:flex; flex-direction:column; gap:1rem; }
+.diff-item {
+  display:flex; gap:1.25rem; align-items:flex-start;
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:16px; padding:1.5rem 1.75rem;
+  transition: border-color 0.22s, transform 0.22s;
+}
+.diff-item:hover { border-color: rgba(108,63,197,0.35); transform: translateX(4px); }
+.diff-bullet {
+  width:38px; height:38px; border-radius:50%; flex-shrink:0;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display:flex; align-items:center; justify-content:center;
+  font-size:1rem;
+  box-shadow: 0 4px 12px rgba(14,165,233,0.3);
+}
+.diff-title { font-size:1rem; font-weight:700; color:var(--white); margin-bottom:0.3rem; }
+.diff-text { font-size:0.88rem; color:var(--muted); line-height:1.6; }
+
+/* ── CTA ── */
+#contato {
+  padding: 6rem 2rem; text-align:center;
+  background:
+    radial-gradient(ellipse 60% 55% at 50% 100%, rgba(108,63,197,0.35) 0%, transparent 65%),
+    var(--dark);
+}
+#contato h2 {
+  font-size:clamp(1.9rem, 4.5vw, 3.2rem); font-weight:800; color:var(--white);
+  max-width:660px; margin:0 auto 1rem;
+  letter-spacing:-0.02em;
+}
+#contato p { color:var(--muted); font-size:1.05rem; max-width:500px; margin:0 auto 2.75rem; }
+.cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-bottom: 4rem; }
+.quem-somos {
+  max-width: 900px; margin: 0 auto;
+  padding: 2.5rem 2rem;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem; text-align: left;
+}
+@media(max-width: 640px) { .quem-somos { grid-template-columns: 1fr; } }
+.qs-item h4 { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--primary-light); margin-bottom: 0.6rem; }
+.qs-item p { font-size: 0.87rem; color: var(--muted); line-height: 1.65; }
+.qs-item strong { color: var(--white); }
+.contact-strip {
+  display:flex; gap:2rem; justify-content:center; flex-wrap:wrap;
+  margin-top:2rem; padding-top:1.75rem; border-top:1px solid var(--card-border);
+}
+.contact-item { display:flex; align-items:center; gap:0.5rem; font-size:0.88rem; color:var(--muted); }
+.contact-item a { color:var(--muted); text-decoration:none; transition:color 0.2s; }
+.contact-item a:hover { color:var(--white); }
+
+/* ── FOOTER ── */
+footer {
+  background: #0a0a18;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 4rem 2rem 2rem;
+}
+.footer-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 2fr 1fr 1fr;
+  gap: 3rem; margin-bottom: 3rem;
+}
+@media(max-width: 768px) {
+  .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+}
+.footer-brand img { height: 32px; margin-bottom: 1rem; filter: brightness(0) invert(1); opacity: 0.9; }
+.footer-brand p { color: #94a3b8; font-size: 0.88rem; line-height: 1.65; margin-bottom: 1.25rem; }
+.footer-wa {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3);
+  color: #10b981; font-size: 0.85rem; font-weight: 600;
+  padding: 0.55rem 1.1rem; border-radius: 2rem; text-decoration: none;
+  transition: background 0.2s;
+}
+.footer-wa:hover { background: rgba(16,185,129,0.2); }
+.footer-col h5 {
+  color: #ffffff; font-size: 0.8rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+.footer-col a {
+  display: block; color: #64748b; font-size: 0.88rem;
+  text-decoration: none; margin-bottom: 0.65rem;
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: #e2e8f0; }
+.footer-bottom {
+  max-width: 1100px; margin: 0 auto;
+  padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 0.75rem;
+}
+.footer-bottom span { color: #374151; font-size: 0.8rem; }
+.footer-bottom a { color: #4b5563; font-size: 0.8rem; text-decoration: none; transition: color 0.2s; }
+.footer-bottom a:hover { color: #94a3b8; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px) {
+  .nav-links { display:none; }
+  .adv-grid { grid-template-columns:1fr; }
+  .hero-stats { gap:2rem; }
+}
+
+/* ── FAQ DARK ── */
+.faq-dark { display:flex; flex-direction:column; gap:0.7rem; margin-top:2.5rem; }
+.faq-dark .faq-item {
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:14px; overflow:hidden; transition: border-color 0.2s;
+}
+.faq-dark .faq-item:hover { border-color:rgba(14,165,233,0.3); }
+.faq-dark .faq-q {
+  padding:1rem 1.2rem; font-weight:700; font-size:0.92rem; color:var(--white);
+  display:flex; justify-content:space-between; align-items:center;
+  cursor:pointer; gap:1rem;
+}
+.faq-dark .faq-q .arrow { font-size:1rem; transition:transform 0.25s; flex-shrink:0; color:var(--muted); }
+.faq-dark .faq-item.open .faq-q .arrow { transform:rotate(180deg); }
+.faq-dark .faq-a { display:none; padding:0 1.2rem 1rem; font-size:0.88rem; color:var(--muted); line-height:1.65; }
+.faq-dark .faq-item.open .faq-a { display:block; }
+
+/* ── ANIMATIONS ── */
+.anim-in {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.anim-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── DASHBOARD MOCKUP ── */
+.dashboard-mockup {
+  background: #12121f;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+}
+.dash-topbar {
+  background: #1c1c2e;
+  padding: 0.75rem 1.25rem;
+  display: flex; align-items: center; gap: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.dash-dot { width: 10px; height: 10px; border-radius: 50%; }
+.dash-dot.red { background: #ff5f57; }
+.dash-dot.yellow { background: #febc2e; }
+.dash-dot.green { background: #28c840; }
+.dash-title { font-size: 0.8rem; color: var(--muted); margin-left: auto; margin-right: auto; }
+.dash-body { padding: 1.25rem; }
+.dash-kpi-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem; margin-bottom: 1rem;
+}
+.dash-kpi {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px; padding: 0.75rem 0.9rem;
+  text-align: center;
+}
+.dash-kpi-val { font-size: 1.25rem; font-weight: 800; color: var(--white); }
+.dash-kpi-lbl { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.15rem; }
+.dash-kpi-delta { font-size: 0.7rem; color: var(--green); margin-top: 0.1rem; }
+.dash-chart-area {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px; padding: 1rem;
+  margin-bottom: 0.75rem;
+}
+.dash-chart-label { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.6rem; font-weight: 600; }
+.dash-bars { display: flex; align-items: flex-end; gap: 5px; height: 60px; }
+.dash-bar {
+  flex: 1; border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, var(--accent), rgba(14,165,233,0.3));
+  transition: height 0.3s;
+}
+.dash-row { display: flex; gap: 0.75rem; }
+.dash-panel {
+  flex: 1;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px; padding: 0.85rem;
+}
+.dash-panel-title { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; font-weight: 700; }
+.dash-creative {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.35rem 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 0.72rem;
+}
+.dash-creative:last-child { border-bottom: none; }
+.dash-creative-rank {
+  width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; font-weight: 700; color: var(--white);
+}
+.dash-creative-name { color: var(--text); flex: 1; }
+.dash-creative-ctr { color: var(--accent); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav>
+  <a class="nav-brand" href="#home">
+    <img src="../logo.png" alt="Conectivos">
+    <span>Meta Ads <em>by Conectivos</em></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#como-funciona">Como funciona</a></li>
+    <li><a href="#funcionalidades">Capacidades</a></li>
+    <li><a href="#avancado">Avançado</a></li>
+    <li><a href="#roi">Resultados</a></li>
+    <li><a href="#diferenciais">Segmentos</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <a class="nav-cta" href="#contato">Análise gratuita</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="home">
+  <div style="max-width:860px; width:100%;">
+    <div class="hero-badge">✦ <span>Conectivos</span> · Meta Ads com Inteligência Artificial</div>
+    <h1>Suas campanhas Meta<br><span class="hl">otimizadas por IA.</span></h1>
+    <p class="hero-sub">A IA da Conectivos analisa, testa e otimiza suas campanhas no Facebook e Instagram continuamente — mais ROAS, menos custo por lead, zero horas perdidas em análises manuais.</p>
+    <div class="hero-btns">
+      <a class="btn-primary" href="#contato">📊 Quero uma demonstração</a>
+      <a class="btn-ghost" href="#como-funciona">Ver como funciona</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">+40%</div>
+        <div class="stat-label">ROAS médio</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">10×</div>
+        <div class="stat-label">Testes A/B</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">⚡ Real-time</div>
+        <div class="stat-label">Alertas de anomalia</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">Auto</div>
+        <div class="stat-label">Relatórios automáticos</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PROBLEMA ── -->
+<section class="section">
+  <div class="section-tag">O Problema</div>
+  <h2 class="section-title">Por que a maioria dos anunciantes perde dinheiro</h2>
+  <p class="section-sub">Sem IA, campanhas Meta dependem de análise manual — lenta, sujeita a erro e impossível de escalar.</p>
+  <div class="problem-grid">
+    <div class="problem-card anim-in">
+      <div class="prob-icon">📉</div>
+      <div class="prob-title">Orçamento desperdiçado em criativos ruins</div>
+      <div class="prob-text">Sem testes sistemáticos, você gasta com criativos que não convertem. A maioria dos anunciantes nunca descobre qual criativo funciona de verdade.</div>
+    </div>
+    <div class="problem-card anim-in">
+      <div class="prob-icon">⏰</div>
+      <div class="prob-title">Horas perdidas em análise e relatórios</div>
+      <div class="prob-text">Gestores gastam 30–40% do tempo analisando dados e fazendo relatórios — tempo que poderia estar sendo usado para estratégia.</div>
+    </div>
+    <div class="problem-card anim-in">
+      <div class="prob-icon">🔔</div>
+      <div class="prob-title">Campanhas deterioram sem alertas</div>
+      <div class="prob-text">CPL dispara, CTR cai, budget fura — e você só descobre dias depois. Cada hora sem reação é dinheiro perdido.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── COMO FUNCIONA ── -->
+<section class="section" id="como-funciona">
+  <div class="section-tag">Como Funciona</div>
+  <h2 class="section-title">Do Gerenciador de Anúncios ao ROAS máximo</h2>
+  <p class="section-sub">Quatro etapas para transformar suas campanhas Meta com inteligência artificial.</p>
+  <div class="steps">
+    <div class="step anim-in">
+      <div class="step-num">1</div>
+      <h3>Conexão</h3>
+      <p>Conectamos ao Gerenciador de Anúncios via API oficial da Meta. Importamos histórico de campanhas e criativos para treinar o modelo.</p>
+    </div>
+    <div class="step anim-in">
+      <div class="step-num">2</div>
+      <h3>Análise</h3>
+      <p>A IA mapeia padrões: quais criativos convertem, quais públicos respondem melhor, quais horários geram menor CPL.</p>
+    </div>
+    <div class="step anim-in">
+      <div class="step-num">3</div>
+      <h3>Otimização</h3>
+      <p>Redistribui budget para campanhas e criativos de melhor performance. Cria variações de copy e criativos para teste A/B automático.</p>
+    </div>
+    <div class="step anim-in">
+      <div class="step-num">4</div>
+      <h3>Relatório</h3>
+      <p>Você recebe relatórios automáticos: diário, semanal e mensal. Com alertas de anomalias em tempo real via WhatsApp.</p>
+    </div>
+  </div>
+
+  <div class="demo-cols" style="margin-top:4rem;">
+    <div class="demo-desc">
+      <h3>Veja a IA em ação</h3>
+      <p>Acompanhe insights de campanha em tempo real e alertas automáticos de anomalia — diretamente no WhatsApp ou no dashboard.</p>
+      <div class="demo-tabs">
+        <button class="demo-tab active" onclick="showDemoTab('demo-analise', this)">Análise de campanha</button>
+        <button class="demo-tab" onclick="showDemoTab('demo-alerta', this)">Alerta de anomalia</button>
+      </div>
+      <div>
+        <span class="demo-pill">✓ API oficial Meta</span>
+        <span class="demo-pill">✓ Tempo real</span>
+        <span class="demo-pill">✓ WhatsApp</span>
+      </div>
+    </div>
+    <div>
+      <!-- Demo Análise de Campanha -->
+      <div class="demo-chat-panel active" id="demo-analise">
+        <div class="phone-frame">
+          <div class="phone-header">
+            <div class="phone-avatar">📊</div>
+            <div>
+              <div class="phone-name">Meta Ads IA · Conectivos</div>
+              <div class="phone-status">● online agora</div>
+            </div>
+          </div>
+          <div class="chat-body">
+            <div class="bubble bubble-in">
+              📊 <strong>Análise da semana:</strong> Campanha Verão 2026 com CTR de 4,2% — 85% acima da média. Criativo #3 (vídeo 15s) responsável por 67% das conversões. Recomendo aumentar budget em 40%.
+              <div class="bubble-time">seg 09:15 ✓✓</div>
+            </div>
+            <div class="bubble bubble-out">
+              E o CPL está ok?
+              <div class="bubble-time">09:16 ✓✓</div>
+            </div>
+            <div class="bubble bubble-in">
+              CPL está em R$ 12,40 — 23% abaixo da meta de R$ 16. Seu melhor resultado histórico. Público 25–34 anos, mobile, 19h–22h convertendo 3× mais. Quer que eu redistribua o budget?
+              <div class="bubble-time">09:16 ✓✓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Demo Alerta de Anomalia -->
+      <div class="demo-chat-panel" id="demo-alerta">
+        <div class="phone-frame">
+          <div class="phone-header">
+            <div class="phone-avatar">⚠️</div>
+            <div>
+              <div class="phone-name">Meta Ads IA · Alertas</div>
+              <div class="phone-status">● online agora</div>
+            </div>
+          </div>
+          <div class="chat-body">
+            <div class="bubble bubble-in">
+              ⚠️ <strong>ALERTA:</strong> Campanha Leads B2B — CPL subiu 45% nas últimas 2 horas (R$ 18 → R$ 26). Público Principal saturado. Ação recomendada: pausar Público Principal e ativar Lookalike 2%. Autorizo?
+              <div class="bubble-time">ter 14:32 ✓✓</div>
+            </div>
+            <div class="bubble bubble-out">
+              Autoriza
+              <div class="bubble-time">14:33 ✓✓</div>
+            </div>
+            <div class="bubble bubble-in">
+              ✅ Feito. Lookalike 2% ativado, Público Principal pausado. Monitorando próximas 2 horas para confirmar normalização do CPL.
+              <div class="bubble-time">14:33 ✓✓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Mockup -->
+  <div style="margin-top:3.5rem;" class="anim-in">
+    <div class="section-tag" style="margin-bottom:1rem;">Dashboard em tempo real</div>
+    <div class="dashboard-mockup">
+      <div class="dash-topbar">
+        <div class="dash-dot red"></div>
+        <div class="dash-dot yellow"></div>
+        <div class="dash-dot green"></div>
+        <div class="dash-title">Meta Ads IA — Dashboard de Performance</div>
+      </div>
+      <div class="dash-body">
+        <div class="dash-kpi-row">
+          <div class="dash-kpi">
+            <div class="dash-kpi-val">R$ 3,2</div>
+            <div class="dash-kpi-lbl">ROAS</div>
+            <div class="dash-kpi-delta">+40% vs mês ant.</div>
+          </div>
+          <div class="dash-kpi">
+            <div class="dash-kpi-val">R$ 12,40</div>
+            <div class="dash-kpi-lbl">CPL</div>
+            <div class="dash-kpi-delta">-23% vs meta</div>
+          </div>
+          <div class="dash-kpi">
+            <div class="dash-kpi-val">4,2%</div>
+            <div class="dash-kpi-lbl">CTR</div>
+            <div class="dash-kpi-delta">+85% vs média</div>
+          </div>
+          <div class="dash-kpi">
+            <div class="dash-kpi-val">847</div>
+            <div class="dash-kpi-lbl">Conversões</div>
+            <div class="dash-kpi-delta">+31% esta semana</div>
+          </div>
+        </div>
+        <div class="dash-chart-area">
+          <div class="dash-chart-label">CPL diário (últimos 7 dias)</div>
+          <div class="dash-bars">
+            <div class="dash-bar" style="height:55%;"></div>
+            <div class="dash-bar" style="height:48%;"></div>
+            <div class="dash-bar" style="height:62%;"></div>
+            <div class="dash-bar" style="height:40%;"></div>
+            <div class="dash-bar" style="height:35%;"></div>
+            <div class="dash-bar" style="height:30%;"></div>
+            <div class="dash-bar" style="height:25%;"></div>
+          </div>
+        </div>
+        <div class="dash-row">
+          <div class="dash-panel">
+            <div class="dash-panel-title">Top Criativos por CTR</div>
+            <div class="dash-creative">
+              <div class="dash-creative-rank">1</div>
+              <div class="dash-creative-name">Vídeo 15s — Produto A</div>
+              <div class="dash-creative-ctr">4,2%</div>
+            </div>
+            <div class="dash-creative">
+              <div class="dash-creative-rank">2</div>
+              <div class="dash-creative-name">Carrossel — Benefícios</div>
+              <div class="dash-creative-ctr">3,8%</div>
+            </div>
+            <div class="dash-creative">
+              <div class="dash-creative-rank">3</div>
+              <div class="dash-creative-name">Imagem Estática — Oferta</div>
+              <div class="dash-creative-ctr">2,9%</div>
+            </div>
+          </div>
+          <div class="dash-panel">
+            <div class="dash-panel-title">Públicos Ativos</div>
+            <div class="dash-creative">
+              <div class="dash-creative-rank" style="background:linear-gradient(135deg,#22c55e,#16a34a);">✓</div>
+              <div class="dash-creative-name">Lookalike 2% — Mobile</div>
+              <div class="dash-creative-ctr" style="color:var(--green);">ativo</div>
+            </div>
+            <div class="dash-creative">
+              <div class="dash-creative-rank" style="background:linear-gradient(135deg,#22c55e,#16a34a);">✓</div>
+              <div class="dash-creative-name">Retargeting 30d</div>
+              <div class="dash-creative-ctr" style="color:var(--green);">ativo</div>
+            </div>
+            <div class="dash-creative">
+              <div class="dash-creative-rank" style="background:linear-gradient(135deg,#ef4444,#dc2626);">✗</div>
+              <div class="dash-creative-name">Público Principal</div>
+              <div class="dash-creative-ctr" style="color:#ef4444;">pausado</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── FUNCIONALIDADES ── -->
+<section class="section" id="funcionalidades">
+  <div class="section-tag">Capacidades</div>
+  <h2 class="section-title">Tudo que você precisa para dominar o Meta Ads</h2>
+  <p class="section-sub">Da otimização de budget ao relatório automático — uma plataforma completa de gestão inteligente.</p>
+  <div class="ftabs" style="margin-top:2rem;">
+    <button class="ftab active" onclick="showTab('otimizacao', this)">Otimização</button>
+    <button class="ftab" onclick="showTab('relatorios', this)">Relatórios</button>
+    <button class="ftab" onclick="showTab('gestao', this)">Gestão</button>
+  </div>
+  <div class="features-grid feature-panel active" id="tab-otimizacao">
+    <div class="feature-card anim-in">
+      <div class="feat-icon">🎯</div>
+      <div>
+        <div class="feat-title">A/B Testing automático</div>
+        <div class="feat-desc">Cria variações de copy, headline e criativo. Escala automaticamente o vencedor.</div>
+      </div>
+    </div>
+    <div class="feature-card anim-in">
+      <div class="feat-icon">📊</div>
+      <div>
+        <div class="feat-title">Redistribuição de budget</div>
+        <div class="feat-desc">Move budget em tempo real para campanhas e públicos com melhor ROI.</div>
+      </div>
+    </div>
+    <div class="feature-card anim-in">
+      <div class="feat-icon">🔍</div>
+      <div>
+        <div class="feat-title">Análise de criativos</div>
+        <div class="feat-desc">Identifica elementos visuais e de copy que mais convertem em cada formato.</div>
+      </div>
+    </div>
+    <div class="feature-card anim-in">
+      <div class="feat-icon">🎭</div>
+      <div>
+        <div class="feat-title">Segmentação preditiva</div>
+        <div class="feat-desc">Cria públicos Lookalike e segmentações baseadas em comportamento de conversão.</div>
+      </div>
+    </div>
+    <div class="feature-card anim-in">
+      <div class="feat-icon">⏰</div>
+      <div>
+        <div class="feat-title">Timing inteligente</div>
+        <div class="feat-desc">Concentra exibição nos horários de maior conversão histórica por público.</div>
+      </div>
+    </div>
+    <div class="feature-card anim-in">
+      <div class="feat-icon">📈</div>
+      <div>
+        <div class="feat-title">Bid management</div>
+        <div class="feat-desc">Otimiza lances para CPA mínimo ou ROAS máximo conforme o objetivo da campanha.</div>
+      </div>
+    </div>
+  </div>
+  <div class="features-grid feature-panel" id="tab-relatorios">
+    <div class="feature-card anim-in">
+      <div class="feat-icon">📋</div>
+      <div>
+        <div class="feat-title">Dashboard em tempo real</div>
+        <div class="feat-desc">Visão unificada de todas campanhas: CPL, ROAS, CTR, conversões em um só lugar.</div>
+      </div>
+    </div>
+    <div class="feature-card anim-in">
+      <div class="feat-icon">📅</div>
+      <div>
+        <div class="feat-title">Relatório automático</div>
+        <div class="feat-desc">Relatório semanal e mensal gerado automaticamente e enviado por email ou WhatsApp.</div>
+      </div>
+    </div>
+    <div class="feature-card anim-in">
+      <div class="feat-icon">🔔</div>
+      <div>
+        <div class="feat-title">Alertas de anomalia</div>
+        <div class="feat-desc">Notificação imediata quando CPL, CTR ou gasto saem do parâmetro normal configurado.</div>
+      </div>
+    </div>
+    <div class="feature-card anim-in">
+      <div class="feat-icon">📊</div>
+      <div>
+        <div class="feat-title">Atribuição multi-toque</div>
+        <div class="feat-desc">Visualize toda a jornada do cliente até a conversão, do primeiro clique ao lead.</div>
+      </div>
+    </div>
+    <div class="feature-card anim-in">
+      <div class="feat-icon">🏆</div>
+      <div>
+        <div class="feat-title">Ranking de criativos</div>
+        <div class="feat-desc">Top criativos rankeados por conversão, CTR e custo — saiba o que funciona.</div>
+      </div>
+    </div>
+    <div class="feature-card anim-in">
+      <div class="feat-icon">📤</div>
+      <div>
+        <div class="feat-title">Exportação</div>
+        <div class="feat-desc">Exporta dados para planilha, Google Data Studio ou BI interno com um clique.</div>
+      </div>
+    </div>
+  </div>
+  <div class="features-grid feature-panel" id="tab-gestao">
+    <div class="feature-card anim-in">
+      <div class="feat-icon">🗂️</div>
+      <div>
+        <div class="feat-title">Organização de campanhas</div>
+        <div class="feat-desc">Estrutura de conta organizada com nomenclatura padronizada e fácil navegação.</div>
+      </div>
+    </div>
+    <div class="feature-card anim-in">
+      <div class="feat-icon">📝</div>
+      <div>
+        <div class="feat-title">Biblioteca de criativos</div>
+        <div class="feat-desc">Repositório organizado de todos os criativos com métricas históricas de performance.</div>
+      </div>
+    </div>
+    <div class="feature-card anim-in">
+      <div class="feat-icon">👁️</div>
+      <div>
+        <div class="feat-title">Aprovação de mudanças</div>
+        <div class="feat-desc">IA propõe mudanças, gestor aprova com 1 clique. Controle total sem esforço manual.</div>
+      </div>
+    </div>
+    <div class="feature-card anim-in">
+      <div class="feat-icon">🔗</div>
+      <div>
+        <div class="feat-title">Integração CRM</div>
+        <div class="feat-desc">Vincula leads do Meta ao CRM para acompanhar a jornada completa do cliente.</div>
+      </div>
+    </div>
+    <div class="feature-card anim-in">
+      <div class="feat-icon">🏷️</div>
+      <div>
+        <div class="feat-title">UTM automático</div>
+        <div class="feat-desc">Gera e aplica UTMs padronizados em todos os anúncios. Rastreamento sem erro humano.</div>
+      </div>
+    </div>
+    <div class="feature-card anim-in">
+      <div class="feat-icon">📱</div>
+      <div>
+        <div class="feat-title">Gestão multi-conta</div>
+        <div class="feat-desc">Gerencie várias contas de anúncio em uma única interface integrada e centralizada.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── CAPACIDADES AVANÇADAS ── -->
+<section class="section" id="avancado">
+  <div class="section-tag">Capacidades Avançadas</div>
+  <h2 class="section-title">Tecnologia de ponta para campanhas de ponta</h2>
+  <p class="section-sub">Recursos avançados que vão além da gestão convencional e entregam vantagem competitiva real.</p>
+  <div class="adv-grid">
+    <div class="adv-card ap anim-in">
+      <div class="adv-icon">🎨</div>
+      <div class="adv-badge available">Disponível</div>
+      <div class="adv-label">Copywriting IA</div>
+      <div class="adv-title">Geração de Copy IA</div>
+      <div class="adv-text">IA gera variações de headline, descrição e CTA baseadas nos melhores performers históricos da sua conta.</div>
+      <ul class="adv-list">
+        <li>10× mais variações testadas</li>
+        <li>Copy baseada em dados reais</li>
+        <li>Menor tempo de produção</li>
+      </ul>
+    </div>
+    <div class="adv-card at anim-in">
+      <div class="adv-icon">🔮</div>
+      <div class="adv-badge available">Disponível</div>
+      <div class="adv-label">Previsão de Performance</div>
+      <div class="adv-title">Predição de Performance</div>
+      <div class="adv-text">Antes de publicar uma campanha, a IA prevê CTR, CPL e ROAS esperados com base em campanhas similares.</div>
+      <ul class="adv-list">
+        <li>Zero verba gasta em campanhas ruins</li>
+        <li>Aprovação informada antes do go-live</li>
+        <li>Benchmark histórico como referência</li>
+      </ul>
+    </div>
+    <div class="adv-card aa anim-in">
+      <div class="adv-icon">🛡️</div>
+      <div class="adv-badge available">Disponível</div>
+      <div class="adv-label">Proteção de Verba</div>
+      <div class="adv-title">Proteção de Budget</div>
+      <div class="adv-text">Detecta anomalias de gasto (budget furando, CPL disparando) e pausa automaticamente campanhas fora do parâmetro.</div>
+      <ul class="adv-list">
+        <li>Nunca mais budget furar</li>
+        <li>Proteção 24/7 sem intervenção manual</li>
+        <li>Regras configuráveis por campanha</li>
+      </ul>
+    </div>
+    <div class="adv-card apk anim-in">
+      <div class="adv-icon">🤖</div>
+      <div class="adv-badge soon">Em breve</div>
+      <div class="adv-label">Geração Visual</div>
+      <div class="adv-title">Creative Studio IA</div>
+      <div class="adv-text">IA gera imagens e vídeos de anúncio automaticamente com base nos melhores performers históricos da conta.</div>
+      <ul class="adv-list">
+        <li>Produção de criativo sem designer</li>
+        <li>Testes em escala sem custo extra</li>
+        <li>Custo de produção zero</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── ROI ── -->
+<section class="section" id="roi">
+  <div class="section-tag">Resultados</div>
+  <h2 class="section-title">Números que falam por si</h2>
+  <p class="section-sub">Resultados médios obtidos pelos clientes Conectivos nos primeiros 90 dias de operação com IA.</p>
+  <div class="roi-grid">
+    <div class="roi-card anim-in">
+      <div class="roi-num">+40%</div>
+      <div class="roi-title">ROAS médio</div>
+      <div class="roi-sub">Mais retorno sobre o mesmo investimento em mídia — sem aumentar o orçamento.</div>
+    </div>
+    <div class="roi-card anim-in">
+      <div class="roi-num">-30%</div>
+      <div class="roi-title">Custo por Lead</div>
+      <div class="roi-sub">Otimização contínua reduz o CPL mês a mês, maximizando cada real investido.</div>
+    </div>
+    <div class="roi-card anim-in">
+      <div class="roi-num">80%</div>
+      <div class="roi-title">Menos tempo em análise</div>
+      <div class="roi-sub">Relatórios e insights automáticos liberam o gestor para focar em estratégia.</div>
+    </div>
+    <div class="roi-card anim-in">
+      <div class="roi-num">10×</div>
+      <div class="roi-title">Mais testes A/B</div>
+      <div class="roi-sub">IA testa mais variações de criativo e copy do que qualquer equipe humana conseguiria.</div>
+    </div>
+  </div>
+
+  <!-- Case real -->
+  <div class="case-wrap anim-in" style="margin-top:3rem;">
+    <div class="case-quote">"Nossa agência gerencia 12 contas de anúncio. Com a IA da Conectivos, o tempo de análise e relatório caiu 70% — e o CPL médio das contas caiu 28% em 90 dias."</div>
+    <div class="case-author">Cliente Conectivos</div>
+    <div class="case-role">Agência de Performance Digital · Rio de Janeiro</div>
+    <div class="case-stats">
+      <div>
+        <div class="case-stat-num">-28%</div>
+        <div class="case-stat-label">CPL médio</div>
+      </div>
+      <div>
+        <div class="case-stat-num">-70%</div>
+        <div class="case-stat-label">Tempo em relatórios</div>
+      </div>
+      <div>
+        <div class="case-stat-num">12</div>
+        <div class="case-stat-label">Contas gerenciadas</div>
+      </div>
+      <div>
+        <div class="case-stat-num">+35%</div>
+        <div class="case-stat-label">ROAS geral</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── SEGMENTOS ── -->
+<section class="section" id="diferenciais">
+  <div class="section-tag">Segmentos</div>
+  <h2 class="section-title">Para qualquer negócio que anuncia no Meta</h2>
+  <p class="section-sub">Do e-commerce à agência de performance — a IA da Conectivos se adapta ao seu mercado e objetivos.</p>
+  <div class="use-grid">
+    <div class="use-card anim-in">
+      <div class="use-icon">🛒</div>
+      <div class="use-title">E-commerce</div>
+      <div class="use-text">Campanhas de performance para lojas online</div>
+    </div>
+    <div class="use-card anim-in">
+      <div class="use-icon">🎓</div>
+      <div class="use-title">Educação</div>
+      <div class="use-text">Captação de alunos para cursos e pós-graduação</div>
+    </div>
+    <div class="use-card anim-in">
+      <div class="use-icon">🏠</div>
+      <div class="use-title">Imobiliário</div>
+      <div class="use-text">Leads qualificados para incorporadoras e imobiliárias</div>
+    </div>
+    <div class="use-card anim-in">
+      <div class="use-icon">💊</div>
+      <div class="use-title">Saúde &amp; Estética</div>
+      <div class="use-text">Captação de pacientes e clientes para clínicas</div>
+    </div>
+    <div class="use-card anim-in">
+      <div class="use-icon">🍕</div>
+      <div class="use-title">Food &amp; Delivery</div>
+      <div class="use-text">Campanhas de awareness e conversão local</div>
+    </div>
+    <div class="use-card anim-in">
+      <div class="use-icon">🎯</div>
+      <div class="use-title">SaaS &amp; Tech</div>
+      <div class="use-text">Geração de leads e trials qualificados</div>
+    </div>
+    <div class="use-card anim-in">
+      <div class="use-icon">🏋️</div>
+      <div class="use-title">Academia &amp; Fitness</div>
+      <div class="use-text">Matrículas e promoções sazonais</div>
+    </div>
+    <div class="use-card anim-in">
+      <div class="use-icon">🏢</div>
+      <div class="use-title">Agências</div>
+      <div class="use-text">Gestão de múltiplas contas com eficiência</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── FAQ ── -->
+<section class="section" id="faq">
+  <div class="section-tag">FAQ</div>
+  <h2 class="section-title">Perguntas frequentes</h2>
+  <p class="section-sub">Tudo que você precisa saber antes de começar com a IA da Conectivos para Meta Ads.</p>
+  <div class="faq-dark">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaqDark(this)">
+        A IA tem acesso para fazer mudanças sozinha nas minhas campanhas?
+        <span class="arrow">▾</span>
+      </div>
+      <div class="faq-a">Você decide o nível de autonomia. No modo sugerido, a IA propõe e você aprova com 1 clique. No modo automático (apenas para ajustes pré-configurados), ela age sozinha. Controle total nas suas mãos — sempre.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaqDark(this)">
+        Precisa substituir meu gerente de tráfego?
+        <span class="arrow">▾</span>
+      </div>
+      <div class="faq-a">Não necessariamente. A IA assume tarefas operacionais (análise, relatórios, ajustes de bid) liberando o gestor para estratégia. É uma ferramenta de produtividade, não de substituição.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaqDark(this)">
+        A IA consegue criar os criativos também?
+        <span class="arrow">▾</span>
+      </div>
+      <div class="faq-a">Hoje criamos variações de copy e headline automaticamente. Geração de imagem e vídeo está em breve (Creative Studio IA). Para criativos visuais, integramos com sua equipe de design ou agência atual.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaqDark(this)">
+        Funciona com contas de qualquer tamanho?
+        <span class="arrow">▾</span>
+      </div>
+      <div class="faq-a">Sim. Atendemos desde contas com R$ 1.000/mês até R$ 500.000/mês. A IA se adapta ao volume de dados disponível para entregar os melhores resultados possíveis.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaqDark(this)">
+        Quanto tempo para ver resultados?
+        <span class="arrow">▾</span>
+      </div>
+      <div class="faq-a">Primeiros insights aparecem na primeira semana. Otimizações significativas — redução de CPL e melhora de ROAS — geralmente em 30 dias de operação com a IA.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaqDark(this)">
+        Funciona com Instagram Ads também?
+        <span class="arrow">▾</span>
+      </div>
+      <div class="faq-a">Sim. Instagram Ads e Facebook Ads são gerenciados juntos pelo Meta Ads Manager — cobrimos os dois com a mesma inteligência e os mesmos relatórios unificados.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section id="contato">
+  <h2>Pronto para parar de desperdiçar<br>verba em anúncios?</h2>
+  <p>Agende uma análise gratuita da sua conta e descubra quanto você está deixando na mesa.</p>
+  <div class="cta-btns">
+    <a class="btn-primary" href="https://wa.me/5521999953224?text=Olá!%20Quero%20uma%20análise%20gratuita%20da%20minha%20conta%20Meta%20Ads." target="_blank">📊 Análise gratuita da minha conta</a>
+    <a class="btn-ghost" href="#diferenciais">Ver casos de uso</a>
+  </div>
+      <div class="quem-somos">
+      <div class="qs-item">
+        <h4>Quem somos</h4>
+        <p>A <strong>Conectivos</strong> é uma agência brasileira de inteligência artificial conversacional para empresas B2B. Desenvolvemos agentes que trabalham 24/7 via WhatsApp, automações e análise de dados.</p>
+      </div>
+      <div class="qs-item">
+        <h4>Nossa missão</h4>
+        <p>Eliminar trabalho manual repetitivo e dar às empresas a capacidade de escalar operações sem aumentar equipe. <strong>IA que conversa. Resultados que aparecem.</strong></p>
+      </div>
+      <div class="qs-item">
+        <h4>Contato</h4>
+        <p>
+          📱 <a href="https://wa.me/5521999953224" target="_blank" rel="noopener noreferrer" style="color:var(--primary-light);">WhatsApp</a><br><br>
+          📧 <a href="mailto:contato@conectivos.net" style="color:var(--primary-light);">contato@conectivos.net</a><br><br>
+          🌐 <a href="https://conectivos.net" target="_blank" rel="noopener noreferrer" style="color:var(--primary-light);">conectivos.net</a>
+        </p>
+      </div>
+    </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="../logo.png" alt="Conectivos">
+      <p>Agência de IA conversacional B2B.<br>Transformamos atendimento, vendas e inteligência<br>via WhatsApp e automações.</p>
+      <a href="https://wa.me/5521999953224?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20as%20solu%C3%A7%C3%B5es%20da%20Conectivos." class="footer-wa" target="_blank" rel="noopener noreferrer">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Falar no WhatsApp
+      </a>
+    </div>
+    <div class="footer-col">
+      <h5>Site</h5>
+      <a href="https://conectivos.net">Início</a>
+      <a href="https://conectivos.net/#solucoes">Soluções</a>
+      <a href="https://conectivos.net/#cases">Cases de Sucesso</a>
+      <a href="https://conectivos.net/#contato">Diagnóstico gratuito</a>
+      <a href="https://conectivos.net/blog">Blog</a>
+    </div>
+    <div class="footer-col">
+      <h5>Serviços</h5>
+      <a href="/servicos/clinica">Clínica &amp; Agendamento</a>
+      <a href="/servicos/agentes">Agentes IA</a>
+      <a href="/servicos/sdr">SDR Autônomo</a>
+      <a href="/servicos/instagram">Instagram DM</a>
+      <a href="/servicos/meta">Meta Ads IA</a>
+      <a href="/servicos/monitor">Social Monitor</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Conectivos. Todos os direitos reservados.</span>
+    <a href="mailto:contato@conectivos.net">contato@conectivos.net</a>
+  </div>
+</footer>
+
+<script>
+// ── TABS ──
+function showTab(tab, el) {
+  document.querySelectorAll('.feature-panel').forEach(function(p) { p.style.display = 'none'; p.classList.remove('active'); });
+  document.querySelectorAll('.ftab').forEach(function(t) { t.classList.remove('active'); });
+  var panel = document.getElementById('tab-' + tab);
+  panel.style.display = 'grid';
+  panel.classList.add('active');
+  el.classList.add('active');
+}
+
+// ── DEMO TABS ──
+function showDemoTab(id, el) {
+  document.querySelectorAll('.demo-chat-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.demo-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ── FAQ DARK ──
+function toggleFaqDark(el) {
+  var item = el.parentElement;
+  item.classList.toggle('open');
+}
+
+// ── SCROLL ANIMATIONS ──
+(function() {
+  if (typeof IntersectionObserver === 'undefined') {
+    document.querySelectorAll('.anim-in').forEach(function(el) {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.anim-in').forEach(function(el) { obs.observe(el); });
+})();
+</script>
+</body>
+</html>

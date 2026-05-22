@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="/icon.png" type="image/png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análise Estratégica — Aura by Conectivos</title>
+<meta name="description" content="Análise estratégica completa da Aura: diferenciais competitivos, SWOT, prioridades e posicionamento de mercado.">
+<style>
+:root{
+  --primary:#6c3fc5;--primary-light:#8b5cf6;--primary-glow:rgba(108,63,197,.35);
+  --accent:#14b8a6;--accent2:#f59e0b;
+  --dark:#0a0614;--dark2:#120c24;--dark3:#1c1338;
+  --card:rgba(255,255,255,.035);--card-border:rgba(255,255,255,.07);
+  --text:#e2dff7;--muted:#9b92c8;--white:#fff;
+  --green:#22c55e;--red:#f87171;--amber:#f59e0b;--blue:#60a5fa;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--dark);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,6,20,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;}
+.nav-brand{display:flex;align-items:center;gap:.7rem;text-decoration:none;}
+.nav-brand img{height:26px;}
+.nav-brand span{font-size:1rem;font-weight:700;color:var(--white);}
+.nav-brand em{color:var(--accent);font-style:normal;}
+.nav-right{display:flex;align-items:center;gap:1.25rem;}
+.nav-back{color:var(--muted);text-decoration:none;font-size:.83rem;font-weight:500;display:flex;align-items:center;gap:.4rem;transition:color .2s;}
+.nav-back:hover{color:var(--white);}
+.nav-pill{background:rgba(108,63,197,.15);border:1px solid rgba(108,63,197,.3);color:var(--primary-light);padding:.3rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+@media(max-width:600px){.nav-back span{display:none;}nav{padding:0 1rem;}}
+
+/* HERO */
+.hero{padding:7rem 1.5rem 4rem;text-align:center;
+  background:radial-gradient(ellipse 80% 55% at 50% -5%,rgba(108,63,197,.5) 0%,transparent 65%),
+    radial-gradient(ellipse 40% 30% at 88% 85%,rgba(20,184,166,.18) 0%,transparent 60%),var(--dark);}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(108,63,197,.12);border:1px solid rgba(108,63,197,.3);border-radius:2rem;padding:.35rem 1rem;font-size:.7rem;color:var(--primary-light);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.4rem;}
+.hero h1{font-size:clamp(1.8rem,4.5vw,3.2rem);font-weight:900;color:var(--white);line-height:1.1;max-width:760px;margin:0 auto 1rem;letter-spacing:-.02em;}
+.hl{background:linear-gradient(135deg,var(--primary-light) 30%,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero p{color:var(--muted);font-size:.98rem;max-width:500px;margin:0 auto 2rem;}
+.toc{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:1rem;}
+.toc a{text-decoration:none;padding:.35rem .9rem;border:1px solid var(--card-border);border-radius:999px;font-size:.75rem;font-weight:600;color:var(--muted);transition:all .2s;}
+.toc a:hover{border-color:var(--primary-light);color:var(--white);}
+
+/* SECTION */
+.section{max-width:1060px;margin:0 auto;padding:5rem 1.5rem;}
+.section-label{font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem;}
+.section-title{font-size:clamp(1.5rem,3.5vw,2.1rem);font-weight:800;color:var(--white);margin-bottom:.8rem;letter-spacing:-.02em;}
+.section-sub{color:var(--muted);font-size:.92rem;max-width:560px;}
+.sep{height:1px;background:linear-gradient(90deg,var(--primary-glow),transparent);margin:5rem 0 0;}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:1rem;padding:1.5rem;}
+.card:hover{border-color:rgba(108,63,197,.25);}
+
+/* TAG */
+.tag{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .6rem;border-radius:999px;margin-bottom:.6rem;}
+.tg-a{background:rgba(20,184,166,.12);color:var(--accent);border:1px solid rgba(20,184,166,.25);}
+.tg-p{background:rgba(108,63,197,.12);color:var(--primary-light);border:1px solid rgba(108,63,197,.25);}
+.tg-g{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2);}
+.tg-r{background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.2);}
+.tg-b{background:rgba(96,165,250,.1);color:var(--blue);border:1px solid rgba(96,165,250,.2);}
+.tg-y{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2);}
+
+/* DIFF GRID */
+.diff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-top:2rem;}
+.diff-card{background:var(--card);border:1px solid var(--card-border);border-radius:1rem;padding:1.5rem;transition:all .25s;}
+.diff-card:hover{border-color:rgba(20,184,166,.3);transform:translateY(-3px);box-shadow:0 12px 40px rgba(20,184,166,.08);}
+.diff-num{font-size:2.5rem;font-weight:900;line-height:1;margin-bottom:.5rem;
+  background:linear-gradient(135deg,var(--primary-light),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.diff-title{font-size:.95rem;font-weight:800;color:var(--white);margin-bottom:.5rem;}
+.diff-body{font-size:.82rem;color:var(--muted);line-height:1.6;}
+
+/* COMP TABLE */
+.table-wrap{overflow-x:auto;border-radius:1rem;border:1px solid var(--card-border);margin-top:2rem;}
+table{width:100%;border-collapse:collapse;font-size:.82rem;}
+thead th{background:var(--dark3);color:var(--muted);padding:.75rem 1rem;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}
+tbody td{padding:.7rem 1rem;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text);}
+tbody tr:hover td{background:rgba(255,255,255,.02);}
+tbody tr:last-child td{border-bottom:none;}
+.aura-row td{background:rgba(20,184,166,.05)!important;font-weight:700;}
+.aura-row td:first-child{color:var(--accent);}
+.check{color:var(--green);}
+.cross{color:var(--red);}
+.partial{color:var(--amber);}
+
+/* SWOT */
+.swot-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:2rem;}
+@media(max-width:640px){.swot-grid{grid-template-columns:1fr;}}
+.swot-box{border-radius:1rem;padding:1.5rem;}
+.swot-box.s{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);}
+.swot-box.w{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.18);}
+.swot-box.o{background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.18);}
+.swot-box.t{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18);}
+.swot-label{font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;}
+.s .swot-label{color:var(--green);}.w .swot-label{color:var(--red);}.o .swot-label{color:var(--blue);}.t .swot-label{color:var(--amber);}
+.swot-items{display:flex;flex-direction:column;gap:.75rem;}
+.swot-item{display:flex;gap:.65rem;align-items:flex-start;font-size:.82rem;color:var(--text);}
+.swot-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:.5rem;}
+.s .swot-dot{background:var(--green);}.w .swot-dot{background:var(--red);}.o .swot-dot{background:var(--blue);}.t .swot-dot{background:var(--amber);}
+
+/* CROSS SWOT */
+.cross-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:2rem;}
+@media(max-width:640px){.cross-grid{grid-template-columns:1fr;}}
+.cross-box{border-radius:1rem;padding:1.4rem;}
+.cso{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);}
+.cst{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18);}
+.cwo{background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.18);}
+.cwt{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.18);}
+.cross-box h4{font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.9rem;}
+.cso h4{color:var(--green);}.cst h4{color:var(--amber);}.cwo h4{color:var(--blue);}.cwt h4{color:var(--red);}
+.cross-box ul{padding-left:1.1rem;}
+.cross-box li{font-size:.82rem;color:var(--muted);margin-bottom:.55rem;line-height:1.5;}
+
+/* PRIORITIES */
+.prio-list{display:flex;flex-direction:column;gap:.85rem;margin-top:2rem;}
+.prio-item{display:flex;gap:1rem;align-items:flex-start;background:var(--card);border:1px solid var(--card-border);border-radius:1rem;padding:1.1rem 1.25rem;transition:border-color .2s;}
+.prio-item:hover{border-color:rgba(108,63,197,.25);}
+.prio-num{width:38px;height:38px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.88rem;color:var(--white);}
+.p1{background:linear-gradient(135deg,#dc2626,#ef4444);}
+.p2{background:linear-gradient(135deg,#d97706,#f59e0b);}
+.p3{background:linear-gradient(135deg,var(--primary),var(--accent));}
+.prio-body{flex:1;}
+.prio-body strong{font-size:.92rem;display:block;margin-bottom:.25rem;color:var(--white);}
+.prio-body p{font-size:.8rem;color:var(--muted);}
+.prio-horizon{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .65rem;background:rgba(255,255,255,.06);border-radius:999px;color:var(--muted);white-space:nowrap;align-self:center;flex-shrink:0;}
+
+/* SCORECARD */
+.score-wrap{margin-top:2rem;border-radius:1rem;overflow:hidden;border:1px solid var(--card-border);}
+.score-head{display:grid;grid-template-columns:2fr 1.5fr 1fr 2fr;gap:1rem;padding:.7rem 1rem;background:var(--dark3);}
+.score-head span{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.score-row{display:grid;grid-template-columns:2fr 1.5fr 1fr 2fr;gap:1rem;padding:.85rem 1rem;border-bottom:1px solid rgba(255,255,255,.04);align-items:center;}
+.score-row:last-child{border-bottom:none;}
+.score-row:hover{background:rgba(255,255,255,.02);}
+.score-metric{font-size:.82rem;color:var(--text);}
+.score-status{}
+.score-bar-wrap{display:flex;align-items:center;gap:.5rem;}
+.score-bar-bg{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden;}
+.score-bar{height:100%;border-radius:999px;}
+.bg-g{background:var(--green);}.bg-a{background:var(--amber);}.bg-r{background:var(--red);}
+.score-num{font-size:.72rem;font-weight:800;width:26px;}
+.score-action{font-size:.75rem;color:var(--accent);}
+@media(max-width:640px){.score-head,.score-row{grid-template-columns:1fr;}.score-head span:not(:first-child){display:none;}}
+
+/* PLANS */
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem;}
+@media(max-width:600px){.plans-grid{grid-template-columns:1fr;}}
+.plan-card{background:var(--card);border:1px solid var(--card-border);border-radius:1rem;padding:1.5rem;transition:all .25s;}
+.plan-card:hover{border-color:rgba(108,63,197,.35);transform:translateY(-3px);}
+.plan-card.featured{border-color:rgba(108,63,197,.4);background:rgba(108,63,197,.07);}
+.plan-name{font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--primary-light);margin-bottom:.5rem;}
+.plan-price{font-size:2rem;font-weight:900;color:var(--white);line-height:1;margin-bottom:.2rem;}
+.plan-price span{font-size:.8rem;font-weight:500;color:var(--muted);}
+.plan-setup{font-size:.75rem;color:var(--muted);margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px solid var(--card-border);}
+.plan-features{display:flex;flex-direction:column;gap:.5rem;}
+.plan-feat{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--muted);}
+.plan-feat::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;}
+
+/* ONBOARDING */
+.onb-list{display:flex;flex-direction:column;gap:0;margin-top:2rem;position:relative;}
+.onb-list::before{content:'';position:absolute;left:19px;top:40px;bottom:40px;width:2px;background:linear-gradient(180deg,var(--primary),var(--accent));opacity:.3;}
+.onb-item{display:flex;gap:1.25rem;align-items:flex-start;padding:1rem 0;}
+.onb-day{width:40px;height:40px;flex-shrink:0;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:var(--white);text-align:center;line-height:1.2;z-index:1;}
+.onb-body strong{font-size:.9rem;color:var(--white);display:block;margin-bottom:.25rem;}
+.onb-body p{font-size:.8rem;color:var(--muted);}
+
+/* CTA */
+.cta-section{text-align:center;padding:5rem 1.5rem;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(108,63,197,.2) 0%,transparent 70%);}
+.cta-section h2{font-size:clamp(1.6rem,3.5vw,2.5rem);font-weight:900;color:var(--white);margin-bottom:1rem;}
+.cta-section p{color:var(--muted);font-size:.95rem;max-width:420px;margin:0 auto 2rem;}
+.cta-btn{display:inline-block;padding:.9rem 2.5rem;background:linear-gradient(135deg,var(--primary),var(--accent));color:var(--white);font-size:.95rem;font-weight:800;text-decoration:none;border-radius:2rem;box-shadow:0 8px 32px var(--primary-glow);transition:opacity .2s,transform .2s;}
+.cta-btn:hover{opacity:.88;transform:translateY(-2px);}
+
+/* ROI LINK */
+.roi-link-section{background:var(--dark2);border-top:1px solid var(--card-border);padding:2.5rem 1.5rem;text-align:center;}
+.roi-link-inner{max-width:600px;margin:0 auto;}
+.roi-link-inner h3{font-size:1.2rem;font-weight:800;color:var(--white);margin-bottom:.5rem;}
+.roi-link-inner p{color:var(--muted);font-size:.85rem;margin-bottom:1.25rem;}
+.btn-outline{display:inline-block;padding:.7rem 1.8rem;border:1.5px solid rgba(108,63,197,.5);color:var(--primary-light);font-size:.85rem;font-weight:700;text-decoration:none;border-radius:2rem;transition:all .2s;}
+.btn-outline:hover{border-color:var(--primary-light);background:rgba(108,63,197,.1);}
+
+/* FADE */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/servicos/clinica" class="nav-brand">
+    <img src="/icon.png" alt="Conectivos">
+    <span>Aura <em>by Conectivos</em></span>
+  </a>
+  <div class="nav-right">
+    <a href="/servicos/clinica" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+      <span>Sobre a Aura</span>
+    </a>
+    <span class="nav-pill">Análise Estratégica</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">✦ Posicionamento de Produto</div>
+  <h1>Análise Estratégica<br><span class="hl">Aura by Conectivos</span></h1>
+  <p>Diferenciais competitivos, análise SWOT, prioridades e modelo de precificação para clínicas de saúde.</p>
+  <div class="toc">
+    <a href="#diferenciais">Diferenciais</a>
+    <a href="#comparativo">Comparativo</a>
+    <a href="#swot">SWOT</a>
+    <a href="#cruzada">Análise Cruzada</a>
+    <a href="#prioridades">Prioridades</a>
+    <a href="#scorecard">Scorecard</a>
+    <a href="#planos">Planos</a>
+    <a href="#onboarding">Onboarding</a>
+  </div>
+</div>
+
+<!-- DIFERENCIAIS -->
+<div class="section" id="diferenciais">
+  <div class="section-label">Posicionamento</div>
+  <div class="section-title">O que torna a Aura diferente</div>
+  <div class="section-sub">6 diferenciais que justificam o preço e resistem à comparação com genéricos.</div>
+
+  <div class="diff-grid">
+    <div class="diff-card fade-in">
+      <div class="diff-num">01</div>
+      <span class="tag tg-a">Core</span>
+      <div class="diff-title">IA contextual, não fluxo pré-definido</div>
+      <div class="diff-body">Chatbots tradicionais seguem árvores de decisão fixas. A Aura usa LLM com memória de contexto — entende intenção, adapta a conversa, lida com mudanças de plano ("afinal prefiro quarta") e responde perguntas não-mapeadas. O paciente não percebe que está falando com IA.</div>
+    </div>
+    <div class="diff-card fade-in">
+      <div class="diff-num">02</div>
+      <span class="tag tg-a">Tecnologia</span>
+      <div class="diff-title">Google Calendar nativo em tempo real</div>
+      <div class="diff-body">A Aura consulta disponibilidade real no Google Agenda do terapeuta antes de oferecer um slot. Nenhum chatbot de mercado faz isso nativamente via WhatsApp. Elimina o problema de "agendei mas a agenda estava cheia".</div>
+    </div>
+    <div class="diff-card fade-in">
+      <div class="diff-num">03</div>
+      <span class="tag tg-p">Canal</span>
+      <div class="diff-title">WhatsApp-first, onde o paciente já está</div>
+      <div class="diff-body">Calendly e Doctoralia exigem que o paciente abra um link, preencha formulário, confirme email. A Aura agenda dentro do WhatsApp, no canal onde a conversa já está. Atrito zero para o paciente — conversão mais alta.</div>
+    </div>
+    <div class="diff-card fade-in">
+      <div class="diff-num">04</div>
+      <span class="tag tg-g">Vertical</span>
+      <div class="diff-title">Especialização em saúde e terapia</div>
+      <div class="diff-body">Construído e validado dentro de uma clínica real. Entende gênero do terapeuta, técnicas específicas (liberação miofascial, quiropraxia), sessões de 30/60/90 min, pacotes, reagendamentos, lista de espera. Não é chatbot genérico reembalado.</div>
+    </div>
+    <div class="diff-card fade-in">
+      <div class="diff-num">05</div>
+      <span class="tag tg-b">Onboarding</span>
+      <div class="diff-title">Implantação em 2–5 dias úteis</div>
+      <div class="diff-body">iClinic e sistemas de prontuário levam semanas de implantação e migração. A Aura opera em cima do Google Agenda que a clínica já usa — sem migração. Resultado: clínica vendendo pelo WhatsApp automático em menos de uma semana.</div>
+    </div>
+    <div class="diff-card fade-in">
+      <div class="diff-num">06</div>
+      <span class="tag tg-y">Comercial</span>
+      <div class="diff-title">ROI demonstrável na proposta</div>
+      <div class="diff-body">A maioria dos softwares vende funcionalidade. A Aura vende resultado financeiro: calculadora de ROI personalizada, cenário com/sem o produto, payback do setup em meses. Facilita decisão de compra e reduz objeção de preço.</div>
+    </div>
+  </div>
+
+  <!-- Frase de posicionamento -->
+  <div class="card" style="margin-top:2rem;border-left:3px solid var(--accent);">
+    <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem;">Frase de posicionamento — o que o time de vendas usa</div>
+    <p style="font-size:1.05rem;font-weight:600;color:var(--white);line-height:1.7;">"A Aura é uma recepcionista inteligente que atende, agenda, confirma e reduz faltas 24 horas por dia pelo WhatsApp — sem substituir sua equipe, mas libertando ela para o que importa."</p>
+    <div style="margin-top:.9rem;font-size:.8rem;color:var(--muted);">
+      <strong style="color:var(--red);">Não é:</strong> sistema de agenda, chatbot simples, prontuário, marketplace.<br>
+      <strong style="color:var(--green);">É:</strong> automação operacional inteligente para clínicas que já usam WhatsApp e Google Agenda.
+    </div>
+  </div>
+</div>
+<div class="sep"></div>
+
+<!-- COMPARATIVO -->
+<div class="section" id="comparativo">
+  <div class="section-label">Mercado</div>
+  <div class="section-title">Aura vs. alternativas do mercado</div>
+  <div class="section-sub">Comparativo direto com as soluções que seu prospect considera antes de fechar.</div>
+  <div class="table-wrap fade-in">
+    <table>
+      <thead>
+        <tr>
+          <th>Solução</th>
+          <th>IA contextual WA</th>
+          <th>Google Agenda nativo</th>
+          <th>Multi-profissional</th>
+          <th>Setor saúde</th>
+          <th>Onboarding &lt;1 sem.</th>
+          <th>ROI calculável</th>
+          <th>Preço acessível</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="aura-row">
+          <td>✦ Aura (Conectivos)</td>
+          <td class="check">✓</td><td class="check">✓</td><td class="check">✓</td>
+          <td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td>
+        </tr>
+        <tr>
+          <td>WhatsApp manual</td>
+          <td class="cross">✗</td><td class="cross">✗</td><td class="partial">~</td>
+          <td class="partial">~</td><td class="check">✓</td><td class="cross">✗</td><td class="check">✓</td>
+        </tr>
+        <tr>
+          <td>Doctoralia</td>
+          <td class="cross">✗</td><td class="cross">✗</td><td class="check">✓</td>
+          <td class="check">✓</td><td class="check">✓</td><td class="cross">✗</td><td class="partial">~</td>
+        </tr>
+        <tr>
+          <td>Calendly / Cal.com</td>
+          <td class="cross">✗</td><td class="check">✓</td><td class="check">✓</td>
+          <td class="cross">✗</td><td class="check">✓</td><td class="cross">✗</td><td class="check">✓</td>
+        </tr>
+        <tr>
+          <td>iClinic / Clínica Ágil</td>
+          <td class="cross">✗</td><td class="partial">~</td><td class="check">✓</td>
+          <td class="check">✓</td><td class="cross">✗</td><td class="cross">✗</td><td class="cross">✗</td>
+        </tr>
+        <tr>
+          <td>Chatbots (ManyChat, Typebot)</td>
+          <td class="cross">✗</td><td class="cross">✗</td><td class="partial">~</td>
+          <td class="cross">✗</td><td class="partial">~</td><td class="cross">✗</td><td class="check">✓</td>
+        </tr>
+        <tr>
+          <td>Blip / Zendesk</td>
+          <td class="partial">~</td><td class="cross">✗</td><td class="check">✓</td>
+          <td class="cross">✗</td><td class="cross">✗</td><td class="cross">✗</td><td class="cross">✗</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:.72rem;color:rgba(155,146,200,.5);margin-top:.6rem;">✓ Sim · ✗ Não · ~ Parcialmente</p>
+</div>
+<div class="sep"></div>
+
+<!-- SWOT -->
+<div class="section" id="swot">
+  <div class="section-label">Estratégia</div>
+  <div class="section-title">Análise SWOT</div>
+  <div class="section-sub">Forças, fraquezas, oportunidades e ameaças do produto Aura.</div>
+  <div class="swot-grid">
+    <div class="swot-box s fade-in">
+      <div class="swot-label">Forças — Strengths</div>
+      <div class="swot-items">
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Disponibilidade 24/7</strong> — resposta imediata a qualquer hora, elimina perda de leads por ausência humana</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>ROI demonstrável</strong> — argumento financeiro sólido de 5,97× reduz barreira de decisão de compra</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Onboarding em 2–5 dias</strong> — reduz fricção de adoção e tempo até ver resultado</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Modelo de precificação escalável</strong> — setup + mensalidade + adicionais protege margem conforme cliente cresce</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Base real validada</strong> — produto construído e rodando em produção em clínica real (ZangFu, SP)</span></div>
+      </div>
+    </div>
+    <div class="swot-box w fade-in">
+      <div class="swot-label">Fraquezas — Weaknesses</div>
+      <div class="swot-items">
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Exposição cambial</strong> — custo de infra em USD (OpenAI, Fly.io); variação dólar impacta margem diretamente</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Sem limites de uso formalizados</strong> — clientes de alto volume podem gerar resultado negativo por plano</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Dependência de terceiros</strong> — Meta (WhatsApp), OpenAI e Google podem alterar APIs unilateralmente</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Conflito de comunicação</strong> — landing page diz "sem taxa de implantação" mas modelo cobra setup</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Zero clientes externos validados</strong> — produto está em produção apenas na ZangFu (própria)</span></div>
+      </div>
+    </div>
+    <div class="swot-box o fade-in">
+      <div class="swot-label">Oportunidades — Opportunities</div>
+      <div class="swot-items">
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Mercado subutilizado</strong> — setor saúde no Brasil ainda em estágio inicial de automação operacional</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Queda do custo de IA</strong> — modelos open-source amadurecendo; oportunidade de reduzir COGS</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Expansão vertical</strong> — modelo adaptável para estética, veterinária, odontologia em rede, fisioterapia</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Contratos anuais</strong> — setup gratuito em plano anual aumenta LTV e reduz churn</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Regulatório como aliado</strong> — LGPD e normas CFM podem inibir concorrentes menos preparados</span></div>
+      </div>
+    </div>
+    <div class="swot-box t fade-in">
+      <div class="swot-label">Ameaças — Threats</div>
+      <div class="swot-items">
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Comoditização de IA</strong> — entrada de concorrentes baratos ou genéricos com soluções similares</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Reajuste Meta/WhatsApp API</strong> — histórico de alterações unilaterais em preços por conversa e políticas</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Variação cambial</strong> — aumento do dólar eleva custo operacional sem aumento de receita (em R$)</span></div>
+        <div class="swot-item"><div class="swot-dot"></div><span><strong>Regulatório adverso</strong> — CFM/CFP podem restringir automação de atendimento em saúde mental</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="sep"></div>
+
+<!-- ANÁLISE CRUZADA -->
+<div class="section" id="cruzada">
+  <div class="section-label">Vetores estratégicos</div>
+  <div class="section-title">Análise cruzada SWOT</div>
+  <div class="section-sub">O que fazer com cada combinação de força, fraqueza, oportunidade e ameaça.</div>
+  <div class="cross-grid">
+    <div class="cross-box cso fade-in">
+      <h4>SO — Forças + Oportunidades (Crescimento)</h4>
+      <ul>
+        <li><strong>ROI + mercado subutilizado:</strong> usar a calculadora de ROI como arma de pré-venda. O argumento financeiro é o atalho para decisão rápida em clínicas que nunca pensaram em automação.</li>
+        <li><strong>Onboarding rápido + mercado grande:</strong> velocidade de implantação permite escalar muitos clientes por mês sem bottleneck operacional. Cada cliente é uma referência para o próximo.</li>
+        <li><strong>Contratos anuais + previsibilidade:</strong> setup gratuito no plano anual para ancorar LTV alto desde o primeiro cliente pagante.</li>
+      </ul>
+    </div>
+    <div class="cross-box cst fade-in">
+      <h4>ST — Forças + Ameaças (Defesa)</h4>
+      <ul>
+        <li><strong>ROI demonstrável vs. comoditização:</strong> quando genéricos baratos entrarem, a Aura defende posição pelo resultado mensurável, não pelo preço. Construir case studies com números reais agora.</li>
+        <li><strong>Especialização vs. genéricos:</strong> aprofundar features específicas de saúde (pacotes de sessão, NPS, follow-up) que genéricos não terão por anos.</li>
+        <li><strong>Onboarding rápido vs. regulatório:</strong> quanto mais cedo a clínica estiver rodando, mais difícil é descontinuar — lock-in natural por dados históricos.</li>
+      </ul>
+    </div>
+    <div class="cross-box cwo fade-in">
+      <h4>WO — Fraquezas + Oportunidades (Melhorias)</h4>
+      <ul>
+        <li><strong>Exposição cambial + queda custo IA:</strong> migrar componentes menos críticos para modelos open-source conforme amadurecem para reduzir COGS e proteger margem.</li>
+        <li><strong>Sem limites de uso + contratos anuais:</strong> definir limites por plano antes de escalar. Clientes anuais aceitam limites mais facilmente quando o setup está incluído.</li>
+        <li><strong>Conflito de comunicação + mercado:</strong> corrigir landing page agora — é um fix de 10 minutos com alto impacto em credibilidade antes de acelerar aquisição.</li>
+      </ul>
+    </div>
+    <div class="cross-box cwt fade-in">
+      <h4>WT — Fraquezas + Ameaças (Mitigação)</h4>
+      <ul>
+        <li><strong>Dependência Meta + reajuste API:</strong> monitorar custo por conversa mensalmente. Se Meta reajustar &gt;30%, avaliar fallback para Evolution API (custo fixo por instância).</li>
+        <li><strong>Sem limites + comoditização:</strong> um cliente de alto volume pode dar prejuízo exatamente quando concorrência mais barata chegar. Limites de uso são proteção de margem, não restrição.</li>
+        <li><strong>LGPD proativa:</strong> DPA padrão para clientes + retenção de 90 dias + anonimização. Transforma compliance em diferencial, não em risco.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="sep"></div>
+
+<!-- PRIORIDADES -->
+<div class="section" id="prioridades">
+  <div class="section-label">Roadmap</div>
+  <div class="section-title">Prioridades estratégicas — próximos 90 dias</div>
+  <div class="section-sub">Ordenadas por impacto e urgência para lançar a Aura no mercado.</div>
+  <div class="prio-list">
+    <div class="prio-item fade-in">
+      <div class="prio-num p1">1</div>
+      <div class="prio-body">
+        <strong>Corrigir conflito de comunicação na landing page</strong>
+        <p>A página diz "sem taxa de implantação" mas o modelo cobra setup. Esse conflito invalida a proposta comercial antes da conversa começar. Fix: "Implantação assistida incluída em planos anuais".</p>
+      </div>
+      <div class="prio-horizon">Esta semana</div>
+    </div>
+    <div class="prio-item fade-in">
+      <div class="prio-num p1">2</div>
+      <div class="prio-body">
+        <strong>Definir limites de uso por plano</strong>
+        <p>Sem limites de mensagens, tokens e terapeutas por plano, clientes de alto volume geram prejuízo. Calcular o custo real de infra por cliente/mês e publicar nas condições de contratação.</p>
+      </div>
+      <div class="prio-horizon">Esta semana</div>
+    </div>
+    <div class="prio-item fade-in">
+      <div class="prio-num p2">3</div>
+      <div class="prio-body">
+        <strong>Publicar calculadora de ROI para prospects</strong>
+        <p>Ferramenta interativa para o prospect rodar os próprios números antes da reunião. Disponível em <a href="/servicos/clinica/roi" style="color:var(--accent)">/servicos/clinica/roi</a>.</p>
+      </div>
+      <div class="prio-horizon">Semana 1–2</div>
+    </div>
+    <div class="prio-item fade-in">
+      <div class="prio-num p2">4</div>
+      <div class="prio-body">
+        <strong>Documentar o processo de onboarding (5 dias)</strong>
+        <p>A promessa de "2–5 dias" precisa de um processo definido: quem faz o quê, quais dados coletar, como configurar WhatsApp + Google Calendar + prompt da AIsha. Sem isso, a primeira venda será caótica.</p>
+      </div>
+      <div class="prio-horizon">Semana 2–3</div>
+    </div>
+    <div class="prio-item fade-in">
+      <div class="prio-num p3">5</div>
+      <div class="prio-body">
+        <strong>Onboarding de 3–5 clínicas beta</strong>
+        <p>Validar o produto com clientes reais que não sejam a ZangFu. Oferecer 3 meses gratuitos em troca de feedback estruturado e depoimento. Gera casos de uso reais e prova social para acelerar vendas.</p>
+      </div>
+      <div class="prio-horizon">Mês 1–2</div>
+    </div>
+    <div class="prio-item fade-in">
+      <div class="prio-num p3">6</div>
+      <div class="prio-body">
+        <strong>Implementar multi-tenant mínimo para 1º cliente externo</strong>
+        <p>Adaptações técnicas no backend: configurações por tenant, WhatsApp por cliente, Google Calendar por cliente. Billing manual (PIX) até 5+ clientes pagando — só então implementar Stripe.</p>
+      </div>
+      <div class="prio-horizon">Mês 2</div>
+    </div>
+  </div>
+</div>
+<div class="sep"></div>
+
+<!-- SCORECARD -->
+<div class="section" id="scorecard">
+  <div class="section-label">Prontidão</div>
+  <div class="section-title">Scorecard estratégico</div>
+  <div class="section-sub">Indicadores de prontidão para lançamento comercial da Aura. Score 0–100.</div>
+  <div class="score-wrap fade-in">
+    <div class="score-head">
+      <span>Dimensão / Indicador</span>
+      <span>Status</span>
+      <span>Score</span>
+      <span>Ação</span>
+    </div>
+    <!-- rows -->
+    <div class="score-row">
+      <div class="score-metric">Produto — Funcionalidade core (agendamento via WA)</div>
+      <div><span class="tag tg-g">Produção</span></div>
+      <div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bg-g" style="width:90%"></div></div><span class="score-num" style="color:var(--green)">90</span></div>
+      <div class="score-action">Manter — base sólida validada</div>
+    </div>
+    <div class="score-row">
+      <div class="score-metric">Produto — Multi-tenant para clientes externos</div>
+      <div><span class="tag tg-r">Não existe</span></div>
+      <div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bg-r" style="width:15%"></div></div><span class="score-num" style="color:var(--red)">15</span></div>
+      <div class="score-action">⚠ Bloqueador — implementar Bloco 3 técnico</div>
+    </div>
+    <div class="score-row">
+      <div class="score-metric">Comercial — Clareza de pricing e comunicação</div>
+      <div><span class="tag tg-r">Conflito</span></div>
+      <div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bg-r" style="width:25%"></div></div><span class="score-num" style="color:var(--red)">25</span></div>
+      <div class="score-action">⚠ Corrigir landing page esta semana</div>
+    </div>
+    <div class="score-row">
+      <div class="score-metric">Comercial — Material de vendas e ROI calculator</div>
+      <div><span class="tag tg-y">Parcial</span></div>
+      <div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bg-a" style="width:55%"></div></div><span class="score-num" style="color:var(--amber)">55</span></div>
+      <div class="score-action">Calculator publicada — criar proposta PDF</div>
+    </div>
+    <div class="score-row">
+      <div class="score-metric">Operacional — Processo de onboarding documentado</div>
+      <div><span class="tag tg-r">Não existe</span></div>
+      <div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bg-r" style="width:10%"></div></div><span class="score-num" style="color:var(--red)">10</span></div>
+      <div class="score-action">⚠ Documentar checklist antes da 1ª venda</div>
+    </div>
+    <div class="score-row">
+      <div class="score-metric">Financeiro — Custo real por cliente calculado</div>
+      <div><span class="tag tg-y">Estimado</span></div>
+      <div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bg-a" style="width:35%"></div></div><span class="score-num" style="color:var(--amber)">35</span></div>
+      <div class="score-action">Mapear custo exato: OpenAI + Fly + Meta</div>
+    </div>
+    <div class="score-row">
+      <div class="score-metric">Financeiro — Limites de uso por plano definidos</div>
+      <div><span class="tag tg-r">Não existe</span></div>
+      <div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bg-r" style="width:0%"></div></div><span class="score-num" style="color:var(--red)">0</span></div>
+      <div class="score-action">⚠ Risco de prejuízo — definir antes de vender</div>
+    </div>
+    <div class="score-row">
+      <div class="score-metric">Mercado — Clientes externos validados</div>
+      <div><span class="tag tg-r">Zero</span></div>
+      <div class="score-bar-wrap"><div class="score-bar-bg"><div class="score-bar bg-r" style="width:0%"></div></div><span class="score-num" style="color:var(--red)">0</span></div>
+      <div class="score-action">⚠ Objetivo primário: 1 cliente externo em produção</div>
+    </div>
+  </div>
+</div>
+<div class="sep"></div>
+
+<!-- PLANOS -->
+<div class="section" id="planos">
+  <div class="section-label">Precificação</div>
+  <div class="section-title">Planos e preços</div>
+  <div class="section-sub">Modelo híbrido: setup + mensalidade + adicionais. Protege margem conforme cliente cresce.</div>
+  <div class="plans-grid">
+    <div class="plan-card fade-in">
+      <div class="plan-name">Solo</div>
+      <div class="plan-price">R$ 597<span>/mês</span></div>
+      <div class="plan-setup">Setup R$ 1.497 · Até 1 profissional</div>
+      <div class="plan-features">
+        <div class="plan-feat">1 número WhatsApp</div>
+        <div class="plan-feat">1 clínica / unidade</div>
+        <div class="plan-feat">600 mensagens AIsha/mês</div>
+        <div class="plan-feat">Até 80 agendamentos/mês</div>
+        <div class="plan-feat">Histórico 90 dias</div>
+        <div class="plan-feat">Suporte por email</div>
+      </div>
+    </div>
+    <div class="plan-card featured fade-in">
+      <div class="plan-badge" style="display:inline-block;font-size:.65rem;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--accent));color:var(--white);padding:.2rem .6rem;border-radius:999px;margin-bottom:.4rem;">Mais popular</div>
+      <div class="plan-name">Essencial</div>
+      <div class="plan-price">R$ 1.197<span>/mês</span></div>
+      <div class="plan-setup">Setup R$ 2.497 · Até 3 profissionais</div>
+      <div class="plan-features">
+        <div class="plan-feat">1 número WhatsApp</div>
+        <div class="plan-feat">1 clínica / unidade</div>
+        <div class="plan-feat">2.000 mensagens AIsha/mês</div>
+        <div class="plan-feat">Até 300 agendamentos/mês</div>
+        <div class="plan-feat">100 transcrições de áudio/mês</div>
+        <div class="plan-feat">Histórico 1 ano</div>
+        <div class="plan-feat">Suporte WhatsApp</div>
+      </div>
+    </div>
+    <div class="plan-card fade-in">
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">R$ 2.497<span>/mês</span></div>
+      <div class="plan-setup">Setup R$ 4.997 · Até 8 profissionais</div>
+      <div class="plan-features">
+        <div class="plan-feat">2 números WhatsApp</div>
+        <div class="plan-feat">Até 3 clínicas / unidades</div>
+        <div class="plan-feat">5.000 mensagens AIsha/mês</div>
+        <div class="plan-feat">Até 800 agendamentos/mês</div>
+        <div class="plan-feat">300 transcrições de áudio/mês</div>
+        <div class="plan-feat">Histórico 3 anos</div>
+        <div class="plan-feat">Suporte WhatsApp + SLA 4h</div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:1.25rem;font-size:.82rem;color:var(--muted);">
+    <strong style="color:var(--white);">Adicionais:</strong>
+    Profissional extra <strong style="color:var(--text);">R$ 250/mês</strong> ·
+    Unidade adicional <strong style="color:var(--text);">R$ 497/mês</strong> ·
+    Número WhatsApp adicional <strong style="color:var(--text);">R$ 397/mês</strong> ·
+    Mensagens excedentes <strong style="color:var(--text);">R$ 0,80/msg</strong> ·
+    Setup gratuito em contrato anual
+  </div>
+</div>
+<div class="sep"></div>
+
+<!-- ONBOARDING -->
+<div class="section" id="onboarding">
+  <div class="section-label">Implantação</div>
+  <div class="section-title">O que acontece nos 5 dias de onboarding</div>
+  <div class="section-sub">Processo estruturado para clínica entrar em produção rapidamente e com confiança.</div>
+  <div class="onb-list">
+    <div class="onb-item fade-in">
+      <div class="onb-day">Dia 1</div>
+      <div class="onb-body">
+        <strong>Discovery e coleta de dados</strong>
+        <p>Briefing com responsável. Coletar: nome, terapeutas e especialidades, serviços (duração + preço), horário de funcionamento, número WhatsApp a ser usado, email Google com acesso ao Calendar. Entregar formulário de onboarding padronizado.</p>
+      </div>
+    </div>
+    <div class="onb-item fade-in">
+      <div class="onb-day">Dia 2</div>
+      <div class="onb-body">
+        <strong>Configuração de infraestrutura</strong>
+        <p>Criar tenant no sistema. Configurar instância WhatsApp (Cloud API Meta). Fazer OAuth do Google Calendar. Cadastrar terapeutas, serviços e horários no painel. Configurar janela de atendimento e clínicas ativas.</p>
+      </div>
+    </div>
+    <div class="onb-item fade-in">
+      <div class="onb-day">Dia 3</div>
+      <div class="onb-body">
+        <strong>Personalização da AIsha</strong>
+        <p>Adaptar prompt base da AIsha para a clínica: nome, tom de voz, especialidades, regras de negócio específicas, FAQ, link de Google Reviews, mensagens personalizadas de confirmação e lembrete.</p>
+      </div>
+    </div>
+    <div class="onb-item fade-in">
+      <div class="onb-day">Dia 4</div>
+      <div class="onb-body">
+        <strong>Teste supervisionado</strong>
+        <p>Simular 10 cenários reais: agendamento simples, pergunta de preço, escolha por gênero do terapeuta, reagendamento, cancelamento, atendimento fora do horário, mensagem fora do escopo. Ajustar prompt. Teste com número pessoal do responsável.</p>
+      </div>
+    </div>
+    <div class="onb-item fade-in">
+      <div class="onb-day">Dia 5</div>
+      <div class="onb-body">
+        <strong>Go-live e handoff</strong>
+        <p>Ativar número para pacientes reais. Monitorar primeiras 24h. Apresentar painel ao responsável (inbox, agendamentos, métricas). Entregar guia de uso. Agendar check-in em 7 e 30 dias. Solicitar depoimento após 30 dias.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ROI LINK -->
+<div class="roi-link-section">
+  <div class="roi-link-inner">
+    <h3>Ver o impacto financeiro para sua clínica</h3>
+    <p>Use a calculadora interativa para personalizar o cenário de ROI com os dados da sua operação.</p>
+    <a href="/servicos/clinica/roi" class="btn-outline">Abrir Calculadora de ROI →</a>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section fade-in">
+  <h2>Pronto para levar a Aura<br>para sua clínica?</h2>
+  <p>Fale com a Conectivos e receba uma proposta personalizada em até 24h.</p>
+  <a href="/servicos/clinica#contato" class="cta-btn">Solicitar demonstração →</a>
+</div>
+
+<script>
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:.1});
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>

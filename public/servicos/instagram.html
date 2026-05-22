@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="/icon.png" type="image/png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instagram DM by Conectivos — IA que Transforma DMs em Vendas</title>
+<meta name="description" content="Automatize as DMs do Instagram com IA da Conectivos. Resposta imediata, captura de leads e conversão 24/7 — nunca perca uma oportunidade no Instagram.">
+<style>
+:root {
+  --primary: #6c3fc5;
+  --primary-light: #8b5cf6;
+  --accent: #ec4899;
+  --accent2: #f59e0b;
+  --dark: #0f0a1e;
+  --dark2: #1a1033;
+  --dark3: #251848;
+  --card: rgba(255,255,255,0.04);
+  --card-border: rgba(255,255,255,0.08);
+  --text: #e2dff7;
+  --muted: #9b92c8;
+  --white: #ffffff;
+  --green: #22c55e;
+  --pink: #ec4899;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--dark);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── NAVBAR ── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:100;
+  background: rgba(15,10,30,0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--card-border);
+  padding: 0 2rem;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand { display:flex; align-items:center; gap:0.75rem; text-decoration:none; }
+.nav-brand img { height:30px; }
+.nav-brand span { font-size:1.05rem; font-weight:700; color:var(--white); }
+.nav-brand em { color:var(--accent); font-style:normal; }
+.nav-links { display:flex; gap:2rem; list-style:none; }
+.nav-links a { color:var(--muted); text-decoration:none; font-size:0.88rem; font-weight:500; transition:color 0.2s; }
+.nav-links a:hover { color:var(--white); }
+.nav-cta {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: var(--white); border:none; padding: 0.5rem 1.3rem;
+  border-radius: 2rem; font-size:0.88rem; font-weight:700;
+  cursor:pointer; text-decoration:none; transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 4px 16px rgba(236,72,153,0.3);
+}
+.nav-cta:hover { opacity:0.9; transform: translateY(-1px); }
+
+/* ── HERO ── */
+#home {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -5%, rgba(236,72,153,0.4) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 35% at 90% 85%, rgba(108,63,197,0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 10% 90%, rgba(236,72,153,0.15) 0%, transparent 60%),
+    var(--dark);
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 7rem 2rem 5rem;
+  position: relative; overflow: hidden;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap:0.5rem;
+  background: rgba(236,72,153,0.12); border: 1px solid rgba(236,72,153,0.35);
+  border-radius: 2rem; padding: 0.4rem 1.1rem;
+  font-size: 0.78rem; color: var(--accent); font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 1.75rem;
+}
+.hero-badge span { color: var(--accent); }
+#home h1 {
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-weight: 800; line-height: 1.12;
+  color: var(--white);
+  max-width: 820px; margin: 0 auto 1.5rem;
+  letter-spacing: -0.02em;
+}
+#home h1 .hl {
+  background: linear-gradient(135deg, var(--accent) 30%, var(--primary-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: 1.15rem; color: var(--muted);
+  max-width: 560px; margin: 0 auto 2.75rem;
+}
+.hero-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color:var(--white); padding: 0.95rem 2.2rem;
+  border-radius: 2rem; font-weight:700; font-size:1rem;
+  text-decoration:none; transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 10px 36px rgba(236,72,153,0.4);
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(236,72,153,0.55); }
+.btn-ghost {
+  background: transparent; border: 1px solid rgba(255,255,255,0.15);
+  color: var(--text); padding: 0.95rem 2.2rem;
+  border-radius: 2rem; font-weight:600; font-size:1rem;
+  text-decoration:none; transition: background 0.2s, border-color 0.2s;
+}
+.btn-ghost:hover { background: var(--card); border-color: rgba(255,255,255,0.25); }
+
+.hero-stats {
+  display: flex; gap: 3.5rem; justify-content: center; flex-wrap:wrap;
+  margin-top: 4.5rem; padding-top: 3rem;
+  border-top: 1px solid var(--card-border);
+}
+.stat { text-align: center; }
+.stat-num { font-size: 2.2rem; font-weight: 900; color: var(--white); }
+.stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top:0.2rem; }
+
+/* ── SHARED SECTION ── */
+.section { padding: 5.5rem 2rem; max-width: 1100px; margin: 0 auto; }
+.section-wrap { padding: 5.5rem 0; }
+.section-inner { max-width:1100px; margin:0 auto; padding: 0 2rem; }
+.section-tag {
+  display: inline-block;
+  color: var(--accent); font-size: 0.75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 0.8rem;
+}
+.section-title {
+  font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+  font-weight: 800; color: var(--white); margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+.section-sub { color: var(--muted); font-size: 1.05rem; max-width: 560px; }
+.divider { width:100%; height:1px; background: var(--card-border); }
+
+/* ── PROBLEM ── */
+.problem-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem; margin-top: 3rem;
+}
+.problem-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: 16px; padding: 1.75rem;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.problem-card:hover { border-color: rgba(236,72,153,0.35); transform: translateY(-3px); }
+.prob-icon { font-size: 2rem; margin-bottom: 0.9rem; }
+.prob-title { font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+.prob-text { font-size: 0.88rem; color: var(--muted); }
+
+/* ── HOW IT WORKS ── */
+.steps { display:flex; gap:1.5rem; margin-top:3rem; flex-wrap:wrap; }
+.step {
+  flex:1; min-width:210px;
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: 18px; padding: 2rem 1.5rem; text-align:center;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.step:hover { border-color: rgba(236,72,153,0.4); transform: translateY(-3px); }
+.step-num {
+  width:46px; height:46px; border-radius:50%;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  display:flex; align-items:center; justify-content:center;
+  font-weight:900; font-size:1.1rem; color:var(--white);
+  margin: 0 auto 1rem;
+  box-shadow: 0 6px 20px rgba(236,72,153,0.35);
+}
+.step h3 { font-size:1rem; font-weight:700; color:var(--white); margin-bottom:0.5rem; }
+.step p { font-size:0.85rem; color:var(--muted); }
+
+/* ── CHAT DEMO ── */
+.demo-cols {
+  display:grid; grid-template-columns: 1fr 1fr;
+  gap:3.5rem; margin-top:3rem; align-items:start;
+}
+@media(max-width:768px) { .demo-cols { grid-template-columns:1fr; } }
+.phone-frame {
+  background: #18182a; border-radius: 26px;
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+}
+.phone-header {
+  background: linear-gradient(135deg, rgba(236,72,153,0.85), rgba(108,63,197,0.85));
+  padding: 0.85rem 1.1rem;
+  display:flex; align-items:center; gap:0.8rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.phone-avatar {
+  width:38px; height:38px; border-radius:50%; flex-shrink:0;
+  background: rgba(255,255,255,0.2);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem;
+}
+.phone-name { font-size:0.9rem; font-weight:700; color:var(--white); }
+.phone-status { font-size:0.72rem; color:rgba(255,255,255,0.75); }
+.chat-body { padding: 1.1rem; display:flex; flex-direction:column; gap:0.85rem; min-height:340px; }
+.bubble {
+  max-width:80%; padding: 0.65rem 1rem; border-radius:16px;
+  font-size:0.84rem; line-height:1.55;
+}
+.bubble-in {
+  background: rgba(255,255,255,0.07); color:var(--text); align-self:flex-start;
+  border-bottom-left-radius:4px;
+}
+.bubble-out {
+  background: linear-gradient(135deg, rgba(236,72,153,0.7), rgba(108,63,197,0.5));
+  color:var(--white); align-self:flex-end; border-bottom-right-radius:4px;
+}
+.bubble-time { font-size:0.66rem; opacity:0.5; margin-top:0.2rem; text-align:right; }
+.demo-desc h3 { font-size:1.5rem; font-weight:800; color:var(--white); margin-bottom:1rem; letter-spacing:-0.01em; }
+.demo-desc p { color:var(--muted); font-size:0.95rem; margin-bottom:1.5rem; }
+.demo-tabs { display:flex; gap:0.5rem; margin-bottom:0.8rem; }
+.demo-tab {
+  background:var(--card); border:1px solid var(--card-border);
+  color:var(--muted); padding:0.4rem 1rem; border-radius:2rem;
+  font-size:0.8rem; font-weight:600; cursor:pointer; transition:all 0.2s;
+}
+.demo-tab.active {
+  background:linear-gradient(135deg, var(--accent), var(--primary));
+  border-color:transparent; color:var(--white);
+}
+.demo-chat-panel { display:none; }
+.demo-chat-panel.active { display:block; }
+.demo-pill {
+  display:inline-flex; align-items:center; gap:0.4rem;
+  background: rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.2);
+  color:var(--green); border-radius:2rem; padding:0.32rem 0.85rem;
+  font-size:0.77rem; font-weight:600; margin:0.25rem;
+}
+
+/* ── FEATURES ── */
+.ftabs {
+  display: flex; gap:0.6rem; flex-wrap:wrap; margin-bottom: 2rem;
+}
+.ftab {
+  background: var(--card); border: 1px solid var(--card-border);
+  color: var(--muted); padding: 0.5rem 1.3rem; border-radius: 2rem;
+  font-size: 0.85rem; cursor:pointer; transition: all 0.2s;
+  font-weight:600; user-select:none;
+}
+.ftab.active {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  border-color: transparent; color: var(--white);
+  box-shadow: 0 4px 16px rgba(236,72,153,0.3);
+}
+.features-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.1rem;
+}
+.feature-panel { display:none; }
+.feature-panel.active { display:grid; }
+.feature-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: 14px; padding: 1.4rem;
+  display:flex; gap:1rem; align-items:flex-start;
+  transition: all 0.25s;
+}
+.feature-card:hover {
+  border-color: rgba(236,72,153,0.45);
+  background: rgba(236,72,153,0.07);
+  transform: translateY(-2px);
+}
+.feat-icon {
+  width: 46px; height:46px; border-radius:12px; flex-shrink:0;
+  background: linear-gradient(135deg, rgba(236,72,153,0.18), rgba(108,63,197,0.18));
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.35rem;
+}
+.feat-title { font-size:0.95rem; font-weight:700; color:var(--white); margin-bottom:0.3rem; }
+.feat-desc { font-size:0.82rem; color:var(--muted); line-height:1.5; }
+
+/* ── ADVANCED ── */
+.adv-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.25rem; margin-top: 3rem;
+}
+@media(max-width:640px) { .adv-grid { grid-template-columns:1fr; } }
+.adv-card {
+  border-radius: 18px; padding: 2rem 1.75rem;
+  position: relative; overflow: hidden;
+}
+.adv-card.ap { background: linear-gradient(135deg, rgba(236,72,153,0.22), rgba(236,72,153,0.06)); border: 1px solid rgba(236,72,153,0.3); }
+.adv-card.at { background: linear-gradient(135deg, rgba(108,63,197,0.18), rgba(108,63,197,0.04)); border: 1px solid rgba(108,63,197,0.25); }
+.adv-card.aa { background: linear-gradient(135deg, rgba(245,158,11,0.18), rgba(245,158,11,0.04)); border: 1px solid rgba(245,158,11,0.25); }
+.adv-card.apk { background: linear-gradient(135deg, rgba(139,92,246,0.18), rgba(139,92,246,0.04)); border: 1px solid rgba(139,92,246,0.25); }
+.adv-icon { font-size: 2.4rem; margin-bottom: 1rem; }
+.adv-label { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; font-weight:700; margin-bottom:0.5rem; }
+.adv-card.ap .adv-label { color: var(--pink); }
+.adv-card.at .adv-label { color: var(--primary-light); }
+.adv-card.aa .adv-label { color: var(--accent2); }
+.adv-card.apk .adv-label { color: var(--primary-light); }
+.adv-title { font-size:1.15rem; font-weight:800; color:var(--white); margin-bottom:0.6rem; }
+.adv-text { font-size:0.87rem; color:var(--muted); margin-bottom:1rem; line-height:1.6; }
+.adv-list { list-style:none; }
+.adv-list li { font-size:0.82rem; color:var(--muted); padding:0.28rem 0; display:flex; gap:0.5rem; align-items:flex-start; }
+.adv-list li::before { content:"→"; color:var(--accent); flex-shrink:0; font-weight:700; }
+.adv-badge {
+  display:inline-block; padding:0.2rem 0.7rem; border-radius:2rem;
+  font-size:0.7rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+  margin-bottom:0.7rem;
+}
+.adv-badge.available { background:rgba(34,197,94,0.12); color:var(--green); border:1px solid rgba(34,197,94,0.25); }
+.adv-badge.soon { background:rgba(245,158,11,0.12); color:var(--accent2); border:1px solid rgba(245,158,11,0.25); }
+.extras-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 1rem; margin-top: 1.5rem;
+}
+
+/* ── ROI ── */
+.roi-grid {
+  display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:1.25rem; margin-top:3rem;
+}
+.roi-card {
+  text-align:center; padding:2.2rem 1.5rem;
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:18px; transition: transform 0.25s, border-color 0.25s;
+}
+.roi-card:hover { transform: translateY(-4px); border-color: rgba(236,72,153,0.3); }
+.roi-num {
+  font-size: 3rem; font-weight:900;
+  background: linear-gradient(135deg, var(--accent), var(--primary-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; line-height:1;
+}
+.roi-title { font-size:0.95rem; font-weight:700; color:var(--white); margin:0.65rem 0 0.3rem; }
+.roi-sub { font-size:0.82rem; color:var(--muted); line-height:1.5; }
+
+/* ── USE CASES ── */
+.use-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 1rem; margin-top: 3rem;
+}
+.use-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: 14px; padding: 1.6rem 1.25rem; text-align: center;
+  transition: all 0.22s;
+}
+.use-card:hover { border-color: rgba(236,72,153,0.4); transform: translateY(-3px); background: rgba(236,72,153,0.05); }
+.use-icon { font-size: 2rem; margin-bottom: 0.7rem; }
+.use-title { font-size: 0.92rem; font-weight: 700; color: var(--white); margin-bottom:0.25rem; }
+.use-text { font-size: 0.78rem; color: var(--muted); }
+
+/* ── CASE REAL ── */
+.case-card {
+  background: linear-gradient(135deg, rgba(236,72,153,0.12), rgba(108,63,197,0.08));
+  border: 1px solid rgba(236,72,153,0.25);
+  border-radius: 20px; padding: 2.5rem;
+  margin-top: 3rem;
+}
+.case-quote {
+  font-size: 1.08rem; color: var(--text); line-height: 1.75;
+  font-style: italic; margin-bottom: 1.5rem;
+  position: relative; padding-left: 1.5rem;
+}
+.case-quote::before {
+  content: '"'; position: absolute; left: 0; top: -0.25rem;
+  font-size: 3rem; color: var(--accent); font-style: normal;
+  line-height: 1; opacity: 0.6;
+}
+.case-author { font-size: 0.88rem; color: var(--muted); font-weight: 600; margin-bottom: 1.75rem; }
+.case-stats {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08);
+}
+.case-stat-num {
+  font-size: 1.6rem; font-weight: 900;
+  background: linear-gradient(135deg, var(--accent), var(--primary-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.case-stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem; }
+
+/* ── DIFFERENTIALS ── */
+.diff-list { margin-top:3rem; display:flex; flex-direction:column; gap:1rem; }
+.diff-item {
+  display:flex; gap:1.25rem; align-items:flex-start;
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:16px; padding:1.5rem 1.75rem;
+  transition: border-color 0.22s, transform 0.22s;
+}
+.diff-item:hover { border-color: rgba(236,72,153,0.35); transform: translateX(4px); }
+.diff-bullet {
+  width:38px; height:38px; border-radius:50%; flex-shrink:0;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  display:flex; align-items:center; justify-content:center;
+  font-size:1rem;
+  box-shadow: 0 4px 12px rgba(236,72,153,0.3);
+}
+.diff-title { font-size:1rem; font-weight:700; color:var(--white); margin-bottom:0.3rem; }
+.diff-text { font-size:0.88rem; color:var(--muted); line-height:1.6; }
+
+/* ── CTA ── */
+#contato {
+  padding: 6rem 2rem; text-align:center;
+  background:
+    radial-gradient(ellipse 60% 55% at 50% 100%, rgba(108,63,197,0.35) 0%, transparent 65%),
+    var(--dark);
+}
+#contato h2 {
+  font-size:clamp(1.9rem, 4.5vw, 3.2rem); font-weight:800; color:var(--white);
+  max-width:660px; margin:0 auto 1rem;
+  letter-spacing:-0.02em;
+}
+#contato p { color:var(--muted); font-size:1.05rem; max-width:500px; margin:0 auto 2.75rem; }
+.cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-bottom: 4rem; }
+.quem-somos {
+  max-width: 900px; margin: 0 auto;
+  padding: 2.5rem 2rem;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem; text-align: left;
+}
+@media(max-width: 640px) { .quem-somos { grid-template-columns: 1fr; } }
+.qs-item h4 { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--primary-light); margin-bottom: 0.6rem; }
+.qs-item p { font-size: 0.87rem; color: var(--muted); line-height: 1.65; }
+.qs-item strong { color: var(--white); }
+.contact-strip {
+  display:flex; gap:2rem; justify-content:center; flex-wrap:wrap;
+  margin-top:2rem; padding-top:1.75rem; border-top:1px solid var(--card-border);
+}
+.contact-item { display:flex; align-items:center; gap:0.5rem; font-size:0.88rem; color:var(--muted); }
+.contact-item a { color:var(--muted); text-decoration:none; transition:color 0.2s; }
+.contact-item a:hover { color:var(--white); }
+
+/* ── FOOTER ── */
+footer {
+  background: #0a0a18;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 4rem 2rem 2rem;
+}
+.footer-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 2fr 1fr 1fr;
+  gap: 3rem; margin-bottom: 3rem;
+}
+@media(max-width: 768px) {
+  .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+}
+.footer-brand img { height: 32px; margin-bottom: 1rem; filter: brightness(0) invert(1); opacity: 0.9; }
+.footer-brand p { color: #94a3b8; font-size: 0.88rem; line-height: 1.65; margin-bottom: 1.25rem; }
+.footer-wa {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3);
+  color: #10b981; font-size: 0.85rem; font-weight: 600;
+  padding: 0.55rem 1.1rem; border-radius: 2rem; text-decoration: none;
+  transition: background 0.2s;
+}
+.footer-wa:hover { background: rgba(16,185,129,0.2); }
+.footer-col h5 {
+  color: #ffffff; font-size: 0.8rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+.footer-col a {
+  display: block; color: #64748b; font-size: 0.88rem;
+  text-decoration: none; margin-bottom: 0.65rem;
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: #e2e8f0; }
+.footer-bottom {
+  max-width: 1100px; margin: 0 auto;
+  padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 0.75rem;
+}
+.footer-bottom span { color: #374151; font-size: 0.8rem; }
+.footer-bottom a { color: #4b5563; font-size: 0.8rem; text-decoration: none; transition: color 0.2s; }
+.footer-bottom a:hover { color: #94a3b8; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px) {
+  .nav-links { display:none; }
+  .adv-grid { grid-template-columns:1fr; }
+  .hero-stats { gap:2rem; }
+  .case-stats { gap:1.25rem; }
+}
+
+/* ── FAQ DARK ── */
+.faq-dark { display:flex; flex-direction:column; gap:0.7rem; margin-top:2.5rem; }
+.faq-dark .faq-item {
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:14px; overflow:hidden; transition: border-color 0.2s;
+}
+.faq-dark .faq-item:hover { border-color:rgba(236,72,153,0.3); }
+.faq-dark .faq-q {
+  padding:1rem 1.2rem; font-weight:700; font-size:0.92rem; color:var(--white);
+  display:flex; justify-content:space-between; align-items:center;
+  cursor:pointer; gap:1rem;
+}
+.faq-dark .faq-q .arrow { font-size:1rem; transition:transform 0.25s; flex-shrink:0; color:var(--muted); }
+.faq-dark .faq-item.open .faq-q .arrow { transform:rotate(180deg); }
+.faq-dark .faq-a { display:none; padding:0 1.2rem 1rem; font-size:0.88rem; color:var(--muted); line-height:1.65; }
+.faq-dark .faq-item.open .faq-a { display:block; }
+
+/* ── ANIMATIONS ── */
+.anim-in {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.anim-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-brand" href="#home">
+    <img src="../logo.png" alt="Conectivos">
+    <span>Instagram DM <em>by Conectivos</em></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#como-funciona">Como funciona</a></li>
+    <li><a href="#funcionalidades">Capacidades</a></li>
+    <li><a href="#avancado">Avançado</a></li>
+    <li><a href="#roi">Resultados</a></li>
+    <li><a href="#diferenciais">Segmentos</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <a class="nav-cta" href="#contato">Falar com especialista</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="home">
+  <div>
+    <div class="hero-badge anim-in">✦ Conectivos · Instagram DM com Inteligência Artificial</div>
+    <h1 class="anim-in">Transforme cada DM<br><span class="hl">em uma oportunidade.</span></h1>
+    <p class="hero-sub anim-in">A IA da Conectivos responde DMs do Instagram em segundos, captura leads, apresenta produtos e agenda vendas — enquanto você foca no conteúdo.</p>
+    <div class="hero-btns anim-in">
+      <a class="btn-primary" href="#contato">📱 Quero uma demonstração</a>
+      <a class="btn-ghost" href="#como-funciona">Ver como funciona</a>
+    </div>
+    <div class="hero-stats anim-in">
+      <div class="stat">
+        <div class="stat-num">&lt; 30s</div>
+        <div class="stat-label">Resposta</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Disponível</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">🛍️</div>
+        <div class="stat-label">Catálogo integrado</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">🎯</div>
+        <div class="stat-label">Leads capturados automaticamente</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PROBLEMA ── -->
+<div class="section-wrap">
+  <div class="section-inner">
+    <p class="section-tag">O problema</p>
+    <h2 class="section-title">Por que DMs viram receita perdida</h2>
+    <p class="section-sub">Cada mensagem não respondida a tempo é uma venda que foi para o concorrente.</p>
+    <div class="problem-grid">
+      <div class="problem-card anim-in">
+        <div class="prob-icon">📩</div>
+        <div class="prob-title">DMs acumulam sem resposta</div>
+        <div class="prob-text">Seguidores que enviam DMs não respondidas em horas perdem o interesse e compram do concorrente. Cada DM perdida é receita perdida.</div>
+      </div>
+      <div class="problem-card anim-in">
+        <div class="prob-icon">🕐</div>
+        <div class="prob-title">Equipe sobrecarregada com respostas</div>
+        <div class="prob-text">Responder DMs manualmente consome horas do time por dia. Escalar o atendimento significa contratar mais pessoas.</div>
+      </div>
+      <div class="problem-card anim-in">
+        <div class="prob-icon">💸</div>
+        <div class="prob-title">Leads que chegam fora do horário somem</div>
+        <div class="prob-text">Prospects que entram em contato à noite, fim de semana ou feriado ficam sem resposta. A taxa de conversão cai drasticamente com o tempo de espera.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── COMO FUNCIONA ── -->
+<div id="como-funciona" class="section-wrap">
+  <div class="section-inner">
+    <p class="section-tag">Como funciona</p>
+    <h2 class="section-title">Da conexão à conversão em 4 etapas</h2>
+    <p class="section-sub">Setup simples, resultado imediato. Em menos de 48h sua conta está respondendo automaticamente.</p>
+
+    <div class="steps">
+      <div class="step anim-in">
+        <div class="step-num">1</div>
+        <h3>Conexão</h3>
+        <p>Conectamos a IA à sua conta do Instagram Business via API oficial. Setup em menos de 24 horas.</p>
+      </div>
+      <div class="step anim-in">
+        <div class="step-num">2</div>
+        <h3>Configuração</h3>
+        <p>Definimos: tom de voz, catálogo de produtos, perguntas frequentes, fluxo de captura de leads e critérios de escalada para humano.</p>
+      </div>
+      <div class="step anim-in">
+        <div class="step-num">3</div>
+        <h3>Ativação</h3>
+        <p>A IA entra em ação. Toda DM recebe resposta em segundos, 24/7, com o tom exato da sua marca.</p>
+      </div>
+      <div class="step anim-in">
+        <div class="step-num">4</div>
+        <h3>Conversão</h3>
+        <p>Leads capturados são enviados para o CRM. Clientes com intenção de compra são direcionados para checkout ou vendedor humano.</p>
+      </div>
+    </div>
+
+    <div class="demo-cols" style="margin-top:4rem;">
+      <div class="demo-desc">
+        <p class="section-tag">Demo ao vivo</p>
+        <h3>Veja a IA em ação</h3>
+        <p>Selecione um cenário e veja como a IA conduz a conversa do início ao fechamento — com o tom da sua marca, em segundos.</p>
+        <div class="demo-tabs">
+          <button class="demo-tab active" onclick="showDemoTab('demo-venda', this)">Venda direta</button>
+          <button class="demo-tab" onclick="showDemoTab('demo-lead', this)">Captura de lead</button>
+        </div>
+        <div style="margin-top:1rem;">
+          <span class="demo-pill">✓ API oficial Instagram</span>
+          <span class="demo-pill">✓ Resposta em &lt; 30s</span>
+          <span class="demo-pill">✓ Tom da marca</span>
+        </div>
+      </div>
+
+      <div>
+        <!-- Demo Venda Direta -->
+        <div id="demo-venda" class="demo-chat-panel active">
+          <div class="phone-frame">
+            <div class="phone-header">
+              <div class="phone-avatar">📸</div>
+              <div>
+                <div class="phone-name">sua_loja</div>
+                <div class="phone-status">● Online agora</div>
+              </div>
+            </div>
+            <div class="chat-body">
+              <div class="bubble bubble-in">
+                Oi! Vi no seu story sobre o vestido roxo. Ainda tem?
+                <div class="bubble-time">14:32</div>
+              </div>
+              <div class="bubble bubble-out">
+                Oi! 😊 Sim, ainda temos o vestido roxo disponível! Ele está em P, M e G. Você tem preferência de tamanho?
+                <div class="bubble-time">14:32</div>
+              </div>
+              <div class="bubble bubble-in">
+                M, quanto custa?
+                <div class="bubble-time">14:33</div>
+              </div>
+              <div class="bubble bubble-out">
+                O vestido em M está R$ 189,00 com frete grátis para compras acima de R$ 150! Posso te enviar o link direto para o checkout? 🛍️
+                <div class="bubble-time">14:33</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demo Captura de Lead -->
+        <div id="demo-lead" class="demo-chat-panel">
+          <div class="phone-frame">
+            <div class="phone-header">
+              <div class="phone-avatar">🤖</div>
+              <div>
+                <div class="phone-name">conectivos.net</div>
+                <div class="phone-status">● Online agora</div>
+              </div>
+            </div>
+            <div class="chat-body">
+              <div class="bubble bubble-in">
+                Como faço para contratar a automação?
+                <div class="bubble-time">10:05</div>
+              </div>
+              <div class="bubble bubble-out">
+                Oi! Fico feliz com seu interesse! 🚀 Para te enviar uma proposta personalizada, pode me informar: qual tipo de negócio você tem e quantas DMs recebe por dia aproximadamente?
+                <div class="bubble-time">10:05</div>
+              </div>
+              <div class="bubble bubble-in">
+                Tenho uma loja de roupas, umas 50 DMs por dia
+                <div class="bubble-time">10:06</div>
+              </div>
+              <div class="bubble bubble-out">
+                Perfeito! Com 50 DMs/dia, a IA te economizaria cerca de 2h30min diariamente. Vou te conectar com nosso especialista para uma demonstração gratuita. Qual é o melhor horário para você hoje ou amanhã?
+                <div class="bubble-time">10:06</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── FUNCIONALIDADES ── -->
+<div id="funcionalidades" class="section-wrap">
+  <div class="section-inner">
+    <p class="section-tag">Capacidades</p>
+    <h2 class="section-title">Tudo que você precisa para vender pelo Instagram</h2>
+    <p class="section-sub">Atendimento, vendas e analytics em uma plataforma integrada.</p>
+
+    <div style="margin-top:2.5rem;">
+      <div class="ftabs">
+        <button class="ftab active" onclick="showTab('atendimento', this)">Atendimento</button>
+        <button class="ftab" onclick="showTab('vendas', this)">Vendas</button>
+        <button class="ftab" onclick="showTab('analytics', this)">Analytics</button>
+      </div>
+
+      <!-- Atendimento -->
+      <div id="tab-atendimento" class="feature-panel active features-grid">
+        <div class="feature-card anim-in">
+          <div class="feat-icon">⚡</div>
+          <div>
+            <div class="feat-title">Resposta imediata</div>
+            <div class="feat-desc">Responde DMs em menos de 30 segundos, 24 horas por dia, 7 dias por semana</div>
+          </div>
+        </div>
+        <div class="feature-card anim-in">
+          <div class="feat-icon">🎨</div>
+          <div>
+            <div class="feat-title">Tom da marca</div>
+            <div class="feat-desc">IA aprende e mantém o tom de voz, vocabulário e personalidade da sua marca</div>
+          </div>
+        </div>
+        <div class="feature-card anim-in">
+          <div class="feat-icon">📦</div>
+          <div>
+            <div class="feat-title">Catálogo integrado</div>
+            <div class="feat-desc">Consulta estoque, preços e variações em tempo real para responder perguntas de produto</div>
+          </div>
+        </div>
+        <div class="feature-card anim-in">
+          <div class="feat-icon">🤝</div>
+          <div>
+            <div class="feat-title">Escalada humana</div>
+            <div class="feat-desc">Identifica quando o cliente precisa de atendimento humano e faz a transferência com contexto</div>
+          </div>
+        </div>
+        <div class="feature-card anim-in">
+          <div class="feat-icon">💬</div>
+          <div>
+            <div class="feat-title">Respostas ricas</div>
+            <div class="feat-desc">Envia imagens de produtos, links de checkout e vídeos conforme o contexto</div>
+          </div>
+        </div>
+        <div class="feature-card anim-in">
+          <div class="feat-icon">🌐</div>
+          <div>
+            <div class="feat-title">Multi-idioma</div>
+            <div class="feat-desc">Detecta e responde no idioma do seguidor automaticamente</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vendas -->
+      <div id="tab-vendas" class="feature-panel features-grid">
+        <div class="feature-card anim-in">
+          <div class="feat-icon">🛍️</div>
+          <div>
+            <div class="feat-title">Apresentação de produtos</div>
+            <div class="feat-desc">Mostra produtos relevantes baseado na pergunta do cliente</div>
+          </div>
+        </div>
+        <div class="feature-card anim-in">
+          <div class="feat-icon">💳</div>
+          <div>
+            <div class="feat-title">Link de checkout</div>
+            <div class="feat-desc">Envia link direto para compra quando cliente demonstra interesse</div>
+          </div>
+        </div>
+        <div class="feature-card anim-in">
+          <div class="feat-icon">🎯</div>
+          <div>
+            <div class="feat-title">Upsell inteligente</div>
+            <div class="feat-desc">Sugere produtos complementares no momento certo da conversa</div>
+          </div>
+        </div>
+        <div class="feature-card anim-in">
+          <div class="feat-icon">📊</div>
+          <div>
+            <div class="feat-title">Lead scoring</div>
+            <div class="feat-desc">Classifica leads por temperatura e potencial de compra</div>
+          </div>
+        </div>
+        <div class="feature-card anim-in">
+          <div class="feat-icon">🔔</div>
+          <div>
+            <div class="feat-title">Alerta de oportunidade</div>
+            <div class="feat-desc">Notifica vendedor quando lead de alto valor entra em contato</div>
+          </div>
+        </div>
+        <div class="feature-card anim-in">
+          <div class="feat-icon">📅</div>
+          <div>
+            <div class="feat-title">Agendamento</div>
+            <div class="feat-desc">Marca demos e consultas diretamente pelo DM</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analytics -->
+      <div id="tab-analytics" class="feature-panel features-grid">
+        <div class="feature-card anim-in">
+          <div class="feat-icon">📈</div>
+          <div>
+            <div class="feat-title">Dashboard em tempo real</div>
+            <div class="feat-desc">Volume de DMs, taxa de resposta, leads gerados e conversões</div>
+          </div>
+        </div>
+        <div class="feature-card anim-in">
+          <div class="feat-icon">🔍</div>
+          <div>
+            <div class="feat-title">Análise de intenção</div>
+            <div class="feat-desc">Classifica DMs por tipo: compra, suporte, parceria, spam</div>
+          </div>
+        </div>
+        <div class="feature-card anim-in">
+          <div class="feat-icon">📊</div>
+          <div>
+            <div class="feat-title">Relatório de conversão</div>
+            <div class="feat-desc">DMs recebidas → leads capturados → vendas geradas</div>
+          </div>
+        </div>
+        <div class="feature-card anim-in">
+          <div class="feat-icon">⏱️</div>
+          <div>
+            <div class="feat-title">Tempo médio de resposta</div>
+            <div class="feat-desc">Monitore a performance e compare com benchmark do setor</div>
+          </div>
+        </div>
+        <div class="feature-card anim-in">
+          <div class="feat-icon">🏷️</div>
+          <div>
+            <div class="feat-title">Tags automáticas</div>
+            <div class="feat-desc">Categoriza conversas por produto, etapa do funil e tipo de cliente</div>
+          </div>
+        </div>
+        <div class="feature-card anim-in">
+          <div class="feat-icon">📤</div>
+          <div>
+            <div class="feat-title">Exportação</div>
+            <div class="feat-desc">Exporte leads e conversas para CRM ou planilha</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── CAPACIDADES AVANÇADAS ── -->
+<div id="avancado" class="section-wrap">
+  <div class="section-inner">
+    <p class="section-tag">Tecnologia</p>
+    <h2 class="section-title">Capacidades avançadas</h2>
+    <p class="section-sub">Inteligência de ponta que vai além do chatbot comum.</p>
+    <div class="adv-grid">
+      <div class="adv-card ap anim-in">
+        <div class="adv-badge available">Disponível</div>
+        <div class="adv-icon">📱</div>
+        <div class="adv-label">Integração</div>
+        <div class="adv-title">Integração Oficial Instagram</div>
+        <div class="adv-text">Usa a API oficial do Instagram Business. Sem risco de banimento. Conexão segura e estável.</div>
+        <ul class="adv-list">
+          <li>Conformidade total com termos</li>
+          <li>Sem ferramentas de terceiros não-oficiais</li>
+          <li>Estabilidade garantida</li>
+        </ul>
+      </div>
+      <div class="adv-card at anim-in">
+        <div class="adv-badge available">Disponível</div>
+        <div class="adv-icon">🎯</div>
+        <div class="adv-label">Inteligência</div>
+        <div class="adv-title">Segmentação de Intenção</div>
+        <div class="adv-text">A IA classifica cada DM: compra, dúvida, reclamação, parceria ou spam. Cada categoria tem um fluxo diferente.</div>
+        <ul class="adv-list">
+          <li>Resposta certa para cada intenção</li>
+          <li>Nenhuma reclamação ignorada</li>
+          <li>Parceiros identificados automaticamente</li>
+        </ul>
+      </div>
+      <div class="adv-card aa anim-in">
+        <div class="adv-badge available">Disponível</div>
+        <div class="adv-icon">🔗</div>
+        <div class="adv-label">E-commerce</div>
+        <div class="adv-title">Integração E-commerce</div>
+        <div class="adv-text">Conecta ao seu e-commerce (Shopify, WooCommerce, Vtex) para consultar estoque e processar pedidos direto pelo DM.</div>
+        <ul class="adv-list">
+          <li>Venda 100% pelo Instagram</li>
+          <li>Estoque em tempo real</li>
+          <li>Checkout sem sair do app</li>
+        </ul>
+      </div>
+      <div class="adv-card apk anim-in">
+        <div class="adv-badge soon">Em breve</div>
+        <div class="adv-icon">🤖</div>
+        <div class="adv-label">IA avançada</div>
+        <div class="adv-title">IA de Produto</div>
+        <div class="adv-text">IA treinada com todo o catálogo e histórico de perguntas. Responde qualquer pergunta técnica sobre produto como um vendedor especialista.</div>
+        <ul class="adv-list">
+          <li>Zero dúvidas sem resposta</li>
+          <li>Cross-sell contextual</li>
+          <li>Conhecimento profundo do catálogo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── ROI / RESULTADOS ── -->
+<div id="roi" class="section-wrap">
+  <div class="section-inner">
+    <p class="section-tag">Resultados</p>
+    <h2 class="section-title">Números que transformam o negócio</h2>
+    <p class="section-sub">Clientes Conectivos reportam resultados consistentes já no primeiro mês de uso.</p>
+    <div class="roi-grid">
+      <div class="roi-card anim-in">
+        <div class="roi-num">+300%</div>
+        <div class="roi-title">Leads Capturados</div>
+        <div class="roi-sub">Cada DM se torna uma oportunidade de negócio</div>
+      </div>
+      <div class="roi-card anim-in">
+        <div class="roi-num">-90%</div>
+        <div class="roi-title">Tempo de Resposta</div>
+        <div class="roi-sub">De horas para segundos</div>
+      </div>
+      <div class="roi-card anim-in">
+        <div class="roi-num">+45%</div>
+        <div class="roi-title">Conversão DM→Venda</div>
+        <div class="roi-sub">Resposta rápida e personalizada converte mais</div>
+      </div>
+      <div class="roi-card anim-in">
+        <div class="roi-num">0</div>
+        <div class="roi-title">DMs Perdidas</div>
+        <div class="roi-sub">Nenhuma mensagem fica sem resposta, nunca</div>
+      </div>
+    </div>
+
+    <!-- Case Real -->
+    <div class="case-card anim-in">
+      <div class="case-quote">
+        Antes perdíamos cerca de 40% das DMs por falta de tempo para responder. Com a IA da Conectivos, 100% das DMs recebem resposta em segundos. Nossas vendas via Instagram cresceram 60% no primeiro mês.
+      </div>
+      <div class="case-author">Cliente Conectivos — E-commerce de Moda (São Paulo)</div>
+      <div class="case-stats">
+        <div>
+          <div class="case-stat-num">+60%</div>
+          <div class="case-stat-label">Vendas via Instagram</div>
+        </div>
+        <div>
+          <div class="case-stat-num">100%</div>
+          <div class="case-stat-label">DMs respondidas</div>
+        </div>
+        <div>
+          <div class="case-stat-num">&lt; 30s</div>
+          <div class="case-stat-label">Tempo de resposta</div>
+        </div>
+        <div>
+          <div class="case-stat-num">3×</div>
+          <div class="case-stat-label">Leads capturados</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── SEGMENTOS ── -->
+<div id="diferenciais" class="section-wrap">
+  <div class="section-inner">
+    <p class="section-tag">Segmentos</p>
+    <h2 class="section-title">Para qualquer tipo de negócio no Instagram</h2>
+    <p class="section-sub">Seja qual for o seu segmento, a IA se adapta ao seu produto, serviço e tom de comunicação.</p>
+    <div class="use-grid">
+      <div class="use-card anim-in">
+        <div class="use-icon">👗</div>
+        <div class="use-title">Moda & Vestuário</div>
+        <div class="use-text">Consultas de produto e fechamento de vendas</div>
+      </div>
+      <div class="use-card anim-in">
+        <div class="use-icon">💅</div>
+        <div class="use-title">Beleza & Estética</div>
+        <div class="use-text">Agendamento de serviços e promoções</div>
+      </div>
+      <div class="use-card anim-in">
+        <div class="use-icon">🍽️</div>
+        <div class="use-title">Restaurantes</div>
+        <div class="use-text">Reservas, cardápio e delivery</div>
+      </div>
+      <div class="use-card anim-in">
+        <div class="use-icon">🏠</div>
+        <div class="use-title">Imóveis</div>
+        <div class="use-text">Captação de interessados e agendamento de visitas</div>
+      </div>
+      <div class="use-card anim-in">
+        <div class="use-icon">📚</div>
+        <div class="use-title">Infoprodutos</div>
+        <div class="use-text">Inscrições em cursos e webinars</div>
+      </div>
+      <div class="use-card anim-in">
+        <div class="use-icon">🏋️</div>
+        <div class="use-title">Academia & Saúde</div>
+        <div class="use-text">Matrículas e consultas de planos</div>
+      </div>
+      <div class="use-card anim-in">
+        <div class="use-icon">🎁</div>
+        <div class="use-title">Presentes & Artesanato</div>
+        <div class="use-text">Pedidos personalizados e cotações</div>
+      </div>
+      <div class="use-card anim-in">
+        <div class="use-icon">🏢</div>
+        <div class="use-title">Serviços B2B</div>
+        <div class="use-text">Captação de leads para serviços empresariais</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── FAQ ── -->
+<div id="faq" class="section-wrap">
+  <div class="section-inner">
+    <p class="section-tag">Dúvidas frequentes</p>
+    <h2 class="section-title">Respondendo antes que você pergunte</h2>
+    <div class="faq-dark anim-in">
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaqDark(this)">
+          A IA responde com o tom da minha marca?
+          <span class="arrow">▾</span>
+        </div>
+        <div class="faq-a">Sim. Na configuração, definimos o tom de voz, vocabulário, emojis e até expressões típicas da sua marca. A IA aprende e mantém o estilo em todas as conversas.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaqDark(this)">
+          O cliente vai saber que está falando com IA?
+          <span class="arrow">▾</span>
+        </div>
+        <div class="faq-a">Você decide. Alguns clientes preferem total transparência, outros preferem uma experiência mais fluida. Configuramos conforme sua preferência.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaqDark(this)">
+          O que acontece quando a IA não souber responder?
+          <span class="arrow">▾</span>
+        </div>
+        <div class="faq-a">Para perguntas fora do escopo configurado, a IA informa que vai acionar um especialista e notifica sua equipe para assumir a conversa com o histórico completo.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaqDark(this)">
+          Funciona com Instagram pessoal ou só Business?
+          <span class="arrow">▾</span>
+        </div>
+        <div class="faq-a">Só com Instagram Business ou Creator, que têm acesso à API oficial. A migração do perfil é gratuita e simples.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaqDark(this)">
+          Posso ver todas as conversas que a IA está tendo?
+          <span class="arrow">▾</span>
+        </div>
+        <div class="faq-a">Sim. O dashboard mostra todas as DMs em tempo real, com possibilidade de intervenção humana a qualquer momento.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaqDark(this)">
+          Quanto tempo para ativar o serviço?
+          <span class="arrow">▾</span>
+        </div>
+        <div class="faq-a">Geralmente 24 a 48 horas após a conexão da conta e configuração inicial. Para casos mais complexos (catálogo grande, múltiplos fluxos), até 5 dias úteis.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── CTA ── -->
+<section id="contato">
+  <h2 class="anim-in">Pronto para transformar cada DM em receita?</h2>
+  <p class="anim-in">Agende uma demonstração e veja a IA respondendo suas DMs em tempo real.</p>
+  <div class="cta-btns anim-in">
+    <a class="btn-primary" href="https://wa.me/5521999953224?text=Ol%C3%A1%21+Quero+uma+demonstra%C3%A7%C3%A3o+do+Instagram+DM+IA" target="_blank" rel="noopener">📱 Agendar demonstração gratuita</a>
+    <a class="btn-ghost" href="#diferenciais">Ver casos de uso</a>
+  </div>
+  <div class="contact-strip anim-in">
+    <div class="contact-item">
+      📱 WhatsApp: <a href="https://wa.me/5521999953224" target="_blank" rel="noopener">(22) 99165-3240</a>
+    </div>
+    <div class="contact-item">
+      ✉️ Email: <a href="mailto:contato@conectivos.net">contato@conectivos.net</a>
+    </div>
+    <div class="contact-item">
+      🌐 <a href="https://conectivos.net" target="_blank" rel="noopener">conectivos.net</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="../logo.png" alt="Conectivos">
+      <p>Agência de IA conversacional B2B.<br>Transformamos atendimento, vendas e inteligência<br>via WhatsApp e automações.</p>
+      <a href="https://wa.me/5521999953224?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20as%20solu%C3%A7%C3%B5es%20da%20Conectivos." class="footer-wa" target="_blank" rel="noopener noreferrer">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Falar no WhatsApp
+      </a>
+    </div>
+    <div class="footer-col">
+      <h5>Site</h5>
+      <a href="https://conectivos.net">Início</a>
+      <a href="https://conectivos.net/#solucoes">Soluções</a>
+      <a href="https://conectivos.net/#cases">Cases de Sucesso</a>
+      <a href="https://conectivos.net/#contato">Diagnóstico gratuito</a>
+      <a href="https://conectivos.net/blog">Blog</a>
+    </div>
+    <div class="footer-col">
+      <h5>Serviços</h5>
+      <a href="/servicos/clinica">Clínica &amp; Agendamento</a>
+      <a href="/servicos/agentes">Agentes IA</a>
+      <a href="/servicos/sdr">SDR Autônomo</a>
+      <a href="/servicos/instagram">Instagram DM</a>
+      <a href="/servicos/meta">Meta Ads IA</a>
+      <a href="/servicos/monitor">Social Monitor</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Conectivos. Todos os direitos reservados.</span>
+    <a href="mailto:contato@conectivos.net">contato@conectivos.net</a>
+  </div>
+</footer>
+
+<script>
+// ── TABS ──
+function showTab(tab, el) {
+  document.querySelectorAll('.feature-panel').forEach(function(p) { p.style.display = 'none'; p.classList.remove('active'); });
+  document.querySelectorAll('.ftab').forEach(function(t) { t.classList.remove('active'); });
+  var panel = document.getElementById('tab-' + tab);
+  panel.style.display = 'grid';
+  panel.classList.add('active');
+  el.classList.add('active');
+}
+
+// ── DEMO TABS ──
+function showDemoTab(id, el) {
+  document.querySelectorAll('.demo-chat-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.demo-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ── FAQ DARK ──
+function toggleFaqDark(el) {
+  var item = el.parentElement;
+  item.classList.toggle('open');
+}
+
+// ── SCROLL ANIMATIONS ──
+(function() {
+  if (typeof IntersectionObserver === 'undefined') {
+    document.querySelectorAll('.anim-in').forEach(function(el) {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.anim-in').forEach(function(el) { obs.observe(el); });
+})();
+</script>
+</body>
+</html>

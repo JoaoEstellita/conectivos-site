@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="/icon.png" type="image/png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta de Valor — Aura by Conectivos</title>
+<meta name="description" content="Veja o impacto financeiro da Aura para sua clínica. Análise completa de ROI, redução de faltas e ganho de produtividade.">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --primary: #6c3fc5;
+  --primary-light: #8b5cf6;
+  --primary-glow: rgba(108,63,197,0.35);
+  --accent: #14b8a6;
+  --accent-glow: rgba(20,184,166,0.3);
+  --accent2: #f59e0b;
+  --dark: #0a0614;
+  --dark2: #120c24;
+  --dark3: #1c1338;
+  --card: rgba(255,255,255,0.035);
+  --card-hover: rgba(255,255,255,0.06);
+  --card-border: rgba(255,255,255,0.07);
+  --card-border-active: rgba(108,63,197,0.4);
+  --text: #e2dff7;
+  --muted: #9b92c8;
+  --white: #ffffff;
+  --green: #22c55e;
+  --green-glow: rgba(34,197,94,0.25);
+  --red: #f87171;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  background:var(--dark);color:var(--text);line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── NAVBAR ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(10,6,20,0.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--card-border);
+  padding:0 2rem;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-brand{display:flex;align-items:center;gap:0.7rem;text-decoration:none;}
+.nav-brand img{height:26px;}
+.nav-brand span{font-size:1rem;font-weight:700;color:var(--white);}
+.nav-brand em{color:var(--accent);font-style:normal;}
+.nav-right{display:flex;align-items:center;gap:1.25rem;}
+.nav-back{color:var(--muted);text-decoration:none;font-size:0.83rem;font-weight:500;
+  display:flex;align-items:center;gap:0.4rem;transition:color .2s;}
+.nav-back:hover{color:var(--white);}
+.nav-cta{
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:var(--white);border:none;padding:0.45rem 1.2rem;
+  border-radius:2rem;font-size:0.83rem;font-weight:700;
+  text-decoration:none;transition:opacity .2s,transform .2s;
+  box-shadow:0 4px 20px var(--primary-glow);
+}
+.nav-cta:hover{opacity:.88;transform:translateY(-1px);}
+@media(max-width:600px){.nav-back span{display:none;}nav{padding:0 1rem;}}
+
+/* ── HERO ── */
+.hero{
+  padding:6.5rem 1.5rem 4rem;text-align:center;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% -10%,rgba(108,63,197,.55) 0%,transparent 65%),
+    radial-gradient(ellipse 45% 40% at 85% 90%,rgba(20,184,166,.2) 0%,transparent 60%),
+    var(--dark);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.018'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(108,63,197,.12);border:1px solid rgba(108,63,197,.3);
+  border-radius:2rem;padding:.35rem 1rem;
+  font-size:.72rem;color:var(--primary-light);font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.5rem;
+}
+.hero h1{
+  font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:var(--white);
+  line-height:1.1;max-width:760px;margin:0 auto 1.2rem;letter-spacing:-.03em;
+}
+.hero h1 .hl{
+  background:linear-gradient(135deg,var(--primary-light) 30%,var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero p{color:var(--muted);font-size:1.05rem;max-width:520px;margin:0 auto 2rem;}
+.hero-scroll{color:var(--muted);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;margin-top:1rem;}
+.hero-scroll svg{animation:bounce 1.8s infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
+
+/* ── SECTION ── */
+.section{max-width:1100px;margin:0 auto;padding:4rem 1.5rem;}
+.section-label{
+  font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:.6rem;
+}
+.section-title{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:800;color:var(--white);
+  margin-bottom:.75rem;letter-spacing:-.02em;}
+.section-sub{color:var(--muted);font-size:.95rem;max-width:520px;}
+
+/* ── CARD ── */
+.card{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:1rem;padding:1.5rem;
+  transition:border-color .25s,background .25s;
+}
+.card:hover{border-color:rgba(108,63,197,.25);background:var(--card-hover);}
+
+/* ── PLANOS ── */
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.5rem;}
+@media(max-width:500px){.plan-grid{grid-template-columns:1fr;}}
+.plan-option{
+  border:1.5px solid var(--card-border);border-radius:.85rem;padding:1.1rem;
+  cursor:pointer;transition:all .25s;background:var(--card);text-align:center;
+}
+.plan-option.active{
+  border-color:var(--primary-light);background:rgba(108,63,197,.12);
+  box-shadow:0 0 0 3px rgba(108,63,197,.15),0 8px 32px rgba(108,63,197,.2);
+}
+.plan-option:hover:not(.active){border-color:rgba(108,63,197,.3);}
+.plan-name{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--primary-light);margin-bottom:.3rem;}
+.plan-price{font-size:1.5rem;font-weight:900;color:var(--white);line-height:1;}
+.plan-price span{font-size:.72rem;font-weight:500;color:var(--muted);}
+.plan-setup{font-size:.7rem;color:var(--muted);margin-top:.2rem;}
+.plan-badge{
+  display:inline-block;font-size:.62rem;font-weight:700;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:var(--white);border-radius:999px;padding:.15rem .5rem;margin-bottom:.4rem;
+}
+
+/* ── INPUTS ── */
+.inputs-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+@media(max-width:560px){.inputs-grid{grid-template-columns:1fr;}}
+.field label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:.4rem;}
+.field label strong{color:var(--accent);}
+.input-wrap{position:relative;}
+.prefix{position:absolute;left:.8rem;top:50%;transform:translateY(-50%);
+  font-size:.85rem;font-weight:700;color:var(--muted);pointer-events:none;}
+input[type=number]{
+  width:100%;padding:.7rem .8rem .7rem 2rem;
+  border:1.5px solid var(--card-border);border-radius:.6rem;
+  font-size:1rem;font-weight:700;color:var(--white);
+  background:rgba(255,255,255,0.05);transition:border-color .2s,background .2s;
+  -moz-appearance:textfield;appearance:none;
+}
+input[type=number]::-webkit-inner-spin-button{display:none;}
+input[type=number]:focus{outline:none;border-color:var(--primary-light);background:rgba(108,63,197,.1);}
+.no-prefix{padding-left:.8rem!important;}
+input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;margin-top:.5rem;}
+
+/* ── MAIN LAYOUT ── */
+.calc-layout{display:grid;grid-template-columns:1fr 1.1fr;gap:2rem;align-items:start;}
+@media(max-width:900px){.calc-layout{grid-template-columns:1fr;}}
+.inputs-panel{}
+.results-panel{position:sticky;top:80px;}
+
+/* ── RESULTS ── */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem;}
+.kpi{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:.85rem;padding:1rem 1.1rem;text-align:center;
+}
+.kpi.highlight{
+  background:rgba(108,63,197,.1);border-color:rgba(108,63,197,.35);
+  box-shadow:0 4px 24px rgba(108,63,197,.15);
+}
+.kpi.green{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.25);}
+.kpi-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem;}
+.kpi-value{font-size:1.6rem;font-weight:900;color:var(--white);line-height:1;}
+.kpi.highlight .kpi-value{
+  background:linear-gradient(135deg,var(--primary-light),var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  font-size:2rem;
+}
+.kpi.green .kpi-value{color:var(--green);}
+.kpi-sub{font-size:.68rem;color:var(--muted);margin-top:.15rem;}
+
+.chart-card{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:1rem;padding:1.25rem;margin-bottom:1rem;
+}
+.chart-title{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;}
+
+.metric-list{}
+.metric-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:.82rem;
+}
+.metric-row:last-child{border-bottom:none;}
+.ml{color:var(--muted);}
+.mv{font-weight:700;}
+.mv-w{color:var(--white);}
+.mv-g{color:var(--green);}
+.mv-r{color:var(--red);}
+.mv-a{color:var(--accent);}
+
+.divider{height:1px;background:rgba(255,255,255,0.06);margin:.75rem 0;}
+
+.net-box{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.9rem 1.1rem;
+  background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);
+  border-radius:.75rem;margin-top:.75rem;
+}
+.net-label{font-size:.82rem;font-weight:700;color:var(--green);}
+.net-value{font-size:1.2rem;font-weight:900;color:var(--green);}
+
+.payback{
+  display:flex;align-items:center;gap:.6rem;margin-top:.75rem;
+  padding:.65rem 1rem;background:rgba(20,184,166,.07);border-radius:.65rem;
+  font-size:.78rem;color:var(--muted);
+}
+.payback strong{color:var(--accent);font-size:.95rem;}
+
+.annual-box{
+  margin-top:.9rem;padding:.8rem 1rem;
+  background:rgba(255,255,255,0.03);border:1px solid var(--card-border);
+  border-radius:.65rem;text-align:center;font-size:.78rem;color:var(--muted);
+}
+.annual-box strong{color:var(--white);font-size:1.05rem;display:block;margin-top:.25rem;}
+
+.cta-btn{
+  display:block;width:100%;margin-top:1.25rem;padding:.9rem;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:var(--white);font-size:.92rem;font-weight:800;text-align:center;
+  border:none;border-radius:.75rem;cursor:pointer;text-decoration:none;
+  box-shadow:0 6px 28px var(--primary-glow);
+  transition:opacity .2s,transform .2s;letter-spacing:.01em;
+}
+.cta-btn:hover{opacity:.88;transform:translateY(-2px);}
+
+/* ── CHARTS SECTION ── */
+.charts-section{
+  background:var(--dark2);border-top:1px solid var(--card-border);
+  border-bottom:1px solid var(--card-border);padding:4rem 0;margin:2rem 0;
+}
+.charts-inner{max-width:1100px;margin:0 auto;padding:0 1.5rem;}
+.charts-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;margin-top:2.5rem;}
+@media(max-width:900px){.charts-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:560px){.charts-grid{grid-template-columns:1fr;}}
+
+/* ── BEFORE AFTER ── */
+.ba-section{max-width:1100px;margin:0 auto;padding:4rem 1.5rem;}
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem;}
+@media(max-width:640px){.ba-grid{grid-template-columns:1fr;}}
+.ba-card{border-radius:1rem;padding:1.75rem;}
+.ba-card.before{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.2);}
+.ba-card.after{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);}
+.ba-head{display:flex;align-items:center;gap:.75rem;margin-bottom:1.2rem;}
+.ba-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.before .ba-icon{background:rgba(248,113,113,.15);}
+.after  .ba-icon{background:rgba(34,197,94,.15);}
+.ba-title{font-size:1rem;font-weight:800;color:var(--white);}
+.ba-sub{font-size:.75rem;color:var(--muted);}
+.ba-items{display:flex;flex-direction:column;gap:.6rem;}
+.ba-item{display:flex;align-items:flex-start;gap:.6rem;font-size:.83rem;}
+.ba-item .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:.45rem;}
+.before .dot{background:var(--red);}
+.after  .dot{background:var(--green);}
+
+/* ── PROJECTION TABLE ── */
+.proj-section{background:var(--dark2);border-top:1px solid var(--card-border);padding:4rem 0;}
+.proj-inner{max-width:1100px;margin:0 auto;padding:0 1.5rem;}
+.proj-table{width:100%;border-collapse:collapse;font-size:.83rem;margin-top:2rem;}
+.proj-table th{
+  background:var(--dark3);color:var(--muted);
+  padding:.7rem 1rem;text-align:left;font-size:.68rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--card-border);
+}
+.proj-table td{padding:.75rem 1rem;border-bottom:1px solid rgba(255,255,255,0.04);}
+.proj-table tr:hover td{background:rgba(255,255,255,0.02);}
+.proj-table .highlight-row td{color:var(--green);font-weight:800;background:rgba(34,197,94,.05);}
+
+/* ── CTA SECTION ── */
+.cta-section{
+  text-align:center;padding:5rem 1.5rem;
+  background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(108,63,197,.25) 0%,transparent 70%);
+}
+.cta-section h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:var(--white);margin-bottom:1rem;}
+.cta-section p{color:var(--muted);font-size:1rem;max-width:460px;margin:0 auto 2rem;}
+.cta-section .cta-btn{max-width:320px;margin:0 auto;}
+
+/* ── DISCLAIMER ── */
+.disclaimer{text-align:center;font-size:.68rem;color:rgba(155,146,200,.4);
+  padding:2rem 1.5rem;line-height:1.8;max-width:700px;margin:0 auto;}
+
+/* ── ANIMATIONS ── */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/servicos/clinica" class="nav-brand">
+    <img src="/icon.png" alt="Conectivos">
+    <span>Aura <em>by Conectivos</em></span>
+  </a>
+  <div class="nav-right">
+    <a href="/servicos/clinica" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+      <span>Sobre a Aura</span>
+    </a>
+    <a href="/servicos/clinica#contato" class="nav-cta">Falar com a Conectivos</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">✦ Análise de Retorno sobre Investimento</div>
+  <h1>Proposta de Valor<br><span class="hl">Personalizada para sua Clínica</span></h1>
+  <p>Ajuste os dados da sua operação e veja em tempo real o impacto financeiro estimado da Aura.</p>
+  <div class="hero-scroll">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</div>
+
+<!-- CALCULATOR -->
+<div class="section">
+  <div class="section-label">Configuração</div>
+  <div class="section-title">Selecione o plano e informe os dados</div>
+  <div class="section-sub" style="margin-bottom:2.5rem;">Os cálculos atualizam automaticamente conforme você preenche.</div>
+
+  <div class="calc-layout">
+
+    <!-- INPUTS -->
+    <div class="inputs-panel">
+      <!-- Planos -->
+      <div class="card" style="margin-bottom:1.5rem;">
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1.1rem;">Plano Aura</div>
+        <div class="plan-grid">
+          <div class="plan-option active" onclick="selectPlan('solo',this)">
+            <div class="plan-name">Solo</div>
+            <div class="plan-price">R$597<span>/mês</span></div>
+            <div class="plan-setup">Setup R$ 1.497</div>
+            <div style="font-size:.7rem;color:var(--muted);margin-top:.4rem;">1 profissional</div>
+          </div>
+          <div class="plan-option" onclick="selectPlan('essencial',this)">
+            <div class="plan-badge">Mais popular</div>
+            <div class="plan-name">Essencial</div>
+            <div class="plan-price">R$1.197<span>/mês</span></div>
+            <div class="plan-setup">Setup R$ 2.497</div>
+            <div style="font-size:.7rem;color:var(--muted);margin-top:.4rem;">Até 3 profissionais</div>
+          </div>
+          <div class="plan-option" onclick="selectPlan('pro',this)">
+            <div class="plan-name">Pro</div>
+            <div class="plan-price">R$2.497<span>/mês</span></div>
+            <div class="plan-setup">Setup R$ 4.997</div>
+            <div style="font-size:.7rem;color:var(--muted);margin-top:.4rem;">Até 8 profissionais</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados -->
+      <div class="card">
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1.3rem;">Dados da sua clínica</div>
+        <div class="inputs-grid">
+          <div class="field">
+            <label>Profissionais ativos</label>
+            <div class="input-wrap">
+              <input type="number" id="profissionais" class="no-prefix" value="3" min="1" max="50" oninput="calcular()">
+            </div>
+          </div>
+          <div class="field">
+            <label>Ticket médio (R$)</label>
+            <div class="input-wrap">
+              <span class="prefix">R$</span>
+              <input type="number" id="ticket" value="180" min="50" max="2000" oninput="calcular()">
+            </div>
+          </div>
+          <div class="field">
+            <label>Consultas por profissional/mês</label>
+            <div class="input-wrap">
+              <input type="number" id="consultas" class="no-prefix" value="80" min="10" max="400" oninput="calcular()">
+            </div>
+          </div>
+          <div class="field">
+            <label>Custo da recepção/mês (R$)</label>
+            <div class="input-wrap">
+              <span class="prefix">R$</span>
+              <input type="number" id="custoRecepcao" value="3050" min="1500" max="8000" oninput="calcular()">
+            </div>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:.5rem;">
+          <label>Taxa de faltas atual: <strong id="faltaLabel">15%</strong></label>
+          <input type="range" id="falta" min="5" max="40" value="15" oninput="updateFalta();calcular()">
+          <div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-top:.2rem;"><span>5% mínimo</span><span>40% máximo</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results-panel">
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi highlight" style="grid-column:1/-1;">
+          <div class="kpi-label">ROI estimado — Para cada R$ 1 investido na Aura</div>
+          <div class="kpi-value" id="kpiRoi">5,9×</div>
+          <div class="kpi-sub">de retorno financeiro</div>
+        </div>
+        <div class="kpi green">
+          <div class="kpi-label">Resultado líquido/mês</div>
+          <div class="kpi-value" id="kpiLiq">R$ 6.328</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Payback do setup</div>
+          <div class="kpi-value" id="kpiPayback" style="color:var(--accent)">~3 meses</div>
+        </div>
+      </div>
+
+      <!-- Breakdown -->
+      <div class="chart-card">
+        <div class="chart-title">Composição do ganho mensal</div>
+        <canvas id="chartDonut" height="200"></canvas>
+      </div>
+
+      <!-- Metrics -->
+      <div class="chart-card">
+        <div class="chart-title">Detalhamento financeiro</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="ml">Faturamento potencial/mês</span><span class="mv mv-w" id="mFaturamento">R$ 43.200</span></div>
+          <div class="metric-row"><span class="ml">Perda atual com faltas</span><span class="mv mv-r" id="mPerda">− R$ 6.480</span></div>
+          <div class="divider"></div>
+          <div class="metric-row"><span class="ml">↳ Receita recuperada (faltas)</span><span class="mv mv-g" id="mRecFalt">+ R$ 3.240</span></div>
+          <div class="metric-row"><span class="ml">↳ Novos agendamentos 24/7</span><span class="mv mv-g" id="mRecNov">+ R$ 2.160</span></div>
+          <div class="metric-row"><span class="ml">↳ Economia de produtividade</span><span class="mv mv-g" id="mEcon">+ R$ 1.525</span></div>
+          <div class="divider"></div>
+          <div class="metric-row"><span class="ml">Ganho total estimado/mês</span><span class="mv mv-a" id="mGanho">R$ 6.925</span></div>
+          <div class="metric-row"><span class="ml">Investimento Aura/mês</span><span class="mv mv-r" id="mInvest">− R$ 597</span></div>
+        </div>
+        <div class="net-box">
+          <span class="net-label">Resultado líquido/mês</span>
+          <span class="net-value" id="mLiq">+ R$ 6.328</span>
+        </div>
+        <div class="payback">⚡ Payback do setup em <strong id="mPayback">~3 meses</strong></div>
+        <div class="annual-box">
+          Resultado líquido estimado em 12 meses
+          <strong id="mAnual">R$ 75.936</strong>
+        </div>
+      </div>
+
+      <a href="/servicos/clinica#contato" class="cta-btn">Quero uma demonstração personalizada →</a>
+    </div>
+  </div>
+</div>
+
+<!-- CHARTS SECTION -->
+<div class="charts-section fade-in">
+  <div class="charts-inner">
+    <div class="section-label">Análise Visual</div>
+    <div class="section-title">Impacto mês a mês</div>
+    <div class="section-sub">Projeção cumulativa do resultado líquido nos primeiros 12 meses.</div>
+    <div style="margin-top:2rem;">
+      <div class="chart-card">
+        <div class="chart-title">Projeção de resultado acumulado (12 meses)</div>
+        <canvas id="chartLine" height="100"></canvas>
+      </div>
+    </div>
+    <div class="charts-grid" style="margin-top:1.5rem;">
+      <div class="chart-card">
+        <div class="chart-title">Comparativo: antes vs. depois da Aura</div>
+        <canvas id="chartBar" height="200"></canvas>
+      </div>
+      <div class="chart-card" style="grid-column:span 2">
+        <div class="chart-title">Breakdown de ganhos por categoria</div>
+        <canvas id="chartHBar" height="120"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE / AFTER -->
+<div class="ba-section fade-in">
+  <div class="section-label">Operação</div>
+  <div class="section-title">O que muda com a Aura</div>
+  <div class="ba-grid">
+    <div class="ba-card before">
+      <div class="ba-head">
+        <div class="ba-icon">⚠️</div>
+        <div><div class="ba-title">Sem a Aura</div><div class="ba-sub">Operação atual</div></div>
+      </div>
+      <div class="ba-items">
+        <div class="ba-item"><div class="dot"></div><span>Atendimento apenas em horário comercial — pacientes fora do horário perdem a oportunidade</span></div>
+        <div class="ba-item"><div class="dot"></div><span>Recepção gasta 4–7h/dia com agendamento, confirmações e reagendamentos manuais</span></div>
+        <div class="ba-item"><div class="dot"></div><span>Taxa de faltas de 10–20% por falta de lembrete proativo</span></div>
+        <div class="ba-item"><div class="dot"></div><span>Leads que entram pelo WhatsApp fora do horário ficam sem resposta</span></div>
+        <div class="ba-item"><div class="dot"></div><span>Agenda subutilizada por falta de encaixes rápidos</span></div>
+      </div>
+    </div>
+    <div class="ba-card after">
+      <div class="ba-head">
+        <div class="ba-icon">✅</div>
+        <div><div class="ba-title">Com a Aura</div><div class="ba-sub">Nova realidade</div></div>
+      </div>
+      <div class="ba-items">
+        <div class="ba-item"><div class="dot"></div><span>Atendimento automático 24h/7 dias — nenhum lead é perdido por falta de resposta</span></div>
+        <div class="ba-item"><div class="dot"></div><span>Recepção foca em atendimento presencial e relacionamento — não em tarefas repetitivas</span></div>
+        <div class="ba-item"><div class="dot"></div><span>Lembretes automáticos reduzem faltas em até 50% — agenda sempre cheia</span></div>
+        <div class="ba-item"><div class="dot"></div><span>Agendamento, reagendamento e cancelamento pelo próprio WhatsApp do paciente</span></div>
+        <div class="ba-item"><div class="dot"></div><span>Relatórios de origem, métricas de conversão e histórico de atendimento no painel</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTION TABLE -->
+<div class="proj-section fade-in">
+  <div class="proj-inner">
+    <div class="section-label">Projeção</div>
+    <div class="section-title">Resultado mês a mês — Ano 1</div>
+    <table class="proj-table">
+      <thead>
+        <tr>
+          <th>Mês</th>
+          <th>Ganho Bruto</th>
+          <th>Investimento Aura</th>
+          <th>Resultado Líquido</th>
+          <th>Acumulado</th>
+        </tr>
+      </thead>
+      <tbody id="projTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section fade-in">
+  <h2>Pronto para transformar<br>a operação da sua clínica?</h2>
+  <p>Fale com a nossa equipe e receba uma proposta personalizada com os dados da sua clínica.</p>
+  <a href="/servicos/clinica#contato" class="cta-btn">Solicitar proposta personalizada →</a>
+</div>
+
+<div class="disclaimer">
+  Os valores são estimativas baseadas em médias do setor de saúde no Brasil e literatura de saúde digital sobre eficácia de lembretes automatizados. Resultados reais podem variar conforme perfil da clínica, volume de atendimento e engajamento da equipe. Custo CLT baseado em Portal Salário/CAGED 2024. Custo Meta Cloud API baseado na tabela de preços por conversa (Brasil). Esta calculadora não substitui análise financeira profissional.
+</div>
+
+<script>
+/* ─── DADOS ─── */
+const PLANOS = {
+  solo:     {label:'Solo',    mensalidade:597,  setup:1497},
+  essencial:{label:'Essencial',mensalidade:1197,setup:2497},
+  pro:      {label:'Pro',     mensalidade:2497, setup:4997},
+};
+let planoAtivo = 'solo';
+let chartDonut=null, chartLine=null, chartBar=null, chartHBar=null;
+
+/* ─── CHART DEFAULTS ─── */
+Chart.defaults.color = '#9b92c8';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.07)';
+Chart.defaults.font.family = "'Segoe UI',system-ui,sans-serif";
+
+/* ─── PLAN SELECT ─── */
+function selectPlan(p, el) {
+  planoAtivo = p;
+  document.querySelectorAll('.plan-option').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+  calcular();
+}
+
+/* ─── FALTA SLIDER ─── */
+function updateFalta() {
+  document.getElementById('faltaLabel').textContent = document.getElementById('falta').value + '%';
+}
+
+/* ─── FORMAT ─── */
+function fmt(v, prefix='R$ ') {
+  return prefix + Math.round(Math.abs(v)).toLocaleString('pt-BR');
+}
+
+/* ─── CALCULAR ─── */
+function calcular() {
+  const prof    = Math.max(1, parseInt(document.getElementById('profissionais').value)||1);
+  const ticket  = Math.max(50, parseFloat(document.getElementById('ticket').value)||180);
+  const cons    = Math.max(1, parseInt(document.getElementById('consultas').value)||80);
+  const faltaPct= parseInt(document.getElementById('falta').value)||15;
+  const custoCLT= Math.max(0, parseFloat(document.getElementById('custoRecepcao').value)||3050);
+  const plano   = PLANOS[planoAtivo];
+
+  const total   = prof * cons;
+  const fat     = total * ticket;
+  const falt    = total * (faltaPct/100);
+  const perdaF  = falt * ticket;
+  const faltNew = total * ((faltaPct*0.5)/100);
+  const recFalt = (falt - faltNew) * ticket;
+  const novos   = Math.max(5, Math.round(total * 0.05));
+  const recNov  = novos * ticket;
+  const econ    = custoCLT * 0.5;
+  const ganho   = recFalt + recNov + econ;
+  const invest  = plano.mensalidade;
+  const liq     = ganho - invest;
+  const roi     = ganho / invest;
+  const payback = Math.ceil(plano.setup / Math.max(1, liq));
+  const anual   = liq * 12 - plano.setup;
+
+  // KPIs
+  document.getElementById('kpiRoi').textContent    = roi.toFixed(1).replace('.',',')+'\xD7';
+  document.getElementById('kpiLiq').textContent    = 'R$ '+Math.round(liq).toLocaleString('pt-BR');
+  const pb = payback<=1?'< 1 mês':`~${payback} ${payback===1?'mês':'meses'}`;
+  document.getElementById('kpiPayback').textContent= pb;
+  document.getElementById('mPayback').textContent  = pb;
+
+  // Metrics
+  document.getElementById('mFaturamento').textContent = fmt(fat);
+  document.getElementById('mPerda').textContent       = '− '+fmt(perdaF);
+  document.getElementById('mRecFalt').textContent     = '+ '+fmt(recFalt);
+  document.getElementById('mRecNov').textContent      = '+ '+fmt(recNov);
+  document.getElementById('mEcon').textContent        = '+ '+fmt(econ);
+  document.getElementById('mGanho').textContent       = fmt(ganho);
+  document.getElementById('mInvest').textContent      = '− '+fmt(invest);
+  document.getElementById('mLiq').textContent         = (liq>=0?'+ ':'')+fmt(liq);
+  document.getElementById('mAnual').textContent       = (anual>=0?'':'-')+fmt(anual);
+
+  // Charts
+  updateCharts(recFalt, recNov, econ, invest, fat, perdaF, liq, plano.setup);
+
+  // Table
+  buildTable(ganho, invest, plano.setup);
+}
+
+/* ─── CHARTS ─── */
+function updateCharts(recFalt, recNov, econ, invest, fat, perdaF, liq, setup) {
+
+  // DONUT
+  const donutCtx = document.getElementById('chartDonut').getContext('2d');
+  if(chartDonut) chartDonut.destroy();
+  chartDonut = new Chart(donutCtx, {
+    type:'doughnut',
+    data:{
+      labels:['Redução de faltas','Novos agendamentos','Produtividade'],
+      datasets:[{
+        data:[Math.max(0,recFalt), Math.max(0,recNov), Math.max(0,econ)],
+        backgroundColor:['rgba(34,197,94,.75)','rgba(20,184,166,.75)','rgba(139,92,246,.75)'],
+        borderColor:['rgba(34,197,94,.2)','rgba(20,184,166,.2)','rgba(139,92,246,.2)'],
+        borderWidth:1,hoverOffset:6,
+      }],
+    },
+    options:{
+      responsive:true,
+      cutout:'68%',
+      plugins:{
+        legend:{position:'bottom',labels:{padding:16,font:{size:11}}},
+        tooltip:{callbacks:{label:c=>' R$ '+Math.round(c.raw).toLocaleString('pt-BR')}},
+      },
+    },
+  });
+
+  // LINE (12 months cumulative)
+  const lineCtx = document.getElementById('chartLine').getContext('2d');
+  if(chartLine) chartLine.destroy();
+  const months = Array.from({length:12},(_,i)=>`Mês ${i+1}`);
+  const cumData = months.map((_,i)=>{
+    const gross = (liq*(i+1)) - setup;
+    return Math.round(gross);
+  });
+  const zero = new Array(12).fill(0);
+  chartLine = new Chart(lineCtx, {
+    type:'line',
+    data:{
+      labels:months,
+      datasets:[
+        {
+          label:'Acumulado líquido (R$)',
+          data:cumData,
+          borderColor:'rgba(20,184,166,1)',
+          backgroundColor:'rgba(20,184,166,0.08)',
+          borderWidth:2.5,fill:true,tension:.4,
+          pointRadius:3,pointBackgroundColor:'rgba(20,184,166,1)',
+        },
+        {
+          label:'Break-even',
+          data:zero,
+          borderColor:'rgba(255,255,255,0.15)',
+          borderWidth:1,borderDash:[6,4],
+          pointRadius:0,fill:false,
+        },
+      ],
+    },
+    options:{
+      responsive:true,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{labels:{font:{size:11},padding:12}},
+        tooltip:{callbacks:{label:c=>{
+          if(c.datasetIndex===1)return null;
+          const v=c.raw;
+          return ` ${v>=0?'':''}R$ ${Math.abs(v).toLocaleString('pt-BR')}`;
+        }}},
+      },
+      scales:{
+        y:{ticks:{callback:v=>'R$'+Math.round(v/1000)+'k'},grid:{color:'rgba(255,255,255,0.05)'}},
+        x:{grid:{display:false}},
+      },
+    },
+  });
+
+  // BAR — before vs after
+  const barCtx = document.getElementById('chartBar').getContext('2d');
+  if(chartBar) chartBar.destroy();
+  const efFat = fat - perdaF;
+  const postFat = efFat + recFalt + recNov;
+  chartBar = new Chart(barCtx, {
+    type:'bar',
+    data:{
+      labels:['Sem Aura','Com Aura'],
+      datasets:[{
+        label:'Faturamento efetivo/mês (R$)',
+        data:[Math.round(efFat), Math.round(postFat)],
+        backgroundColor:['rgba(248,113,113,.6)','rgba(34,197,94,.6)'],
+        borderColor:['rgba(248,113,113,1)','rgba(34,197,94,1)'],
+        borderWidth:1.5,borderRadius:8,
+      }],
+    },
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>' R$ '+Math.round(c.raw).toLocaleString('pt-BR')}},
+      },
+      scales:{
+        y:{ticks:{callback:v=>'R$'+Math.round(v/1000)+'k'},grid:{color:'rgba(255,255,255,0.05)'}},
+        x:{grid:{display:false}},
+      },
+    },
+  });
+
+  // HBAR — breakdown
+  const hBarCtx = document.getElementById('chartHBar').getContext('2d');
+  if(chartHBar) chartHBar.destroy();
+  chartHBar = new Chart(hBarCtx, {
+    type:'bar',
+    data:{
+      labels:['Redução de faltas','Novos agendamentos','Produtividade','Investimento Aura'],
+      datasets:[{
+        axis:'y',
+        data:[Math.round(recFalt), Math.round(recNov), Math.round(econ), -Math.round(invest)],
+        backgroundColor:[
+          'rgba(34,197,94,.65)','rgba(20,184,166,.65)',
+          'rgba(139,92,246,.65)','rgba(248,113,113,.65)',
+        ],
+        borderColor:[
+          'rgba(34,197,94,1)','rgba(20,184,166,1)',
+          'rgba(139,92,246,1)','rgba(248,113,113,1)',
+        ],
+        borderWidth:1.5,borderRadius:6,
+      }],
+    },
+    options:{
+      indexAxis:'y',
+      responsive:true,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>{
+          const v=c.raw;
+          return ` ${v>=0?'+ ':''} R$ ${Math.abs(v).toLocaleString('pt-BR')}/mês`;
+        }}},
+      },
+      scales:{
+        x:{ticks:{callback:v=>'R$'+Math.round(Math.abs(v)/1000)+'k'},grid:{color:'rgba(255,255,255,0.05)'}},
+        y:{grid:{display:false}},
+      },
+    },
+  });
+}
+
+/* ─── TABLE ─── */
+function buildTable(ganho, invest, setup) {
+  const tbody = document.getElementById('projTableBody');
+  tbody.innerHTML='';
+  let acum = -setup;
+  const meses=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  for(let i=0;i<12;i++){
+    const liq = ganho - invest;
+    acum += liq;
+    const isPos = acum >= 0;
+    const cls = i===11?'highlight-row':'';
+    tbody.innerHTML+=`
+      <tr class="${cls}">
+        <td style="color:var(--muted)">${meses[i]}</td>
+        <td style="color:var(--green)">R$ ${Math.round(ganho).toLocaleString('pt-BR')}</td>
+        <td style="color:var(--red)">R$ ${Math.round(invest).toLocaleString('pt-BR')}</td>
+        <td style="color:${liq>=0?'var(--green)':'var(--red)'}">
+          ${liq>=0?'+ ':''}R$ ${Math.round(Math.abs(liq)).toLocaleString('pt-BR')}
+        </td>
+        <td style="color:${isPos?'var(--green)':'var(--red)'}">
+          ${acum>=0?'+ ':''}R$ ${Math.round(Math.abs(acum)).toLocaleString('pt-BR')}
+        </td>
+      </tr>`;
+  }
+}
+
+/* ─── INTERSECTION OBSERVER ─── */
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});
+},{threshold:0.12});
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+
+/* ─── INIT ─── */
+calcular();
+</script>
+</body>
+</html>

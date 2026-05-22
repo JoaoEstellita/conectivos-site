@@ -177,42 +177,36 @@
   <!-- ══ TAB: PROJETOS ══ -->
   <div id="tab-projetos" class="tab-content active">
     <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <div class="card-title" style="margin:0" id="form-title">Adicionar Projeto / Cliente</div>
-        <button class="btn btn-ghost btn-sm" id="form-cancel-btn" style="display:none" onclick="cancelEdit()">✕ Cancelar edição</button>
-      </div>
-      <input type="hidden" id="p-edit-id" value="">
+      <div class="card-title">Adicionar Projeto / Cliente</div>
       <div class="g3">
         <div class="fg"><label>Nome do Projeto</label><input type="text" id="p-nome" placeholder="Ex: GS Clínica"></div>
         <div class="fg"><label>Modelo LLM</label>
           <select id="p-modelo">
             <option value="gpt4omini">GPT-4o-mini</option>
             <option value="gpt4o">GPT-4o</option>
+            <option value="claude3haiku">Claude 3 Haiku</option>
             <option value="claude35haiku">Claude 3.5 Haiku</option>
-            <option value="gemini20flash">Gemini 2.0 Flash</option>
+            <option value="geminiflash">Gemini 1.5 Flash</option>
           </select>
         </div>
-        <div class="fg"><label>Profissionais (médicos, terapeutas…)</label><input type="number" id="p-prof" min="1"></div>
+        <div class="fg"><label>Profissionais (médicos, terapeutas…)</label><input type="number" id="p-prof" value="52" min="1"></div>
         <div class="fg">
           <label>Msgs / profissional / mês</label>
-          <input type="number" id="p-mpp" min="1">
+          <input type="number" id="p-mpp" value="154" min="1">
           <div class="hint">Total = profissionais × msgs/prof</div>
         </div>
-        <div class="fg"><label>Receita Mensal (R$)</label><input type="number" id="p-receita"></div>
-        <div class="fg"><label>Infra Fixa / mês (R$)</label><input type="number" id="p-infra">
+        <div class="fg"><label>Receita Mensal (R$)</label><input type="number" id="p-receita" value="5900"></div>
+        <div class="fg"><label>Infra Fixa / mês (R$)</label><input type="number" id="p-infra" value="158">
           <div class="hint">Fly.io + S3 fixo; Meta API calculada auto</div>
         </div>
       </div>
-      <button class="btn btn-primary" id="form-submit-btn" onclick="addProjeto()">+ Adicionar Projeto</button>
+      <button class="btn btn-primary" onclick="addProjeto()">+ Adicionar Projeto</button>
     </div>
 
     <div class="g4" id="proj-metrics" style="margin-bottom:16px"></div>
 
     <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <div class="card-title" style="margin:0">Portfólio</div>
-        <button class="btn btn-ghost btn-sm" onclick="analisarPortfolio()">🤖 Analisar portfólio com Zumé</button>
-      </div>
+      <div class="card-title">Portfólio</div>
       <div class="tw">
         <table>
           <thead>
@@ -247,8 +241,9 @@
           <select id="sim-modelo" onchange="simRecalc()">
             <option value="gpt4omini">GPT-4o-mini</option>
             <option value="gpt4o">GPT-4o</option>
+            <option value="claude3haiku">Claude 3 Haiku</option>
             <option value="claude35haiku">Claude 3.5 Haiku</option>
-            <option value="gemini20flash">Gemini 2.0 Flash</option>
+            <option value="geminiflash">Gemini 1.5 Flash</option>
           </select>
         </div>
       </div>
@@ -364,9 +359,10 @@
         <p style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:10px">☁️ Fly.io</p>
         <div class="fg"><label>Instância (R$)</label><input type="number" id="i-fly" value="35" oninput="infraRecalc()"></div>
         <hr class="divider">
-        <p style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:10px">📱 Meta Cloud API</p>
-        <div class="fg"><label>Conversas / mês</label><input type="number" id="i-conv" value="800" oninput="infraRecalc()"></div>
-        <div class="fg"><label>Taxa / conversa (USD)</label><input type="number" id="i-meta" value="0.026" step=".001" oninput="infraRecalc()"></div>
+        <p style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px">📱 Meta Cloud API</p>
+        <p style="font-size:10px;color:var(--muted);margin-bottom:8px">✓ Conversas service (paciente → bot) = <strong>grátis</strong><br>💰 Conversas utility (lembretes, confirmações) = pagas</p>
+        <div class="fg"><label>Conversas utility / mês (lembretes)</label><input type="number" id="i-conv" value="400" oninput="infraRecalc()"></div>
+        <div class="fg"><label>Taxa / conversa utility (USD)</label><input type="number" id="i-meta" value="0.013" step=".001" oninput="infraRecalc()"></div>
         <hr class="divider">
         <p style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:10px">🗄️ S3 / Litestream</p>
         <div class="fg"><label>S3 mensal (R$)</label><input type="number" id="i-s3" value="5" oninput="infraRecalc()"></div>
@@ -441,10 +437,11 @@
 <script>
 /* ════ DADOS ════ */
 const MODELS = {
-  gpt4omini:    { label:'GPT-4o-mini',      in:.15,  out:.60,  color:'#10b981' },
-  gpt4o:        { label:'GPT-4o',           in:2.50, out:10.0, color:'#3b82f6' },
-  claude35haiku:{ label:'Claude 3.5 Haiku', in:.80,  out:4.00, color:'#ec4899' },
-  gemini20flash:{ label:'Gemini 2.0 Flash', in:.10,  out:.40,  color:'#f59e0b' },
+  gpt4omini:    { label:'GPT-4o-mini',      in:.15,   out:.60,  color:'#10b981' },
+  gpt4o:        { label:'GPT-4o',           in:2.50,  out:10.0, color:'#3b82f6' },
+  claude3haiku: { label:'Claude 3 Haiku',   in:.25,   out:1.25, color:'#8b5cf6' },
+  claude35haiku:{ label:'Claude 3.5 Haiku', in:.80,   out:4.00, color:'#ec4899' },
+  geminiflash:  { label:'Gemini 1.5 Flash', in:.075,  out:.30,  color:'#f59e0b' },
 };
 const EXP_TIERS = [1000,5000,10000,25000,50000,100000,250000,500000,1000000];
 // Tiers de msgs/profissional para a simulação
@@ -461,12 +458,15 @@ const gTin  = () => parseInt($('gTin').value)     || 10500;
 const gTout = () => parseInt($('gTout').value)    || 500;
 
 function llmCost(modelKey, msgs, tin, tout, brl) {
-  const m = MODELS[modelKey] || MODELS['gpt4omini'];
+  const m = MODELS[modelKey];
   const usd = (tin/1e6 * m.in + tout/1e6 * m.out) * msgs;
   return { usd, brl: usd*brl, perMsg: usd/msgs };
 }
-function metaCost(msgs, brl, rate=0.026) {
-  return Math.ceil(msgs/10) * rate * brl;
+// Meta: apenas conversas UTILITY (lembretes/confirmações business-initiated) são pagas.
+// Conversas SERVICE (paciente inicia) = grátis desde abr/2024.
+// Estimativa: ~1 utility a cada 20 msgs (1 lembrete por ~3-4 agendamentos).
+function metaCost(msgs, brl, rate=0.013) {
+  return Math.ceil(msgs/20) * rate * brl;
 }
 function infraCost(msgs, brl, fly=35, s3=5, outros=0) {
   return { fly, meta: metaCost(msgs, brl), s3, outros, total: fly + metaCost(msgs, brl) + s3 + outros };
@@ -510,59 +510,17 @@ function save() { localStorage.setItem('cnx_proj2', JSON.stringify(projetos)); }
 function addProjeto() {
   const nome = $('p-nome').value.trim();
   if(!nome){ alert('Informe o nome'); return; }
-  const editId = $('p-edit-id').value;
-  const data = {
-    nome,
+  projetos.push({
+    id: Date.now(), nome,
     modelo: $('p-modelo').value,
     prof: parseInt($('p-prof').value)||1,
     mpp:  parseInt($('p-mpp').value)||100,
     receita: parseFloat($('p-receita').value)||0,
     infra:   parseFloat($('p-infra').value)||40,
-  };
-  if (editId) {
-    projetos = projetos.map(p => p.id == editId ? {...p, ...data} : p);
-    cancelEdit();
-  } else {
-    projetos.push({id: Date.now(), ...data});
-    $('p-nome').value=''; $('p-prof').value=''; $('p-mpp').value='';
-    $('p-receita').value=''; $('p-infra').value='';
-  }
-  save(); renderProjetos();
+  });
+  save(); $('p-nome').value=''; renderProjetos();
 }
-
-function editProjeto(id) {
-  const p = projetos.find(x => x.id == id);
-  if (!p) return;
-  $('p-edit-id').value = p.id;
-  $('p-nome').value = p.nome;
-  $('p-modelo').value = p.modelo;
-  $('p-prof').value = p.prof;
-  $('p-mpp').value = p.mpp;
-  $('p-receita').value = p.receita;
-  $('p-infra').value = p.infra;
-  $('form-title').textContent = '✏️ Editando: ' + p.nome;
-  $('form-submit-btn').textContent = '✓ Salvar alterações';
-  $('form-submit-btn').className = 'btn btn-accent';
-  $('form-cancel-btn').style.display = 'inline-block';
-  $('tab-projetos').scrollIntoView({behavior:'smooth'});
-}
-
-function cancelEdit() {
-  $('p-edit-id').value = '';
-  $('p-nome').value=''; $('p-prof').value=''; $('p-mpp').value='';
-  $('p-receita').value=''; $('p-infra').value='';
-  $('p-modelo').value = 'gpt4omini';
-  $('form-title').textContent = 'Adicionar Projeto / Cliente';
-  $('form-submit-btn').textContent = '+ Adicionar Projeto';
-  $('form-submit-btn').className = 'btn btn-primary';
-  $('form-cancel-btn').style.display = 'none';
-}
-
-function deleteProjeto(id) {
-  if (!confirm('Remover este projeto?')) return;
-  projetos=projetos.filter(p=>p.id!==id); save(); renderProjetos();
-  if ($('p-edit-id').value == id) cancelEdit();
-}
+function deleteProjeto(id) { projetos=projetos.filter(p=>p.id!==id); save(); renderProjetos(); }
 
 function renderProjetos() {
   const brl=gBrl(), tin=gTin(), tout=gTout();
@@ -588,7 +546,7 @@ function renderProjetos() {
       <td>${fBRL(llm.brl)}</td>
       <td>${fBRL(cogs)}</td>
       <td>${marginBadge(mg)}</td>
-      <td style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="editProjeto(${p.id})" title="Editar">✏️</button><button class="btn btn-ghost btn-sm" onclick="analisarProposta(${p.id})" title="Analisar com Zumé">🤖</button><button class="btn btn-danger btn-sm" onclick="deleteProjeto(${p.id})">✕</button></td>
+      <td><button class="btn btn-danger btn-sm" onclick="deleteProjeto(${p.id})">✕</button></td>
     </tr>`;
   });
   tbody.innerHTML=rows;
@@ -812,83 +770,68 @@ function infraRecalc(){
 /* ════ ZUMÉ ════ */
 const Z_DEFAULT_URL   = 'https://api.dashboard.conectivos.net/api/zume/public-chat';
 const Z_DEFAULT_TOKEN = 'conectivoszume';
+// Contexto adicional que se soma ao prompt base do Zumé — não substitui sua personalidade
+const Z_CTX = `Você é o assistente financeiro interno da Conectivos, integrado à Calculadora Aura de custos de LLM e margens. Use SEMPRE os dados abaixo — não invente valores.
 
-function getZCtx() {
-  const brl=gBrl(), tin=gTin(), tout=gTout();
-  let ctx = `Você é Zumé, assistente IA da Conectivos. Está integrado à Calculadora Aura — ferramenta de precificação de propostas de IA para clínicas e empresas.
+## FÓRMULA DE CUSTO LLM
+custo_por_msg_USD = (tokens_input × preço_input + tokens_output × preço_output) / 1.000.000
+Padrão Conectivos: 10.500 tokens input + 500 tokens output = 11.000 tokens/msg
 
-CONFIGURAÇÃO ATUAL: Câmbio R$${brl.toFixed(2)}/USD | Tokens input/msg: ${tin.toLocaleString('pt-BR')} | Tokens output/msg: ${tout.toLocaleString('pt-BR')}
+## MODELOS LLM (USD / 1M tokens input / output)
+| Modelo            | Input   | Output  | Custo/msg USD | Custo/msg R$ (×5,70) |
+|-------------------|---------|---------|---------------|----------------------|
+| GPT-4o-mini       | $0,15   | $0,60   | $0,001875     | R$0,0107             |
+| GPT-4o            | $2,50   | $10,00  | $0,02875      | R$0,1639             |
+| Claude 3 Haiku    | $0,25   | $1,25   | $0,00325      | R$0,0185             |
+| Claude 3.5 Haiku  | $0,80   | $4,00   | $0,0104       | R$0,0593             |
+| Gemini 1.5 Flash  | $0,075  | $0,30   | $0,000938     | R$0,00534            |
 
-MODELOS LLM (preço/1M tokens): GPT-4o-mini $0.15/$0.60 | GPT-4o $2.50/$10.00 | Claude 3.5 Haiku $0.80/$4.00 | Gemini 2.0 Flash $0.10/$0.40
+## META CLOUD API — MODELO REAL
+- Conversas SERVICE (paciente inicia o contato) → GRÁTIS desde abril/2024
+- Conversas UTILITY (business-initiated: lembretes, confirmações) → $0,013/conversa
+- Conversas MARKETING (disparos) → $0,026/conversa
+- Estimativa: ~1 utility a cada 20 msgs (1 lembrete por 3-4 agendamentos)
 
-INFRA PADRÃO/CLIENTE/MÊS: Fly.io R$35 + Meta Cloud API ~R$118 (800 conv × $0.026) + S3 R$5 = ~R$158 fixo`;
+## INFRA PADRÃO POR CLIENTE/MÊS
+- Fly.io (instância shared): R$35
+- Meta utility (~400 conv × $0,013 × R$5,70): ~R$30
+- S3/Litestream: R$5
+- TOTAL infra: ~R$70/mês por cliente (sem marketing)
 
-  if (projetos.length > 0) {
-    ctx += `\n\nPROJETOS NO PORTFÓLIO:\n`;
-    projetos.forEach(p => {
-      const totalMsgs = p.prof * p.mpp;
-      const llm = llmCost(p.modelo, totalMsgs, tin, tout, brl);
-      const meta = metaCost(totalMsgs, brl);
-      const cogs = llm.brl + meta + p.infra;
-      const mg = p.receita > 0 ? (p.receita - cogs) / p.receita * 100 : null;
-      ctx += `- ${p.nome}: ${p.prof} prof | ${totalMsgs.toLocaleString('pt-BR')} msgs/mês | ${MODELS[p.modelo]?.label||p.modelo} | COGS R$${cogs.toFixed(2)} | Receita R$${p.receita.toFixed(2)} | Margem ${mg !== null ? mg.toFixed(1)+'%' : 'indefinida'}\n`;
-    });
-  } else {
-    ctx += `\n\nNenhum projeto cadastrado ainda.`;
-  }
+## PROJETO GS — DADOS REAIS
+- 55 médicos, 1 agente centralizado, sem limite de mensagens
+- Modelo: Claude 3.5 Haiku ($0,80/$4,00 por 1M tokens)
+- Volume estimado: 8.000 msgs/mês → custo LLM = 8.000 × R$0,0593 = R$474
+- COGS total: R$474 (LLM) + R$70 (infra) = R$544/mês
+- Receita: R$5.900/mês → margem bruta: 91%
+- A 20k msgs/mês: LLM R$1.186 + infra R$70 = R$1.256 → margem ainda 79%
 
-  ctx += `\n\nSUA FUNÇÃO: ajudar a equipe Conectivos a definir o valor adequado de propostas comerciais. Para cada projeto analise: preço mínimo viável, margem atual vs ideal (meta 70%+), risco de subprecificação, e recomendação objetiva de preço. Use sempre os números reais da calculadora. Seja direto e use R$ concretos.`;
-  return ctx;
-}
+## PROJETO ZANGFU — DADOS REAIS
+- 15 terapeutas, 3 unidades, modelo GPT-4o-mini
+- Volume ~3.000 msgs/mês → LLM = 3.000 × R$0,0107 = R$32
+
+## REGRAS DE CÁLCULO
+Ao calcular custo LLM: sempre use tokens padrão (10.500 in / 500 out) a menos que o usuário especifique outro valor.
+Ao calcular Meta: pergunte se são conversas service (grátis) ou utility (pagas a $0,013).
+Margem = (receita - COGS) / receita × 100.
+Câmbio padrão: R$5,70/USD (editável na calculadora).`;
 
 function zUrl()   { return localStorage.getItem('z_url')   || Z_DEFAULT_URL;   }
 function zToken() { return localStorage.getItem('z_token') || Z_DEFAULT_TOKEN; }
 
 function toggleZCfg(){const p=$('z-cfg-panel'),b=$('z-cfg-btn');const open=p.style.display!=='none';p.style.display=open?'none':'block';b.textContent=open?'⚙ Configurar':'✕ Fechar';}
 function saveZume(){localStorage.setItem('z_url',$('z-url').value);localStorage.setItem('z_token',$('z-token').value);const s=$('z-status');s.textContent='✓ Salvo';s.style.color='var(--green)';setTimeout(()=>s.textContent='',2000);}
-async function testZume(){const url=$('z-url').value||Z_DEFAULT_URL,token=$('z-token').value||Z_DEFAULT_TOKEN,s=$('z-status');s.textContent='Testando…';s.style.color='var(--muted)';try{const r=await fetch(url,{method:'POST',headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({message:'ping',context:getZCtx()})});s.textContent=r.ok?'✓ Online ('+r.status+')':'✗ Erro '+r.status;s.style.color=r.ok?'var(--green)':'var(--red)';}catch(e){s.textContent='✗ '+e.message;s.style.color='var(--red)';}}
+async function testZume(){const url=$('z-url').value||Z_DEFAULT_URL,token=$('z-token').value||Z_DEFAULT_TOKEN,s=$('z-status');s.textContent='Testando…';s.style.color='var(--muted)';try{const r=await fetch(url,{method:'POST',headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({message:'ping',context:Z_CTX})});s.textContent=r.ok?'✓ Online ('+r.status+')':'✗ Erro '+r.status;s.style.color=r.ok?'var(--green)':'var(--red)';}catch(e){s.textContent='✗ '+e.message;s.style.color='var(--red)';}}
 function loadZume(){$('z-url').value=zUrl();$('z-token').value=zToken();}
 
 async function zumeRequest(msg, statusEl) {
   if (statusEl) { statusEl.textContent='Zumé está pensando…'; }
   try {
-    const r = await fetch(zUrl(), {method:'POST', headers:{'Authorization':'Bearer '+zToken(),'Content-Type':'application/json'}, body:JSON.stringify({message:msg, context:getZCtx()})});
+    const r = await fetch(zUrl(), {method:'POST', headers:{'Authorization':'Bearer '+zToken(),'Content-Type':'application/json'}, body:JSON.stringify({message:msg, context:Z_CTX})});
     if (statusEl) statusEl.textContent='';
     if (r.ok) { const d=await r.json(); return d.reply||d.message||JSON.stringify(d); }
     return 'Erro '+r.status;
   } catch(e) { if(statusEl) statusEl.textContent=''; return 'Erro: '+e.message; }
-}
-
-function analisarProposta(id) {
-  const p = projetos.find(x => x.id == id);
-  if (!p) return;
-  const brl=gBrl(), tin=gTin(), tout=gTout();
-  const totalMsgs = p.prof * p.mpp;
-  const llm = llmCost(p.modelo, totalMsgs, tin, tout, brl);
-  const meta = metaCost(totalMsgs, brl);
-  const cogs = llm.brl + meta + p.infra;
-  const mg = p.receita > 0 ? (p.receita - cogs) / p.receita * 100 : null;
-  const prompt = `Analise a proposta "${p.nome}": ${p.prof} profissionais, ${totalMsgs.toLocaleString('pt-BR')} msgs/mês com ${MODELS[p.modelo]?.label||p.modelo}, COGS R$${cogs.toFixed(2)}/mês (LLM R$${llm.brl.toFixed(2)} + Meta R$${meta.toFixed(2)} + Infra R$${p.infra.toFixed(2)}), receita atual R$${p.receita.toFixed(2)}/mês${mg !== null ? ', margem atual '+mg.toFixed(1)+'%' : ', sem receita definida'}. Estou precificando corretamente? Qual o preço mínimo viável e o preço ideal para 70% e 80% de margem?`;
-  document.getElementById('zfloat-panel').classList.add('open');
-  addFBubble(prompt, 'user');
-  zumeRequest(prompt, document.getElementById('zfloat-status')).then(r => addFBubble(r, 'bot'));
-}
-
-function analisarPortfolio() {
-  if (!projetos.length) { alert('Adicione ao menos um projeto primeiro.'); return; }
-  const brl=gBrl(), tin=gTin(), tout=gTout();
-  const linhas = projetos.map(p => {
-    const totalMsgs = p.prof * p.mpp;
-    const llm = llmCost(p.modelo, totalMsgs, tin, tout, brl);
-    const meta = metaCost(totalMsgs, brl);
-    const cogs = llm.brl + meta + p.infra;
-    const mg = p.receita > 0 ? (p.receita - cogs) / p.receita * 100 : null;
-    return `${p.nome}: COGS R$${cogs.toFixed(0)}, receita R$${p.receita}, margem ${mg !== null ? mg.toFixed(1)+'%' : 'indefinida'}`;
-  }).join(' | ');
-  const prompt = `Analise o portfólio completo da Conectivos: ${linhas}. Quais projetos estão subprecificados? Onde está o maior risco? Que ajustes de preço recomenda para cada um?`;
-  document.getElementById('zfloat-panel').classList.add('open');
-  addFBubble(prompt, 'user');
-  zumeRequest(prompt, document.getElementById('zfloat-status')).then(r => addFBubble(r, 'bot'));
 }
 
 async function sendChat(){
@@ -897,8 +840,7 @@ async function sendChat(){
   const reply=await zumeRequest(msg,null);
   addBubble(reply,'bot');
 }
-function renderMd(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>').replace(/\n/g,'<br>');}
-function addBubble(text,type){const w=$('chat-msgs'),d=document.createElement('div');d.className='bubble '+type;d.innerHTML=type==='bot'?`<strong>Zumé</strong> — ${renderMd(text)}`:renderMd(text);w.appendChild(d);w.scrollTop=w.scrollHeight;return d;}
+function addBubble(text,type){const w=$('chat-msgs'),d=document.createElement('div');d.className='bubble '+type;d.innerHTML=type==='bot'?`<strong>Zumé</strong> — ${text}`:text;w.appendChild(d);w.scrollTop=w.scrollHeight;return d;}
 
 /* FLOAT WIDGET */
 function toggleZFloat(){document.getElementById('zfloat-panel').classList.toggle('open');}
@@ -909,29 +851,27 @@ async function sendFloatChat(){
   const reply=await zumeRequest(msg,st);
   addFBubble(reply,'bot');
 }
-function addFBubble(text,type){const w=document.getElementById('zfloat-msgs'),d=document.createElement('div');d.className='bubble '+type;d.innerHTML=type==='bot'?`<strong>Zumé</strong> — ${renderMd(text)}`:renderMd(text);w.appendChild(d);w.scrollTop=w.scrollHeight;return d;}
+function addFBubble(text,type){const w=document.getElementById('zfloat-msgs'),d=document.createElement('div');d.className='bubble '+type;d.innerHTML=type==='bot'?`<strong>Zumé</strong> — ${text}`:text;w.appendChild(d);w.scrollTop=w.scrollHeight;return d;}
 
 /* ════ INIT ════ */
-async function fetchCambio() {
-  try {
-    const r = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL');
-    const d = await r.json();
-    const rate = parseFloat(d.USDBRL.bid);
-    if (rate > 0) { $('gUsd').value = rate.toFixed(2); globalRecalc(); }
-  } catch(e) { /* mantém 5.70 */ }
-}
-
 document.addEventListener('DOMContentLoaded',()=>{
-  // Migra modelos antigos removidos
-  projetos = projetos.map(p => ({...p, modelo: (p.modelo==='geminiflash'||p.modelo==='claude3haiku') ? 'gpt4omini' : p.modelo}));
-  save();
-
+  // Seed GS se lista vazia
+  if(!projetos.length){
+    projetos=[
+      {id:1,nome:'GS Clínica (55 médicos)',modelo:'claude35haiku',prof:55,mpp:145,receita:5900,infra:40},
+      {id:2,nome:'ZangFu (3 clínicas)',    modelo:'gpt4omini',prof:15,mpp:200,receita:0,   infra:200},
+    ];
+    save();
+  }
   renderExpPills();
   renderProjetos();
   infraRecalc();
   loadZume();
+
+  // Pré-seleciona GS na simulação
   populateSimSel();
-  fetchCambio();
+  const gsProj=projetos.find(p=>p.nome.includes('GS'));
+  if(gsProj){ $('sim-proj-sel').value=gsProj.id; $('sim-slider').value=gsProj.mpp; simRecalc(); }
 });
 </script>
 </body>
